@@ -1,20 +1,25 @@
 ;;************************************************************************************
 ;;
 ;;    
-;;                        Carregador de Inicialização HBoot
-;;        
-;;                             Hexagon® Boot - HBoot
+;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
+;; ││ ││
+;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
+;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
+;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
+;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
+;;              ┌─┘│          
+;;              └──┘          
+;;
+;;
+;;************************************************************************************
+;;    
+;;                                   Hexagon® Boot
+;;
+;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
 ;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
 ;;                         Todos os direitos reservados
 ;;                                  
-;;************************************************************************************
-;;
-;;                                   Hexagon® Boot
-;;
-;;                   Carregador de Inicialização do Kernel Hexagon®
-;;
-;;
 ;;************************************************************************************
 
 ;; Função que transfere a execução para o Hexagon®, passando parâmetros pelos 
