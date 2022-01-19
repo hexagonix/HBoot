@@ -24,8 +24,8 @@
 
 ;; Versão do HBoot
 
-versaoHBoot                 equ "1.1.3 [DevTR_BETA]"
-verProtocolo                equ "1.15.1 DevTR_BETA"
+versaoHBoot                 equ "1.1.5"
+verProtocolo                equ "1.15.5"
 
 ;; Segmentos de carregamento do HBoot e do Hexagon®
 
