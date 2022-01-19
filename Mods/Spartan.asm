@@ -13,7 +13,7 @@ cabecalhoHBoot:
 .arquitetura: db 01h           ;; Arquitetura (i386), 1 byte
 .versaoMod:   db 01h           ;; Versão
 .subverMod:   db 00h           ;; Subversão
-.nomeMod:     db "SPARTAN ", 0 ;; Nome do módulo
+.nomeMod:     db "SPARTAN "    ;; Nome do módulo
 
 ;;************************************************************************************
 
