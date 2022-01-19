@@ -5,7 +5,8 @@
 use16	
 
 ;; O Hboot e módulos devem apresentar um cabeçalho especial de imagem HBoot
-;; São 6 bytes, com assinatura (número mágico) e arquitetura alvo
+;; São 10 bytes, com assinatura (número mágico), arquitetura alvo, versão,
+;; subversão e nome interno, sendo o último com até 8 bytes.
 
 cabecalhoHBoot:
 
@@ -16,6 +17,8 @@ cabecalhoHBoot:
 .nomeMod:     db "SPARTAN "    ;; Nome do módulo
 
 ;;************************************************************************************
+
+;; Início do módulo: ?x????:10h 
 
 inicioModulo:  
 
