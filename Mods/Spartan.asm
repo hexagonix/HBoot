@@ -9,8 +9,11 @@ use16
 
 cabecalhoHBoot:
 
-.assinatura:  db "HBOOT"     ;; Assinatura, 5 bytes
-.arquitetura: db 01h         ;; Arquitetura (i386), 1 byte
+.assinatura:  db "HBOOT"       ;; Assinatura, 5 bytes
+.arquitetura: db 01h           ;; Arquitetura (i386), 1 byte
+.versaoMod:   db 01h           ;; Versão
+.subverMod:   db 00h           ;; Subversão
+.nomeMod:     db "SPARTAN ", 0 ;; Nome do módulo
 
 ;;************************************************************************************
 

@@ -24,7 +24,7 @@
 
 ;; Versão do HBoot
 
-versaoHBoot                 equ "1.1.5"
+versaoHBoot                 equ "1.2.0"
 verProtocolo                equ "1.15.5"
 
 ;; Segmentos de carregamento do HBoot e do Hexagon®
@@ -40,7 +40,7 @@ ARQUITETURA                 = 01h      ;; Arquitetura do HBoot e a qual se desti
 ;; Tamanho do cabeçalho HAPP da imagem
 
 CABECALHO_HAPP              = 026h     ;; Versão 2.0 da definição HAPP
-CABECALHO_MODULO            = 06h      ;; Versão 1.0 da definição de cabeçalhos de módulo
+CABECALHO_MODULO            = 11h      ;; Versão 1.0 da definição de cabeçalhos de módulo
 
 ;; Memória mínima para o boot do Hexagon®. Vale lembrar que os requisitos são variáveis a depender
 ;; da versão do Hexagon®, sendo necessária a adaptação à necessidade mínima de memória.
