@@ -40,7 +40,7 @@ ARQUITETURA                 = 01h      ;; Arquitetura do HBoot e a qual se desti
 ;; Tamanho do cabeçalho HAPP da imagem
 
 CABECALHO_HAPP              = 026h     ;; Versão 2.0 da definição HAPP
-CABECALHO_MODULO            = 11h      ;; Versão 1.0 da definição de cabeçalhos de módulo
+CABECALHO_MODULO            = 10h      ;; Versão 1.0 da definição de cabeçalhos de módulo
 
 ;; Memória mínima para o boot do Hexagon®. Vale lembrar que os requisitos são variáveis a depender
 ;; da versão do Hexagon®, sendo necessária a adaptação à necessidade mínima de memória.
