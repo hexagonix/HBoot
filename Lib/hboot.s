@@ -24,7 +24,9 @@
 
 ;; Versão do HBoot
 
-versaoHBoot                 equ "1.2.0"
+versaoHBoot                 equ "1.3.0"
+versaoHBootCabecalho          = 1
+subVerHBootCabecalho          = 3
 verProtocolo                equ "1.15.5"
 
 ;; Segmentos de carregamento do HBoot e do Hexagon®
