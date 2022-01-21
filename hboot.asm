@@ -34,8 +34,11 @@ use16
 
 cabecalhoHBoot:
 
-.assinatura:  db "HBOOT"     ;; Assinatura, 5 bytes
-.arquitetura: db ARQUITETURA ;; Arquitetura (i386), 1 byte
+.assinatura:  db "HBOOT"              ;; Assinatura, 5 bytes
+.arquitetura: db ARQUITETURA          ;; Arquitetura (i386), 1 byte
+.versaoMod:   db versaoHBootCabecalho ;; Versão
+.subverMod:   db subVerHBootCabecalho ;; Subversão
+.nomeHBoot:   db "HBoot   "           ;; Nome do módulo
 
     cmp byte[HBoot.Parametros.execucaoModulo], 00h
     jne retornarModulo
