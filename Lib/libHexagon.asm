@@ -22,6 +22,12 @@
 ;;                                  
 ;;************************************************************************************
 
+;; Definições importantes para o carregamento do Hexagon®
+
+SEG_HEXAGON equ 0x50   ;; Segmento para carregar Kernel
+
+;;************************************************************************************
+
 ;; Função que transfere a execução para o Hexagon®, passando parâmetros pelos 
 ;; registradores, como descrito a seguir:
 ;;
@@ -63,7 +69,7 @@ executarKernel:
 ;; 1.0 sem problemas, uma vez que as informações necessárias à execução já se encontram nessa
 ;; versão da especificação. Os dados contidos no cabeçalho serão futuramente validados, se necessário
 
-    jmp SEG_KERNEL:CABECALHO_HAPP   ;; Configurar CS:IP e executar o Kernel
+    jmp SEG_HEXAGON:CABECALHO_HAPP   ;; Configurar CS:IP e executar o Kernel
 
 ;;************************************************************************************
 
@@ -80,7 +86,7 @@ configurarInicioHexagon:
 
 	rep movsb ;; Copiar (ECX) caracteres de ESI para EDI
 
-    mov word[HBoot.Arquivos.segmentoFinal], SEG_KERNEL
+    mov word[HBoot.Arquivos.segmentoFinal], SEG_HEXAGON
 
 ;; Vamos marcar para modo de boot do Hexagon(R)
 

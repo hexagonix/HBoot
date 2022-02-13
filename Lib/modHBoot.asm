@@ -27,6 +27,11 @@
 ;; para funções específicas, como teste de memória, testes de outros componentes e 
 ;; etc
 
+CABECALHO_MODULO = 10h      ;; Versão 1.0 da definição de cabeçalhos de módulo
+SEG_MODULOS      equ 0x2000 ;; Segmento para carregamento de imagens de diagnóstico
+
+;;************************************************************************************
+
 HBoot.modHBoot.Mensagens:
 
 .retornoMod: db 13, 10, "HBoot: Voce retornou de um modulo HBoot finalizado.", 13, 10

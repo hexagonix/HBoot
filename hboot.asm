@@ -52,6 +52,7 @@ cabecalhoHBoot:
 ;; Vamos incluir todas as constantes utilizadas
 
 include "Lib/hboot.s"
+include "Lib/versao.s"
 
 ;; Macros utilizados pelo HBoot
 
@@ -68,13 +69,13 @@ include "Dev/dev.asm"
 
 ;; Agora, bibliotecas úteis
 
+include "Lib/libMod.asm"
+include "Lib/libUtil.asm"
+include "Lib/libHexagon.asm"
 include "Lib/string.asm"
 include "Lib/num.asm"
 include "Lib/HAPP.asm"
 include "Lib/int.asm"
-include "Lib/libMod.asm"
-include "Lib/libUtil.asm"
-include "Lib/libHexagon.asm"
 include "Lib/prompt.asm"
 
 ;; Agora vamos incluir os módulos internos e o carregador de módulos
