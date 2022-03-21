@@ -81,7 +81,7 @@ HBoot.Mensagens:
                         db " > [2]: Obter informacoes do ambiente de inicializacao configurado.", 13, 10
                         db " > [3]: Confirmar alteracoes/informacoes e iniciar o Hexagon(R).", 13, 10
                         db " > [4]: Mais informacoes sobre o HBoot.", 13, 10
-                        db " > [t,T]: Opcoes de diagnostico, estensao e outras funcoes (use com cuidado).", 13, 10, 0
+                        db " > [t,T]: Opcoes de diagnostico e experimentais (use com cuidado).", 13, 10, 0
 .selecioneModif:        db 13, 10, "HBoot: Selecione opcao: ", 0
 .modifIndisponivel:     db 13, 10, "HBoot: Opcao invalida. Pressione [ENTER] para continuar boot.", 0
 .testarComponentes:     db 13, 10, "HBoot: Aqui voce pode testar componentes do HBoot, bem como utilizar", 13, 10
