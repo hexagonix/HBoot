@@ -5,8 +5,26 @@
 ;; Copyright (C) 2022 Felipe Miguel Nery Lunkes
 ;; Todos os direitos reservados.
 
-use16	
+;; Macros 
 
+macro exibir mensagem
+{
+
+    mov si, mensagem
+
+	call imprimir
+
+}
+
+;;************************************************************************************
+
+;; Definições iniciais e constantes
+
+MEMORIA_MINIMA = 31744    ;; Memória mínima necessária para boot seguro do Hexagonix
+
+;;************************************************************************************
+
+use16	
 
 cabecalhoHBoot:
 
@@ -14,7 +32,7 @@ cabecalhoHBoot:
 .arquitetura: db 01h           ;; Arquitetura (i386), 1 byte
 .versaoMod:   db 01h           ;; Versão
 .subverMod:   db 00h           ;; Subversão
-.nomeMod:     db "x86Detec"    ;; Nome do módulo
+.nomeMod:     db "x86Det  "    ;; Nome do módulo
 
 ;;************************************************************************************
 
@@ -30,19 +48,22 @@ inicioModulo:
     mov ds, ax           
     mov es, ax                                        
 
-    mov si, x86.iniciando
+    call limparTela
 
-    call imprimir ;; E solicitar a função de exibição para que a exiba na tela
+    exibir x86.iniciando
+    exibir x86.direitos
 
-    call verificarDiscos
+    call verificarHardware
 
-    mov si, x86.terminar
+    exibir x86.terminar
 
-    call imprimir ;; E solicitar a função de exibição para que a exiba na tela
+    call verificarAprovacao
 
-    mov ax, 0
+    exibir x86.reinicioNecessario
 
-    int 16h 
+    call aguardarPressionamento
+
+    int 19h
 
 ;;************************************************************************************
 ;;
@@ -50,13 +71,43 @@ inicioModulo:
 ;;
 ;;************************************************************************************
 
+verificarHardware:
+
+    exibir x86.iniciandoIdentificacao
+
+    call identificarVendedorProcx86
+    call identificarNomeProcx86
+    call verificarMemoria
+    call verificarDiscos
+
+    ret
+
+;;************************************************************************************
+
+verificarAprovacao:
+
+    exibir x86.resultadoAvaliacao
+
+    cmp byte[x86.aprovadoTestes], 01h
+    je .aprovado 
+
+    exibir x86.resultadoNegativo
+
+    jmp .fim 
+
+.aprovado:
+
+    exibir x86.resultadoPositivo
+
+.fim:
+
+    ret
+
 ;;************************************************************************************
 
 verificarDiscos:
 
-    mov si, x86.identificandoDiscos
-
-    call imprimir
+    exibir x86.identificandoDiscos
 
     clc 
 
@@ -81,9 +132,7 @@ verificarDiscos:
 
     jc .errodsq0
  
-    mov si, x86.dsq0
-    
-    call imprimir 
+    exibir x86.dsq0
 
     jmp .dsq1
  
@@ -114,10 +163,8 @@ verificarDiscos:
  
     jc .errodsq1
  
-    mov si, x86.dsq1
+    exibir x86.dsq1
     
-    call imprimir 
- 
     jmp .hd0
  
  .errodsq1:
@@ -149,10 +196,17 @@ verificarDiscos:
 
     jc .errohd0
  
-    mov si, x86.hd0
-    
-    call imprimir 
+    exibir x86.hd0
  
+ ;; Para realização a inicialização correta, o hd0 é requisito
+
+    cmp byte [x86.aprovadoTestes], 01h
+    jne .continuar 
+
+    mov byte[x86.aprovadoTestes], 01h ;; Aprovado aqui mas recusado de todo jeito
+
+.continuar:
+
     jmp .hd1
  
  .errohd0:
@@ -182,10 +236,8 @@ verificarDiscos:
  
     jc .errohd1
  
-    mov si, x86.hd1
-    
-    call imprimir 
- 
+    exibir x86.hd1
+
     jmp .fim
  
  .errohd1:
@@ -195,6 +247,208 @@ verificarDiscos:
     ret
 
 ;;************************************************************************************
+
+identificarVendedorProcx86:
+
+    mov eax, 0
+	
+    cpuid
+	
+	mov [x86.vendedorx86], ebx
+	mov [x86.vendedorx86 + 4], edx
+	mov [x86.vendedorx86 + 8], ecx
+
+.exibirUsuario:
+
+    exibir x86.fornecedorProc
+
+    exibir x86.vendedorx86
+
+    ret
+
+;;************************************************************************************
+
+identificarNomeProcx86:
+
+    mov eax, 80000002h	
+	
+    cpuid
+	
+	mov di, x86.nomex86		
+
+	stosd
+
+	mov eax, ebx
+
+	stosd
+
+	mov eax, ecx
+
+	stosd
+
+	mov eax, edx
+
+	stosd
+	
+	mov eax, 80000003h
+
+	cpuid
+	
+	stosd
+
+	mov eax, ebx
+	
+    stosd
+	
+    mov eax, ecx
+	
+    stosd
+	
+    mov eax, edx
+	
+    stosd
+	
+	mov eax, 80000004h	
+	
+    cpuid
+	
+	stosd
+	
+    mov eax, ebx
+	
+    stosd
+	
+    mov eax, ecx
+	
+    stosd 
+	
+    mov eax, edx
+	
+    stosd
+	
+    mov si, x86.nomex86		
+	
+    mov cx, 48
+	
+.loopCPU:	
+
+    lodsb
+
+	cmp al, ' '
+	jae .formatarNomeCPU
+	
+    mov al, 0
+	
+.formatarNomeCPU:	
+
+    mov [si-1], al
+	
+    loop .loopCPU
+
+    exibir x86.nomeProcessador
+
+    mov si, x86.nomex86
+
+    cmp byte[si], 0
+    jne .comCPUID
+
+    exibir x86.semCPUID
+
+    jmp .fim
+
+.comCPUID:
+
+    exibir x86.nomex86
+
+.fim:
+
+	ret
+
+;;************************************************************************************
+
+verificarMemoria:
+
+    push edx
+	push ecx
+	push ebx
+
+	xor eax, eax
+	xor ebx, ebx
+	
+	mov ax, 0xE801
+	
+	xor dx, dx
+	xor cx, cx
+	
+	int 15h
+	
+	jnc .processar
+	
+	xor eax, eax
+	
+	jmp .fim         ;; Erro                                  
+
+.quantificar:
+
+	mov si, ax
+	
+	or si, bx
+	jne .quantificar
+	
+	mov ax, cx
+	mov bx, dx
+
+.processar:
+
+	cmp ax, 0x3C00
+	jb .abaixoDe16MB
+	
+	movzx eax, bx
+	
+	add eax, 100h
+	
+	shl eax, 16      ;; EAX = EAX * 65536
+	
+	jmp .fim
+
+.abaixoDe16MB:
+
+	shl eax, 10      ;; EAX = EAX * 1024
+
+.fim:
+
+	pop ebx
+	pop ecx
+	pop edx
+	
+;; Vamos salvar aqui o total de memória recuperado. Caso seja suficiente para o processo continuar,
+;; a quantidade de RAM instalada será fornecida ao Hexagon®, em Kbytes
+
+;; Vamos comparar se a quantidade de RAM é suficiente para uma inicialização bem sucedida
+
+    shr eax, 10 ;; EAX = EAX / 1024
+
+    cmp dword eax, MEMORIA_MINIMA
+    jbe .erroMemoria ;; Se menos que isso, não temos o suficiente
+
+    exibir x86.memoriaSuficiente
+
+;; Para realização a inicialização correta, o mínimo de RAM é requisito
+
+    mov byte[x86.aprovadoTestes], 01h
+
+    ret
+
+.erroMemoria:
+
+    exibir x86.memoriaInsuficiente
+
+;; Para realização a inicialização correta, o mínimo de RAM é requisito
+
+    mov byte[x86.aprovadoTestes], 00h
+
+    ret
+
 
 ;;************************************************************************************
 ;;
@@ -224,25 +478,22 @@ imprimir:
 
 ;;************************************************************************************
 
-limparTela:                  
-
-    pusha 
+limparTela:
 
     mov dx, 0
-    mov bh, 0
-    mov ah, 2
-    
+	mov bh, 0
+	mov ah, 2
+	
+    int 10h  
+	
+	mov ah, 6			
+	mov al, 0			
+	mov bh, 7			
+	mov cx, 0			
+	mov dh, 24			
+	mov dl, 79
+	
     int 10h
-
-    mov ah, 6
-    mov al, 0
-    mov cx, 0
-    mov dh, 24
-    mov dl, 79
-    
-    int 10h
-
-    popa 
 
     ret
 
@@ -381,15 +632,31 @@ paraMaiusculoPronto:
 
 ;;************************************************************************************
 
-VERSAO equ "0.0.1"
+VERSAO equ "0.0.5"
 
 x86:
 
-.terminar:            db 10, 13, "O x86-Detect terminou de fazer o diagnostico.", 13, 10, 0
-.identificandoDiscos: db 10, 13, "Indentificando unidades de disco online: ", 0
-.iniciando:           db 10, 13, 10, 13, "x86-Detect para HBoot versao ", VERSAO, 10, 13, 0
-.dsq0:                db "dsq0", 0
-.dsq1:                db "dsq1", 0
-.hd0:                 db "hd0", 0
-.hd1:                 db "hd1", 0
-.espaco:              db " ", 0
+.iniciando:              db "x86-Detect para HBoot versao ", VERSAO, 10, 13, 0
+.direitos:               db "Copyright (C) 2022 Felipe Miguel Nery Lunkes. Todos os direitos reservados.", 10, 13, 0
+.iniciandoIdentificacao: db 10, 13, "[!] Iniciando a identificacao do hardware instalado...", 0
+.identificandoDiscos:    db 10, 13, " [>] Indentificando unidades de disco online: ", 0
+.terminar:               db 10, 13, "[!] O x86-Detect terminou de fazer o diagnostico.", 10, 13, 0
+.dsq0:                   db "dsq0", 0
+.dsq1:                   db "dsq1", 0
+.hd0:                    db "hd0", 0
+.hd1:                    db "hd1", 0
+.espaco:                 db " ", 0
+.virgula:                db ", ", 0
+.ponto:                  db ".", 0
+.fornecedorProc:         db 10, 13, " [>] Fornecedor do processador instalado: ", 0
+.nomeProcessador:        db 10, 13, " [>] Nome do processador instalado: ", 0
+.vendedorx86: times 13   db 0
+.nomex86:                db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
+.semCPUID:               db "Processador sem suporte a CPUID.", 0
+.memoriaInsuficiente:    db 10, 13, " [>] Memoria insuficiente para iniciar o Hexagonix.", 0
+.memoriaSuficiente:      db 10, 13, " [>] Memoria instalada superior ao minimo necessario.", 0
+.resultadoAvaliacao:     db 10, 13, "Resultado da avaliacao de desempenho e compatibilidade:", 10, 13, 0
+.resultadoNegativo:      db 10, 13, " [!] O sistema nao podera ser iniciado nesta configuracao.", 0
+.resultadoPositivo:      db 10, 13, " [:D] O Hexagonix pode ser iniciado neste dispositivo/configuracao.", 0
+.reinicioNecessario:     db 10, 13, 10, 13, "[!] Reinicio necessario. Pressione qualquer tecla para continuar...", 0
+.aprovadoTestes:         db 0
