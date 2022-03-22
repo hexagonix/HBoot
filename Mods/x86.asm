@@ -632,7 +632,7 @@ paraMaiusculoPronto:
 
 ;;************************************************************************************
 
-VERSAO equ "0.0.5"
+VERSAO equ "0.0.5 (22/03/2022)"
 
 x86:
 
@@ -656,7 +656,7 @@ x86:
 .memoriaInsuficiente:    db 10, 13, " [>] Memoria insuficiente para iniciar o Hexagonix.", 0
 .memoriaSuficiente:      db 10, 13, " [>] Memoria instalada superior ao minimo necessario.", 0
 .resultadoAvaliacao:     db 10, 13, "Resultado da avaliacao de desempenho e compatibilidade:", 10, 13, 0
-.resultadoNegativo:      db 10, 13, " [!] O sistema nao podera ser iniciado nesta configuracao.", 0
-.resultadoPositivo:      db 10, 13, " [:D] O Hexagonix pode ser iniciado neste dispositivo/configuracao.", 0
+.resultadoNegativo:      db 10, 13, "[!] O sistema nao podera ser iniciado nesta configuracao.", 0
+.resultadoPositivo:      db 10, 13, "[:D] O Hexagonix pode ser iniciado neste dispositivo/configuracao.", 0
 .reinicioNecessario:     db 10, 13, 10, 13, "[!] Reinicio necessario. Pressione qualquer tecla para continuar...", 0
 .aprovadoTestes:         db 0
