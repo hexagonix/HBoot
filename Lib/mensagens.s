@@ -76,12 +76,13 @@ HBoot.Mensagens:
                         db "apos os testes, carregar o kernel, fornecer parametros (caso sejam", 13, 10
                         db "fornecidos pelo usuario) e iniciar a execucao do Hexagon(R).", 0
 .pressionouF8:          db "HBoot: Aqui voce pode alterar parametros de boot do Hexagon(R).", 13, 10, 0
-.listaModif:            db 13,10, "Voce pode alterar os parametros abaixo (lista provisoria):", 13, 10
+.listaModif:            db 13, 10, "Voce pode alterar os parametros abaixo (lista provisoria):", 13, 10
                         db " > [1]: Fornecer linha de comando/parametros personalizada ao Hexagon(R).", 13, 10
                         db " > [2]: Obter informacoes do ambiente de inicializacao configurado.", 13, 10
                         db " > [3]: Confirmar alteracoes/informacoes e iniciar o Hexagon(R).", 13, 10
                         db " > [4]: Mais informacoes sobre o HBoot.", 13, 10
-                        db " > [t,T]: Opcoes de diagnostico e experimentais (use com cuidado).", 13, 10, 0
+                        db " > [t,T]: Opcoes experimentais e de diagnostico (modulos, iniciar FreeDOS, etc).", 10, 13
+                        db "          Use as funcoes experimentais e de diagnostico com cuidado!", 10, 13, 0
 .selecioneModif:        db 13, 10, "HBoot: Selecione opcao: ", 0
 .modifIndisponivel:     db 13, 10, "HBoot: Opcao invalida. Pressione [ENTER] para continuar boot.", 0
 .testarComponentes:     db 13, 10, "HBoot: Aqui voce pode testar componentes do HBoot, bem como utilizar", 13, 10
