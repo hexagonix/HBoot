@@ -79,6 +79,10 @@ verificarHardware:
     call identificarNomeProcx86
     call verificarMemoria
     call verificarDiscos
+;;  call verificarPortasSeriais
+;;  call verificarPortasParalelas
+;;  call verificarVideo
+;;  call verificarPerifericos
 
     ret
 
@@ -632,7 +636,7 @@ paraMaiusculoPronto:
 
 ;;************************************************************************************
 
-VERSAO equ "0.0.5 (22/03/2022)"
+VERSAO equ "0.0.6 (22/03/2022)"
 
 x86:
 
