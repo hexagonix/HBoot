@@ -4,6 +4,10 @@
 ;;
 ;; Copyright (C) 2022 Felipe Miguel Nery Lunkes
 ;; Todos os direitos reservados.
+;;
+;; Contêm código derivado das bibliotecas Assembly para PX-DOS
+;; Copyright (C) 2012-2016 Felipe Miguel Nery Lunkes
+;; Todos os direitos reservados.
 
 ;; Macros 
 
@@ -30,8 +34,8 @@ cabecalhoHBoot:
 
 .assinatura:  db "HBOOT"       ;; Assinatura, 5 bytes
 .arquitetura: db 01h           ;; Arquitetura (i386), 1 byte
-.versaoMod:   db 01h           ;; Versão
-.subverMod:   db 00h           ;; Subversão
+.versaoMod:   db 00h           ;; Versão
+.subverMod:   db 01h           ;; Subversão
 .nomeMod:     db "x86Det  "    ;; Nome do módulo
 
 ;;************************************************************************************
@@ -48,20 +52,33 @@ inicioModulo:
     mov ds, ax           
     mov es, ax                                        
 
+;; Vamos preparar a tela para o usuário
+
     call limparTela
+    call definirCor
+
+;; Exibir informações de inicialização
 
     exibir x86.iniciando
     exibir x86.direitos
 
+;; Vamos iniciar agora a verificação do hardware disponível
+
     call verificarHardware
+
+;; Vamos verificar se a execução do Hexagon foi aprovada
 
     exibir x86.terminar
 
     call verificarAprovacao
 
+;; Vamos solicitar a interação do usuário para reiniciar e retornar ao HBoot
+
     exibir x86.reinicioNecessario
 
     call aguardarPressionamento
+
+;; Reiniciar!
 
     int 19h
 
@@ -432,6 +449,25 @@ verificarMemoria:
 
     shr eax, 10 ;; EAX = EAX / 1024
 
+    push eax 
+
+    exibir x86.memoriaDisponivel
+
+    pop eax 
+    push eax 
+
+    shr ax, 10 ;; ECX = ECX / 1024
+
+    call paraString 
+
+    mov si, ax
+    
+    call imprimir
+
+    exibir x86.megabytes 
+
+    pop eax 
+
     cmp dword eax, MEMORIA_MINIMA
     jbe .erroMemoria ;; Se menos que isso, não temos o suficiente
 
@@ -441,7 +477,7 @@ verificarMemoria:
 
     mov byte[x86.aprovadoTestes], 01h
 
-    ret
+    jmp .terminar
 
 .erroMemoria:
 
@@ -451,12 +487,17 @@ verificarMemoria:
 
     mov byte[x86.aprovadoTestes], 00h
 
-    ret
+.terminar:
 
+    ret
 
 ;;************************************************************************************
 ;;
 ;; Funções úteis para a execução do módulo
+;;
+;; Bibliotecas Assembly para PX-DOS adaptadas para o x86-Detect
+;; Copyright (C) 2012-2016 Felipe Miguel Nery Lunkes
+;; Todos os direitos reservados.
 ;;
 ;;************************************************************************************
 
@@ -636,14 +677,137 @@ paraMaiusculoPronto:
 
 ;;************************************************************************************
 
-VERSAO equ "0.0.6 (22/03/2022)"
+gotoxy:
+
+;; Em dh a linha
+;; Em dl a coluna
+
+    push ax
+    push bx
+    push dx
+
+    mov ah, 02h
+    mov bh, 0
+
+    int 10h
+
+    pop dx
+    pop bx
+    pop ax
+		
+    ret
+
+;;************************************************************************************
+
+definirCor:
+
+    mov ah, 00h
+    mov al, 03h
+
+    int 10h
+
+    mov ax, 1003h
+    mov bx, 0    
+
+    int 10h
+
+    push ax      
+    push ds      
+    push bx      
+    push cx      
+    push di      
+
+    mov ax, 40h
+    mov ds, ax  
+    mov ah, 06h
+    mov al, 0   
+    mov bh, 1001_1111b  
+    mov ch, 0   
+    mov cl, 0   
+    mov di, 84h 
+    mov dh, [di] 
+    mov di, 4ah 
+    mov dl, [di]
+
+    dec dl  
+
+    int 10h
+ 
+    mov bh, 0  
+    mov dl, 0   
+    mov dh, 0   
+    mov ah, 02
+
+    int 10h
+
+    pop di      
+    pop cx      
+    pop bx      
+    pop ds      
+    pop ax      
+
+    ret 
+
+;;************************************************************************************
+
+paraString:
+
+    pusha
+
+    mov cx, 0
+    mov bx, 10
+    mov di, .tmp
+		
+.empurrar:
+
+    mov dx, 0
+
+    div bx
+    inc cx
+
+    push dx
+
+    test ax,ax
+    jnz .empurrar
+		
+.puxar:
+
+    pop dx
+
+    add dl, '0'
+    mov [di], dl
+
+    inc di
+    dec cx
+
+    jnz .puxar
+
+    mov byte [di], 0
+
+    popa
+
+    mov ax, .tmp
+
+    ret
+		
+    .tmp: times 7 db 0
+
+;;************************************************************************************
+
+;;************************************************************************************
+;;
+;; Constantes e mensagens do módulo 
+;;
+;;************************************************************************************
+
+VERSAO equ "0.1.1 (02/04/2022)"
 
 x86:
 
 .iniciando:              db "x86-Detect para HBoot versao ", VERSAO, 10, 13, 0
 .direitos:               db "Copyright (C) 2022 Felipe Miguel Nery Lunkes. Todos os direitos reservados.", 10, 13, 0
-.iniciandoIdentificacao: db 10, 13, "[!] Iniciando a identificacao do hardware instalado...", 0
-.identificandoDiscos:    db 10, 13, " [>] Indentificando unidades de disco online: ", 0
+.iniciandoIdentificacao: db 10, 13, "[!] Iniciando a identificacao e inicializacao do hardware instalado...", 0
+.identificandoDiscos:    db 10, 13, " [>] Unidades de disco online (nomes Hexagon): ", 0
 .terminar:               db 10, 13, "[!] O x86-Detect terminou de fazer o diagnostico.", 10, 13, 0
 .dsq0:                   db "dsq0", 0
 .dsq1:                   db "dsq1", 0
@@ -652,15 +816,17 @@ x86:
 .espaco:                 db " ", 0
 .virgula:                db ", ", 0
 .ponto:                  db ".", 0
-.fornecedorProc:         db 10, 13, " [>] Fornecedor do processador instalado: ", 0
+.fornecedorProc:         db 10, 13, " [>] Fabricante do processador instalado: ", 0
 .nomeProcessador:        db 10, 13, " [>] Nome do processador instalado: ", 0
 .vendedorx86: times 13   db 0
 .nomex86:                db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
-.semCPUID:               db "Processador sem suporte a CPUID.", 0
-.memoriaInsuficiente:    db 10, 13, " [>] Memoria insuficiente para iniciar o Hexagonix.", 0
-.memoriaSuficiente:      db 10, 13, " [>] Memoria instalada superior ao minimo necessario.", 0
+.semCPUID:               db "processador sem suporte a CPUID.", 0
+.memoriaInsuficiente:    db " [impossivel executar o Hexagon].", 0
+.memoriaSuficiente:      db " [compativel com Hexagon].", 0
 .resultadoAvaliacao:     db 10, 13, "Resultado da avaliacao de desempenho e compatibilidade:", 10, 13, 0
 .resultadoNegativo:      db 10, 13, "[!] O sistema nao podera ser iniciado nesta configuracao.", 0
 .resultadoPositivo:      db 10, 13, "[:D] O Hexagonix pode ser iniciado neste dispositivo/configuracao.", 0
+.memoriaDisponivel:      db 10, 13, " [>] Memoria total instalada: ", 0
+.megabytes:              db " megabytes", 0
 .reinicioNecessario:     db 10, 13, 10, 13, "[!] Reinicio necessario. Pressione qualquer tecla para continuar...", 0
 .aprovadoTestes:         db 0
