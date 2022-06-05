@@ -24,7 +24,7 @@ macro exibir mensagem
 
 ;; Definições iniciais e constantes
 
-MEMORIA_MINIMA = 31744    ;; Memória mínima necessária para boot seguro do Hexagonix
+MEMORIA_MINIMA = 32768    ;; Memória mínima necessária para boot seguro do Hexagonix
 
 ;;************************************************************************************
 
@@ -35,7 +35,7 @@ cabecalhoHBoot:
 .assinatura:  db "HBOOT"       ;; Assinatura, 5 bytes
 .arquitetura: db 01h           ;; Arquitetura (i386), 1 byte
 .versaoMod:   db 00h           ;; Versão
-.subverMod:   db 01h           ;; Subversão
+.subverMod:   db 02h           ;; Subversão
 .nomeMod:     db "x86Det  "    ;; Nome do módulo
 
 ;;************************************************************************************
@@ -448,6 +448,8 @@ verificarMemoria:
 ;; Vamos comparar se a quantidade de RAM é suficiente para uma inicialização bem sucedida
 
     shr eax, 10 ;; EAX = EAX / 1024
+    
+    add eax, 1024 ;; Vamos adicionar o abaixo da marca de 1 Mb
 
     push eax 
 
@@ -800,7 +802,7 @@ paraString:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "0.1.1 (19/05/2022)"
+VERSAO equ "0.2 (05/06/2022)"
 
 x86:
 
