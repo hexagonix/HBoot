@@ -24,7 +24,7 @@
 
 ;; Versão do HBoot
 
-versaoHBoot                 equ "1.4.1 (build 20/05/2022)"
-verProtocolo                equ "1.0 (H1)"
+versaoHBoot                 equ "1.5 (build 05/06/2022)"
+verProtocolo                equ "1.1 (H1 R2)"
 versaoHBootCabecalho          = 1
-subVerHBootCabecalho          = 4
+subVerHBootCabecalho          = 5

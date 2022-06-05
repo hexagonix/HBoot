@@ -84,6 +84,11 @@ verificarMemoria:
 
     shr eax, 10 ;; EAX = EAX / 1024
 
+;; Precisamos agora adicionar a memória abaixo de 1 MB que está disponível mas que 
+;; não entra na quantificação feita.
+
+	add eax, 1024 ;; Pronto. Vamos adicionar 1024 kbytes a conta
+
     mov word[memoriaDisponivel], ax 
 
     cmp dword eax, MEMORIA_MINIMA

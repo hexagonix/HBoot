@@ -33,7 +33,7 @@ ARQUITETURA                 = 01h      ;; Arquitetura do HBoot e a qual se desti
 ;; Memória mínima para o boot do Hexagon®. Vale lembrar que os requisitos são variáveis a depender
 ;; da versão do Hexagon®, sendo necessária a adaptação à necessidade mínima de memória.
 
-MEMORIA_MINIMA              = 31744    ;; Memória mínima necessária para boot seguro
+MEMORIA_MINIMA              = 32768    ;; Memória mínima necessária para boot seguro
 
 ;; Constantes utilizadas para alterações de parâmetros de boot
 
