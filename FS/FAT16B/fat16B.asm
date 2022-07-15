@@ -1,25 +1,19 @@
 ;;************************************************************************************
 ;;
 ;;    
-;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
-;; ││ ││
-;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
-;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
-;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
-;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
-;;              ┌─┘│          
-;;              └──┘          
-;;
-;;
+;;                        Carregador de Inicialização HBoot
+;;        
+;;                             Hexagon® Boot - HBoot
+;;           
+;;                Copyright © 2020-2021 Felipe Miguel Nery Lunkes
+;;                         Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
-;;    
+;;
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
-;;                                  
+;;
 ;;          Lógica para encontrar e carregar arquivo em um volume FAT16
 ;;
 ;;************************************************************************************
@@ -28,8 +22,6 @@
 
 procurarArquivoFAT16B:
 
-    mov ebp, dword[enderecoLBAParticao + (SEG_HBOOT * 16)]
-
 ;; Calcular o tamanho do diretório raiz
 ;; 
 ;; Fórmula:
@@ -37,24 +29,24 @@ procurarArquivoFAT16B:
 ;; Tamanho  = (entradasRaiz * 32) / bytesPorSetor
 
     mov ax, word[entradasRaiz]
-    shl ax, 5           ;; Multiplicar por 32
+    shl ax, 5			;; Multiplicar por 32
     mov bx, word[bytesPorSetor]
-    xor dx, dx          ;; DX = 0
+    xor dx, dx			;; DX = 0
     
-    div bx              ;; AX = AX / BX
+    div bx				;; AX = AX / BX
     
     mov word[tamanhoRaiz], ax ;; Salvar tamanho do diretório raiz
 
-;; Calcular o tamanho das tabelas FAT   
+;; Calcular o tamanho das tabelas FAT	
 ;;
 ;; Fórmula:
 ;; Tamanho  = totalFATs * setoresPorFAT
 
     mov ax, word[setoresPorFAT]
     movzx bx, byte[totalFATs]
-    xor dx, dx                ;; DX = 0
+    xor dx, dx			      ;; DX = 0
     
-    mul bx                    ;; AX = AX * BX
+    mul bx				      ;; AX = AX * BX
     
     mov word[tamanhoFATs], ax ;; Salvar tamanho das FATs
 
@@ -64,7 +56,7 @@ procurarArquivoFAT16B:
 ;;
 ;; setoresReservados + LBA da partição
 
-    add word[setoresReservados], bp ;; BP é o LBA da partição
+    add word[setoresReservados], bp	;; BP é o LBA da partição
     
 ;; Calcular o endereço da área de dados
 ;;
@@ -72,7 +64,7 @@ procurarArquivoFAT16B:
 ;;
 ;; setoresReservados + tamanhoFATs + tamanhoRaiz
 
-    movzx eax, word[setoresReservados]  
+    movzx eax, word[setoresReservados]	
     
     add ax, word[tamanhoFATs]
     add ax, word[tamanhoRaiz]
@@ -99,45 +91,47 @@ procurarArquivoFAT16B:
     mov cx, word[entradasRaiz]
     mov bx, bufferDeDisco
 
-    cld                 ;; Limpar direção
+    cld				    ;; Limpar direção
     
 loopEncontrarArquivoFAT16B:
 
 ;; Encontrar o nome de 11 caracteres do arquivo em uma entrada
 
-    xchg cx, dx         ;; Salvar contador de loop
+    xchg cx, dx			;; Salvar contador de loop
     mov cx, 11
     mov si, HBoot.Arquivos.nomeImagem
     mov di, bx
     
-    rep cmpsb           ;; Comparar (ECX) caracteres entre DI e SI
+    rep cmpsb			;; Comparar (ECX) caracteres entre DI e SI
     
     je .arquivoEncontrado
 
-    add bx, 32          ;; Ir para a próxima entrada do diretório raiz (+ 32 bytes)
+    add bx, 32			;; Ir para a próxima entrada do diretório raiz (+ 32 bytes)
     
-    xchg cx, dx         ;; Restaurar contador
+    xchg cx, dx			;; Restaurar contador
     
     loop loopEncontrarArquivoFAT16B
 
-;; O arquivo executável não foi encontrado. Setar erro e retornar
+;; O arquivo executável do Kernel não foi encontrado. Exibir mensagem de erro e finalizar.
 
-    stc 
+    pop esi
 
-    ret
+    mov si, HBoot.Mensagens.naoEncontrado
+    
+    call imprimir
+    
+    jmp $
 
 .arquivoEncontrado:
 
-    clc 
-
-    mov si, word[bx+26]     
+    mov si, word[bx+26]		
     mov word[cluster], si ;; Salvar primeiro cluster
 
 ;; Carregar FAT na memória para encontrar todos os clusters do arquivo
 
-    mov ax, word[setoresPorFAT]     ;; Total de setores para carregar
-    mov si, word[setoresReservados] ;; LBA
-    mov di, bufferDeDisco           ;; Buffer para onde os dados serão carregados
+    mov ax, word[setoresPorFAT]	    ;; Total de setores para carregar
+    mov si, word[setoresReservados]	;; LBA
+    mov di, bufferDeDisco		    ;; Buffer para onde os dados serão carregados
 
     call carregarSetor
 
@@ -151,13 +145,13 @@ loopEncontrarArquivoFAT16B:
     movzx ebx, word[bytesPorSetor]
     xor edx, edx
         
-    mul ebx                 ;; AX = AX * BX 
+    mul ebx				    ;; AX = AX * BX	
     
-    mov ebp, eax            ;; Salvar tamanho do cluster
+    mov ebp, eax			;; Salvar tamanho do cluster
     
-    mov ax, word[HBoot.Arquivos.segmentoFinal]  ;; Segmento de carregamento do arquivo
+    mov ax, word[HBoot.Arquivos.segmentoFinal]	;; Segmento de carregamento do arquivo
     mov es, ax
-    mov edi, 0              ;; Buffer para carregar o Kernel
+    mov edi, 0			    ;; Buffer para carregar o Kernel
 
 ;; Encontrar cluster e carregar cadeia de clusters
 
@@ -169,16 +163,16 @@ loopCarregarClustersFAT16B:
 ;; 
 ;; ((cluster - 2) * setoresPorCluster) + areaDeDados
  
-    movzx esi, word[cluster]    
+    movzx esi, word[cluster]	
         
     sub esi, 2
 
-    movzx ax, byte[setoresPorCluster]       
+    movzx ax, byte[setoresPorCluster]		
     xor edx, edx         ;; DX = 0
     
     mul esi              ;; (cluster - 2) * setoresPorCluster
     
-    mov esi, eax    
+    mov esi, eax	
 
     add esi, dword[areaDeDados]
 
@@ -193,7 +187,7 @@ loopCarregarClustersFAT16B:
     
     add bx, bufferDeDisco       ;; Localização da FAT
 
-    mov si, word[bx]            ;; SI contêm o próximo cluster
+    mov si, word[bx]		    ;; SI contêm o próximo cluster
 
     mov word[cluster], si       ;; Salvar isso
 
@@ -207,5 +201,5 @@ loopCarregarClustersFAT16B:
     jmp loopCarregarClustersFAT16B
 
 .finalizado:
-    
+
     ret

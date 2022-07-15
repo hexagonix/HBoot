@@ -1,31 +1,21 @@
 ;;************************************************************************************
 ;;
 ;;    
-;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
-;; ││ ││
-;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
-;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
-;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
-;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
-;;              ┌─┘│          
-;;              └──┘          
-;;
-;;
-;;************************************************************************************
-;;    
-;;                                   Hexagon® Boot
-;;
-;;                   Carregador de Inicialização do Kernel Hexagon®
+;;                        Carregador de Inicialização HBoot
+;;        
+;;                             Hexagon® Boot - HBoot
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                 Copyright © 2020-2021 Felipe Miguel Nery Lunkes
 ;;                         Todos os direitos reservados
 ;;                                  
 ;;************************************************************************************
-
-HBoot.Init.Dev:
-
-.IDUnidade: db 0
-.FSUnidade: db 0
+;;
+;;                                   Hexagon® Boot
+;;
+;;                   Carregador de Inicialização do Kernel Hexagon®
+;;
+;;
+;;************************************************************************************
 
 initDev:
 
@@ -36,7 +26,5 @@ initDev:
     call verificarDiscos  ;; Vamos verificar as unidades presentes no computador
 
     call iniciarCOM1      ;; Vamos iniciar a porta serial COM1
-
-    call iniciarParalela  ;; Iniciar a porta paralela
 
     ret

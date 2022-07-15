@@ -1,65 +1,55 @@
 ;;************************************************************************************
 ;;
 ;;    
-;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
-;; ││ ││
-;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
-;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
-;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
-;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
-;;              ┌─┘│          
-;;              └──┘          
-;;
-;;
+;;                        Carregador de Inicialização HBoot
+;;        
+;;                             Hexagon® Boot - HBoot
+;;           
+;;                 Copyright © 2020-2021 Felipe Miguel Nery Lunkes
+;;                         Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
-;;    
+;;
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
-;;                                  
+;;
+;;
 ;;************************************************************************************
 
 HBoot.Disco:
 
-.tamanho:       db 16
-.reservado:     db 0
-.totalSetores:  dw 0
-.deslocamento:  dw 0x0000
-.segmento:      dw 0
-.LBA:           dd 0
+.tamanho:		db 16
+.reservado:	    db 0
+.totalSetores:	dw 0
+.deslocamento:	dw 0x0000
+.segmento:	    dw 0
+.LBA:		    dd 0
                 dd 0
 .dsq0Online:    db 0
 .dsq1Online:    db 0
 .hd0Online:     db 0
 .hd1Online:     db 0
 
-HBoot.Disco.Mensagens:
-
-.erroReiniciarDisco: db 13, 10, "HBoot: Falha ao reiniciar disco.", 13, 10
-                     db "HBoot: Pressione [ENTER] para continuar...", 13, 10, 13, 10, 0
-
 ;;************************************************************************************
-;;  
+;;	
 ;; Dados do disco
 ;;
 ;;************************************************************************************
                                                         
-bytesPorSetor:       dw 512 ;; Número de bytes em cada setor
-setoresPorCluster:   db 8   ;; Setores por cluster
-setoresReservados:   dw 16  ;; Setores reservados após o setor de inicialização
-totalFATs:           db 2   ;; Número de tabelas FAT
-entradasRaiz:        dw 512 ;; Número total de pastas e arquivos no diretório raiz
-setoresPorFAT:       dw 16  ;; Setores usados na FAT
-idDrive:             db 0   ;; Número de identificação do drive.
+bytesPorSetor:	 	 dw 512	;; Número de bytes em cada setor
+setoresPorCluster:	 db 8	;; Setores por cluster
+setoresReservados:	 dw 16	;; Setores reservados após o setor de inicialização
+totalFATs:		     db 2	;; Número de tabelas FAT
+entradasRaiz:		 dw 512	;; Número total de pastas e arquivos no diretório raiz
+setoresPorFAT:		 dw 16	;; Setores usados na FAT
+idDrive:		     db 0	;; Número de identificação do drive.
 tamanhoRaiz:         dw 0   ;; Tamanho do diretório raiz (em setores)
 tamanhoFATs:         dw 0   ;; Tamanho das tabelas FAT (em setores)
 areaDeDados:         dd 0   ;; Endereço físico da área de dados (LBA)
 enderecoLBAParticao: dd 0   ;; Endereço LBA da partição
 enderecoBPB:         dd 0   ;; Endereço do BIOS Parameter Block (BPB)
-cluster:             dw 0   ;; Cluster atual
+cluster:	         dw 0   ;; Cluster atual
 memoriaDisponivel:   dw 0   ;; Memória disponível
 
 ;;************************************************************************************
@@ -182,7 +172,7 @@ verificarhd0:
 ;; Entrada:
 ;;
 ;; AX  - Total de setores para carregar
-;; ESI - Endereço LBA  
+;; ESI - Endereço LBA	
 ;; ES:DI - Localização do destino
 
 carregarSetor:
@@ -196,15 +186,17 @@ carregarSetor:
 
     mov dl, byte[idDrive]
     mov si, HBoot.Disco
-    mov ah, 0x42        ;; Função de leitura
+    mov ah, 0x42		;; Função de leitura
     
     int 13h             ;; Serviços de disco do BIOS
     
-    jnc .concluido          
+    jnc .concluido			
 
 ;; Se ocorrerem erros no disco, exibir mensagem de erro na tela
 
-    exibir HBoot.Mensagens.erroDisco    
+    mov si, HBoot.Mensagens.erroDisco	
+    
+    call imprimir
     
     jmp $
 
@@ -212,56 +204,4 @@ carregarSetor:
     
     pop si
     
-    ret
-
-;;************************************************************************************
-
-reiniciarDiscos:
-
-.reiniciardsq0:
-
-    mov ah, 00h
-    mov dl, 00h 
-
-    int 13h
-
-    jc .erro 
-
-.reiniciardsq1:
-
-    mov ah, 00h 
-    mov dl, 01h 
-
-    int 13h
-
-    jc .erro 
-
-.reiniciarhd0:
-
-    mov ah, 00h
-    mov dl, 80h 
-
-    int 13h
-
-    jc .erro
-
-.reiniciarhd1:
-
-    mov ah, 00h
-    mov dl, 81h 
-
-    int 13h
-
-    jc .erro
-
-    jmp .fim
-
-.erro:
-
-    exibir HBoot.Disco.Mensagens.erroReiniciarDisco
-
-    call aguardarTeclado
-
-.fim:
-
     ret

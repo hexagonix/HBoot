@@ -7,7 +7,12 @@
 ;;           
 ;;                 Copyright © 2020-2021 Felipe Miguel Nery Lunkes
 ;;                         Todos os direitos reservados
-;;                                  
+;;        
+;;        
+;;                                  Versão 1.0
+;;        
+;;
+;;
 ;;************************************************************************************
 ;;
 ;;                                   Hexagon® Boot
@@ -17,16 +22,25 @@
 ;;
 ;;************************************************************************************
 
-;; Aqui iremos utilizar os serviços do BIOS para provocar um atraso
+macro tocarNota nota, tempo
+{
 
-executarAtraso:
+    mov ax, nota
+    mov bx, 8
+    
+    call emitirsom
 
-    mov al, 0
-    mov ah, 86h  ;; Função de causar atraso
-    mov cx, 1    ;; CX:DX - tempo, em microssegundos
+    mov dx, tempo
 
-    int 15h      ;; Chamar BIOS
+    call executarAtraso
 
-    ret
+}
 
-	
+macro novaLinha
+{
+
+    mov si, HBoot.Mensagens.novaLinha
+
+    call imprimir
+
+}

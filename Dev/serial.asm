@@ -1,38 +1,33 @@
 ;;************************************************************************************
 ;;
 ;;    
-;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
-;; ││ ││
-;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
-;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
-;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
-;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
-;;              ┌─┘│          
-;;              └──┘          
-;;
-;;
+;;                        Carregador de Inicialização HBoot
+;;        
+;;                             Hexagon® Boot - HBoot
+;;           
+;;                 Copyright © 2020-2021 Felipe Miguel Nery Lunkes
+;;                         Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
-;;    
+;;
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
-;;                                  
+;;
+;;
 ;;************************************************************************************
 
 iniciarCOM1:  ;; Esse método é usado para inicializar uma Porta Serial
 
 
     mov ah, 0     ;; Move o valor 0 para o registrador ah 
-                  ;; A função 0 é usada para inicializar a Porta Serial COM1
+	              ;; A função 0 é usada para inicializar a Porta Serial COM1
     mov al, 0xE3  ;; Parâmetros da porta serial
     mov dx, 0     ;; Número da porta (COM 1) - Porta Serial 1
     
     int 14h       ;; Inicializar porta - Ativa a porta para receber e enviar dados
-    
-    ret
+	
+	ret
 
 ;;************************************************************************************
 
