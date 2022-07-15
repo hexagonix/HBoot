@@ -1,13 +1,16 @@
 ;;************************************************************************************
 ;;
 ;;    
-;;                        Carregador de Inicialização HBoot
-;;        
-;;                             Hexagon® Boot - HBoot
-;;           
-;;                 Copyright © 2020-2021 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
-;;                                  
+;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
+;; ││ ││
+;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
+;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
+;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
+;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
+;;              ┌─┘│          
+;;              └──┘          
+;;
+;;
 ;;************************************************************************************
 ;;
 ;;                                   Hexagon® Boot
@@ -29,8 +32,11 @@ use16
 
 cabecalhoHBoot:
 
-.assinatura:  db "HBOOT"     ;; Assinatura, 5 bytes
-.arquitetura: db ARQUITETURA ;; Arquitetura (i386), 1 byte
+.assinatura:  db "HBOOT"              ;; Assinatura, 5 bytes
+.arquitetura: db 1                    ;; Arquitetura (i386), 1 byte
+.versaoMod:   db 1                    ;; Versão
+.subverMod:   db 0                    ;; Subversão
+.nomeHBoot:   db "HBoot   "           ;; Nome do módulo
 
     jmp inicioHBoot
 
@@ -146,7 +152,7 @@ executarKernel:
     
     pop ebp                         ;; Ponteiro para o BPB
     mov esi, HBoot.Parametros.bufLeitura + (SEG_HBOOT * 16) ;; Apontar ESI para parâmetros
-    mov dl, byte[idDrive]           ;; Drive utilizado para a inicialização
+    mov bl, byte[idDrive]           ;; Drive utilizado para a inicialização
     mov cx, word[memoriaDisponivel] ;; Memória RAM instalada
 
 ;; O Hexagon® apresenta o cabeçalho HAPP, que será padrão em todos os executáveis no
@@ -933,10 +939,10 @@ configurarInicioHexagon:
 
 HBoot.Mensagens:
 
-.iniciando:             db "HBoot: Hexagon(R) Boot (HBoot) versao ", versaoHBoot, " iniciado.", 13, 10
-                        db "HBoot: Gerenciador de Inicializacao para Hexagon(R).", 13, 10
-                        db "HBoot: Copyright (C) 2020-2021 Felipe Miguel Nery Lunkes.", 13, 10
-                        db "HBoot: Todos os direitos reservados.", 13, 10, 0
+.iniciando:             db "Hexagon(R) Boot (HBoot) versao ", versaoHBoot, " iniciado.", 13, 10
+                        db "Gerenciador de Inicializacao para Hexagon(R).", 13, 10
+                        db "Copyright (C) 2020-2022 Felipe Miguel Nery Lunkes.", 13, 10
+                        db "Todos os direitos reservados.", 13, 10, 0
 .naoEncontrado:         db 13,10, "HBoot: A imagem do Hexagon(R) nao foi encontrada no disco atual.", 13, 10
                         db "HBoot: Impossivel continuar com o protocolo de inicializacao. Tente realizar", 13, 10
                         db "HBoot: uma restauracao ou reinstalacao do Sistema e tente iniciar o Sistema", 13, 10
@@ -960,7 +966,7 @@ HBoot.Mensagens:
                         db "HBoot: no volume de instalacao do Hexagon(R), o processo ira falhar.", 13, 10
                         db " > [1] Iniciar FreeDOS instalado no volume Hexagon(R).", 10, 13
                         db " > [v,V]: Retornar ao menu anterior.", 13, 10, 0
-.aguardarUsuario:       db "HBoot: Pressione [F8] para alterar parametros de inicializacao...",  0
+.aguardarUsuario:       db "Pressione [F8] para acessar as configuracoes do HBoot... ",  0
 .pressionado:           db "[Ok]", 13, 10, 0
 .falhaOpcao:            db "[Falha]", 13, 10, 0
 .sobreHBoot:            db 13, 10, "Hboot: Informacoes do Hexagon(R) Boot - HBoot versao ", versaoHBoot, 13, 10, 13, 10

@@ -1,16 +1,14 @@
 ;;************************************************************************************
 ;;
 ;;    
-;;                        Carregador de Inicialização HBoot
-;;        
-;;                             Hexagon® Boot - HBoot
-;;           
-;;                 Copyright © 2020-2021 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
-;;        
-;;        
-;;                                  Versão 1.0
-;;        
+;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
+;; ││ ││
+;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
+;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
+;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
+;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
+;;              ┌─┘│          
+;;              └──┘          
 ;;
 ;;
 ;;************************************************************************************
