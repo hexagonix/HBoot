@@ -44,66 +44,66 @@ HBoot.Int:
 ;;
 ;; Aviso! AX, BX, CX e DX perdidos no processo
 
-instalarInterrupcao:	
+instalarInterrupcao:    
 
         push es
 
-		xor	bh, bh
-		shl	bx, 2	;; Localização dentro do segmento com o vetor de interrupção
+        xor bh, bh
+        shl bx, 2   ;; Localização dentro do segmento com o vetor de interrupção
 
-		xor	ax, ax
-		mov	es, ax
+        xor ax, ax
+        mov es, ax
 
-		cli			;; Desativar as interrupções
+        cli         ;; Desativar as interrupções
 
-		mov	[es:0000h + bx], di
-		mov	[es:0002h + bx], cx
+        mov [es:0000h + bx], di
+        mov [es:0002h + bx], cx
 
-		sti			;; Habilitar interrupções
+        sti         ;; Habilitar interrupções
 
-		pop	es
+        pop es
         
-		ret
+        ret
 
 ;;************************************************************************************
 
 instalar80h:
 
-	mov bl, 80h
-	mov cx, cs 
-	mov di, retornarHBoot
+    mov bl, 80h
+    mov cx, cs 
+    mov di, retornarHBoot
 
-	call instalarInterrupcao
+    call instalarInterrupcao
 
-	ret 
-	
+    ret 
+    
 ;;************************************************************************************
 
 retornarHBoot:
 
-		push ax
-		push bx
-		push cx
-		push dx
-		push ds
-		push es
-		push di
+        push ax
+        push bx
+        push cx
+        push dx
+        push ds
+        push es
+        push di
 
-		jmp SEG_HBOOT:retornarInterrupcao
+        jmp SEG_HBOOT:retornarInterrupcao
 
-		pop	di
-		pop	es
-		pop	ds
-		pop	dx
-		pop	cx
-		pop	bx
-		pop	ax
+        pop di
+        pop es
+        pop ds
+        pop dx
+        pop cx
+        pop bx
+        pop ax
 
-		iret
+        iret
 
 ;;************************************************************************************
 
 retornarInterrupcao:
 
     jmp analisarPC.novaEntrada
-	
+    

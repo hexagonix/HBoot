@@ -27,18 +27,18 @@
 limparTela:
 
     mov dx, 0
-	mov bh, 0
-	mov ah, 2
-	
+    mov bh, 0
+    mov ah, 2
+    
     int 10h  
-	
-	mov ah, 6			
-	mov al, 0			
-	mov bh, 7			
-	mov cx, 0			
-	mov dh, 24			
-	mov dl, 79
-	
+    
+    mov ah, 6           
+    mov al, 0           
+    mov bh, 7           
+    mov cx, 0           
+    mov dh, 24          
+    mov dl, 79
+    
     int 10h
 
     ret
@@ -53,9 +53,9 @@ limparTela:
 
 imprimir:
 
-    lodsb		;; mov AL, [SI] & inc SI
+    lodsb       ;; mov AL, [SI] & inc SI
     
-    or al, al	;; cmp AL, 0
+    or al, al   ;; cmp AL, 0
     jz .pronto
     
     mov ah, 0Eh
@@ -72,89 +72,89 @@ imprimir:
 
 imprimirHexa:
 
-	pusha
+    pusha
 
-	mov bp, sp
-	mov si, [bp+18] 
-	
+    mov bp, sp
+    mov si, [bp+18] 
+    
 .cont:
-	
-	lodsb
-		
-	or al, al
-	jz .pronto
-		
-	mov ah, 0x0e
-	mov bx, 0
-	mov bl, 7 
-	
+    
+    lodsb
+        
+    or al, al
+    jz .pronto
+        
+    mov ah, 0x0e
+    mov bx, 0
+    mov bl, 7 
+    
     int 10h
-		
-	jmp .cont
-		
+        
+    jmp .cont
+        
 .pronto:
-	
-	mov sp, bp
-	
+    
+    mov sp, bp
+    
     popa
-	
+    
     ret
 
 ;;************************************************************************************
 
 testarVideo:
 
-	mov ax, 19
-	int 10h ;; 320x200 com 256 cores
+    mov ax, 19
+    int 10h ;; 320x200 com 256 cores
 
-	mov ax, 0a000h
-	mov es, ax ;; Definir DI para o segmento de memória de vídeo
-	xor bl, bl ;; BL será usado para armazenar o número da figura
+    mov ax, 0a000h
+    mov es, ax ;; Definir DI para o segmento de memória de vídeo
+    xor bl, bl ;; BL será usado para armazenar o número da figura
 
 .novo:
 
-	inc bl
+    inc bl
 
-	hlt ;; Processador irá aguardar
+    hlt ;; Processador irá aguardar
 
-	xor cx, cx
-	xor dx, dx ;; CX e DX representam as coordenadas
-	xor di, di ;; Defina di para o início da tela
+    xor cx, cx
+    xor dx, dx ;; CX e DX representam as coordenadas
+    xor di, di ;; Defina di para o início da tela
 
 .a:
 
-	mov al, cl
-	xor al, dl
-	add al, dl
-	add al, bl ;; Cria uma cor
-	
-	stosb      ;; Escreve um pixel
-	
-	inc cx
+    mov al, cl
+    xor al, dl
+    add al, dl
+    add al, bl ;; Cria uma cor
+    
+    stosb      ;; Escreve um pixel
+    
+    inc cx
 
-	cmp cx, 320 ;; Atualizar coordenadas
-	jne .a
+    cmp cx, 320 ;; Atualizar coordenadas
+    jne .a
 
-	xor cx, cx
-	
-	inc dx
+    xor cx, cx
+    
+    inc dx
 
-	cmp dx, 200
-	jne .a
+    cmp dx, 200
+    jne .a
 
-	mov ah, 1  ;; Checa se alguma tecla foi pressionada
-	
-	int 16h
+    mov ah, 1  ;; Checa se alguma tecla foi pressionada
+    
+    int 16h
 
-	jz .novo ;; Se nenhuma tecla pressionada, exiba outra figura
+    jz .novo ;; Se nenhuma tecla pressionada, exiba outra figura
 
-	mov ax, 3 ;; Retornar ao modo texto
-	
-	int 10h
+    mov ax, 3 ;; Retornar ao modo texto
+    
+    int 10h
 
 ;; Importante restaurar o segmento antes de finalizar!
 
-	mov ax, SEG_HBOOT
-	mov es, ax
+    mov ax, SEG_HBOOT
+    mov es, ax
 
-	ret
+    ret

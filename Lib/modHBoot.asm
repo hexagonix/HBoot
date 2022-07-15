@@ -57,13 +57,13 @@ carregarModulo:
     call lerTeclado
 
     mov si, HBoot.Arquivos.imagemModulo
-	mov di, HBoot.Arquivos.nomeImagem
+    mov di, HBoot.Arquivos.nomeImagem
 
-	mov cx, 11
-	
+    mov cx, 11
+    
 ;; Copiar o nome do arquivo
 
-	rep movsb ;; Copiar (ECX) caracteres de ESI para EDI
+    rep movsb ;; Copiar (ECX) caracteres de ESI para EDI
 
     mov word[HBoot.Arquivos.segmentoFinal], SEG_MODULOS
 

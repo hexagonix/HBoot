@@ -2,7 +2,7 @@
 ;;
 ;; Exibe uma mensagem e, após interação do usuário, reinicia o computador
 
-use16	
+use16   
 
 ;; O Hboot e módulos devem apresentar um cabeçalho especial de imagem HBoot
 ;; São 10 bytes, com assinatura (número mágico), arquitetura alvo, versão,
@@ -62,9 +62,9 @@ inicioModulo:
 
 imprimir:
 
-    lodsb		;; mov AL, [SI] & inc SI
+    lodsb       ;; mov AL, [SI] & inc SI
     
-    or al, al	;; cmp AL, 0
+    or al, al   ;; cmp AL, 0
     jz .pronto
     
     mov ah, 0Eh

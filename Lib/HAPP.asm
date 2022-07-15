@@ -30,40 +30,40 @@ CABECALHO_HAPP = 026h     ;; Versão 2.0 da definição HAPP
 
 verificarImagemHAPP:
 
-	push es
+    push es
 
-	push ds
-	pop es 
+    push ds
+    pop es 
 
     mov si, SEG_HEXAGON
 
     cmp byte[si+0], "H" ;; H de HAPP
-	jne .imagemInvalida
+    jne .imagemInvalida
 
-	cmp byte[si+1], "A" ;; A de HAPP
-	jne .imagemInvalida
+    cmp byte[si+1], "A" ;; A de HAPP
+    jne .imagemInvalida
 
-	cmp byte[si+2], "P" ;; P de HAPP
-	jne .imagemInvalida
+    cmp byte[si+2], "P" ;; P de HAPP
+    jne .imagemInvalida
 
-	cmp byte[si+3], "P" ;; P de HAPP
-	jne .imagemInvalida
+    cmp byte[si+3], "P" ;; P de HAPP
+    jne .imagemInvalida
 
 ;; Se chegamos até aqui, temos o cabeçalho no arquivo, devemos checar o restante dos campos,
 ;; como a arquitetura
 
 ;; Vamos checar se a arquitetura da imagem é a mesma do Sistema
 
-	cmp byte[si+4], ARQUITETURA ;; Arquitetura suportada
-	jne .imagemInvalida
+    cmp byte[si+4], ARQUITETURA ;; Arquitetura suportada
+    jne .imagemInvalida
 
 ;; Os tipos de imagem podem ser (01h) imagens executáveis e (02h e 03h) bibliotecas
 ;; estáticas ou sinâminas (implementações futuras)
 
-	cmp byte[si+11], 03h
-	jg .imagemInvalida
+    cmp byte[si+11], 03h
+    jg .imagemInvalida
 
-	jmp .fim ;; Vamos continuar sem marcar erro na imagem
+    jmp .fim ;; Vamos continuar sem marcar erro na imagem
 
 .imagemInvalida:
 
@@ -73,6 +73,6 @@ verificarImagemHAPP:
     
 .fim:
 
-	pop es 
-	
+    pop es 
+    
     ret
