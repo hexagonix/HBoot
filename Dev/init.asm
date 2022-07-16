@@ -12,12 +12,14 @@
 ;;
 ;;
 ;;************************************************************************************
-;;
+;;    
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;
-;;
+;;           
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
 
 initDev:
@@ -29,5 +31,7 @@ initDev:
     call verificarDiscos  ;; Vamos verificar as unidades presentes no computador
 
     call iniciarCOM1      ;; Vamos iniciar a porta serial COM1
+
+    call iniciarParalela
 
     ret

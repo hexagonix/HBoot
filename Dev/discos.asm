@@ -12,12 +12,14 @@
 ;;
 ;;
 ;;************************************************************************************
-;;
+;;    
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;
-;;
+;;           
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
 
 HBoot.Disco:
@@ -54,6 +56,47 @@ enderecoLBAParticao: dd 0   ;; Endereço LBA da partição
 enderecoBPB:         dd 0   ;; Endereço do BIOS Parameter Block (BPB)
 cluster:	         dw 0   ;; Cluster atual
 memoriaDisponivel:   dw 0   ;; Memória disponível
+
+;;************************************************************************************
+
+;; Carregar setor do disco especificado
+;;
+;; Entrada:
+;;
+;; AX  - Total de setores para carregar
+;; ESI - Endereço LBA	
+;; ES:DI - Localização do destino
+
+carregarSetor:
+
+    push si
+
+    mov word[HBoot.Disco.totalSetores], ax
+    mov dword[HBoot.Disco.LBA], esi
+    mov word[HBoot.Disco.segmento], es
+    mov word[HBoot.Disco.deslocamento], di
+
+    mov dl, byte[idDrive]
+    mov si, HBoot.Disco
+    mov ah, 0x42		;; Função de leitura
+    
+    int 13h             ;; Serviços de disco do BIOS
+    
+    jnc .concluido			
+
+;; Se ocorrerem erros no disco, exibir mensagem de erro na tela
+
+    mov si, HBoot.Mensagens.erroDisco	
+    
+    call imprimir
+    
+    jmp $
+
+.concluido:
+    
+    pop si
+    
+    ret
 
 ;;************************************************************************************
 
@@ -169,42 +212,3 @@ verificarhd0:
     ret
 
 ;;************************************************************************************
-
-;; Carregar setor do disco especificado
-;;
-;; Entrada:
-;;
-;; AX  - Total de setores para carregar
-;; ESI - Endereço LBA	
-;; ES:DI - Localização do destino
-
-carregarSetor:
-
-    push si
-
-    mov word[HBoot.Disco.totalSetores], ax
-    mov dword[HBoot.Disco.LBA], esi
-    mov word[HBoot.Disco.segmento], es
-    mov word[HBoot.Disco.deslocamento], di
-
-    mov dl, byte[idDrive]
-    mov si, HBoot.Disco
-    mov ah, 0x42		;; Função de leitura
-    
-    int 13h             ;; Serviços de disco do BIOS
-    
-    jnc .concluido			
-
-;; Se ocorrerem erros no disco, exibir mensagem de erro na tela
-
-    mov si, HBoot.Mensagens.erroDisco	
-    
-    call imprimir
-    
-    jmp $
-
-.concluido:
-    
-    pop si
-    
-    ret

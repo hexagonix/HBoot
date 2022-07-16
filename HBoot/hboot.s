@@ -12,18 +12,15 @@
 ;;
 ;;
 ;;************************************************************************************
-;;
+;;    
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;
-;;
+;;           
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
-
-;; Versão do HBoot
-
-versaoHBoot                 equ "1.0 (funcional em KVM)"
-verProtocolo                equ "1.0 (funcional em KVM)"
 
 ;; Segmentos de carregamento do HBoot e do Hexagon®
 
@@ -47,7 +44,7 @@ MEMORIA_MINIMA              = 31744    ;; Memória mínima necessária para boot
 ;; Constantes utilizadas para alterações de parâmetros de boot
 
 FATOR_TEMPO                 = 10000    ;; Contagem de décimos de segundo
-CICLOS_PARAMETROS_INICIACAO = 05       ;; Contagem de tempo = valor x 1 décimo de segundo
+CICLOS_PARAMETROS_INICIACAO = 30       ;; Contagem de tempo = valor x 1 décimo de segundo
 
 ;; Scancode de teclas do teclado
 

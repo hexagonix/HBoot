@@ -12,55 +12,56 @@
 ;;
 ;;
 ;;************************************************************************************
-;;
+;;    
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;
-;;
+;;           
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
 
-verificarImagemHAPP:
+parahexa:
 
-    mov di, SEG_KERNEL
-    sub di, 0x50
+	pusha
 
-    cmp byte[di+0], "H" ;; H de HAPP
-	jne .imagemInvalida
+	mov bp, sp
+	mov dx, [bp+20]
 
-	cmp byte[di+1], "A" ;; A de HAPP
-	jne .imagemInvalida
+	push dx	
 
-	cmp byte[di+2], "P" ;; P de HAPP
-	jne .imagemInvalida
+	call imprimirHexa
 
-	cmp byte[di+3], "P" ;; P de HAPP
-	jne .imagemInvalida
+	mov dx, [bp+18]
 
-;; Se chegamos até aqui, temos o cabeçalho no arquivo, devemos checar o restante dos campos,
-;; como a arquitetura
+	mov cx, 4
+	mov si, HBoot.Mensagens.hexc
+	mov di, HBoot.Mensagens.hex+2
+	
+guardar:
+	
+	rol dx, 4
 
-;; Vamos checar se a arquitetura da imagem é a mesma do Sistema
+	mov bx, 15
 
-	cmp byte[di+4], ARQUITETURA ;; Arquitetura suportada
-	jne .imagemInvalida
+	and bx, dx
 
-;; Os tipos de imagem podem ser (01h) imagens executáveis e (02h e 03h) bibliotecas
-;; estáticas ou dinâminas (implementações futuras)
+	mov al, [si+bx]
 
-	cmp byte[di+11], 03h
-	jg .imagemInvalida
+	stosb
 
-	jmp .fim ;; Vamos continuar sem marcar erro na imagem
+	loop guardar
 
-.imagemInvalida:
+	push HBoot.Mensagens.hex
 
-    mov si, HBoot.Mensagens.imagemInvalida
+	call imprimirHexa
 
-    call imprimir
+	mov sp, bp
 
-    jmp $
-    
-.fim:
+	popa
 
-    ret
+	mov ax, SEG_HBOOT
+	mov es, ax
+
+	ret

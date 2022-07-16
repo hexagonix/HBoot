@@ -12,54 +12,55 @@
 ;;
 ;;
 ;;************************************************************************************
-;;
+;;    
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;
-;;
+;;           
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
 
-parahexa:
+macro tocarNota nota, tempo
+{
 
-	pusha
+    mov ax, nota
+    mov bx, 8
+    
+    call emitirsom
 
-	mov bp, sp
-	mov dx, [bp+20]
+    mov dx, tempo
 
-	push dx	
+    call executarAtraso
 
-	call imprimirHexa
+}
 
-	mov dx, [bp+18]
+macro novaLinha
+{
 
-	mov cx, 4
-	mov si, HBoot.Mensagens.hexc
-	mov di, HBoot.Mensagens.hex+2
-	
-guardar:
-	
-	rol dx, 4
+    mov si, HBoot.Mensagens.novaLinha
 
-	mov bx, 15
+    call imprimir
 
-	and bx, dx
+}
 
-	mov al, [si+bx]
+;; Uma forma mais simples de exibir conteúdo 
 
-	stosb
+macro exibir texto
+{
 
-	loop guardar
+    mov si, texto
 
-	push HBoot.Mensagens.hex
+    call imprimir
 
-	call imprimirHexa
+}
 
-	mov sp, bp
+macro diag texto
+{
 
-	popa
+    mov si, texto
 
-	mov ax, SEG_HBOOT
-	mov es, ax
+    call transferirCOM1
 
-	ret
+}

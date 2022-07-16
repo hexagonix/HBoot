@@ -12,18 +12,20 @@
 ;;
 ;;
 ;;************************************************************************************
-;;
+;;    
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;
-;;
+;;           
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
 
 HBoot.Procx86.Dados:
 
 .vendedorProcx86: times 13 db 0
-.nomeProcx86:              db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd",0
+.nomeProcx86:              db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
 
 ;;************************************************************************************
 
@@ -151,8 +153,6 @@ habilitarA20:
     
 .erroA20:
 
-    mov si, HBoot.Mensagens.erroA20
-
-    call imprimir 
+    exibir HBoot.Mensagens.erroA20
 
     jmp $

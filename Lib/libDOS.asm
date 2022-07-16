@@ -12,12 +12,14 @@
 ;;
 ;;
 ;;************************************************************************************
-;;
+;;    
 ;;                                   Hexagon® Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
-;;
-;;
+;;           
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
+;;                                  
 ;;************************************************************************************
 
 ;; Agora, o HBoot pode realizar a inicialização de sistemas DOS-like, como MS-DOS,
@@ -26,19 +28,24 @@
 
 ;; Aqui temos os nomes de arquivos que possam conter um kernel DOS
 
-HBoot.DOS.Arquivos:
+HBoot.Modulos.DOS.Arquivos:
 
 .imagemFreeDOS: db "KERNEL  SYS"
 
 ;; Aqui temos os segmentos para carregamento de um kernel DOS (variável)
 
-HBoot.DOS.Segmentos.segmentoFreeDOS equ 0x60
+HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS equ 0x60
 
 ;;************************************************************************************
 
-HBoot.DOS.iniciarFreeDOS:
+HBoot.Modulos.DOS.iniciarFreeDOS:
 
-    mov si, HBoot.DOS.Arquivos.imagemFreeDOS
+    push ds 
+    pop es 
+    
+    mov byte[HBoot.Modulos.Controle.moduloAtivado], 01h
+
+    mov si, HBoot.Modulos.DOS.Arquivos.imagemFreeDOS
 	mov di, HBoot.Arquivos.nomeImagem
 
 	mov cx, 11
@@ -47,16 +54,24 @@ HBoot.DOS.iniciarFreeDOS:
 
 	rep movsb ;; Copiar (ECX) caracteres de ESI para EDI
 
-    mov word[HBoot.Arquivos.segmentoFinal], HBoot.DOS.Segmentos.segmentoFreeDOS
+    mov word[HBoot.Arquivos.segmentoFinal], HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS
 
     call procurarArquivo
 
-    pop ebp                         ;; Ponteiro para o BPB
+    jc .gerenciarErroArquivo
 
 ;; O FreeDOS recebe o parâmetro de drive de boot em BL
 
     mov bl, byte[idDrive]           ;; Drive utilizado para a inicialização
 
-    jmp HBoot.DOS.Segmentos.segmentoFreeDOS:0000 ;; Configurar CS:IP e executar o Kernel
+    jmp HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS:0000h ;; Configurar CS:IP e executar o Kernel
 
     jmp $
+
+.gerenciarErroArquivo:
+
+    exibir HBoot.Mensagens.DOSAusente
+
+    call aguardarTeclado
+
+    jmp verificarInteracaoUsuario.testarComponentes
