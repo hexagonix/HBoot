@@ -17,18 +17,22 @@
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
 ;;                                  
-;;          Lógica para encontrar e carregar arquivo em um volume FAT16
+;;************************************************************************************
+;;
+;;                                   Hexagon® Boot
+;;
+;;                   Carregador de Inicialização do Kernel Hexagon®
+;;
+;;            Lógica para encontrar e carregar arquivo em um volume FAT16
 ;;
 ;;************************************************************************************
 
 ;; Agora iremos procurar o arquivo que contêm o Kernel
 
 procurarArquivoFAT16B:
-
-    mov ebp, dword[enderecoLBAParticao + (SEG_HBOOT * 16)]
 
 ;; Calcular o tamanho do diretório raiz
 ;; 
@@ -120,15 +124,17 @@ loopEncontrarArquivoFAT16B:
     
     loop loopEncontrarArquivoFAT16B
 
-;; O arquivo executável não foi encontrado. Setar erro e retornar
+;; O arquivo executável do Kernel não foi encontrado. Exibir mensagem de erro e finalizar.
 
-    stc 
+    pop esi
 
-    ret
+    mov si, HBoot.Mensagens.naoEncontrado
+    
+    call imprimir
+    
+    jmp $
 
 .arquivoEncontrado:
-
-    clc 
 
     mov si, word[bx+26]		
     mov word[cluster], si ;; Salvar primeiro cluster
@@ -207,5 +213,5 @@ loopCarregarClustersFAT16B:
     jmp loopCarregarClustersFAT16B
 
 .finalizado:
-    
+
     ret

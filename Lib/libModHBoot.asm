@@ -17,8 +17,8 @@
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
 ;;                                  
 ;;************************************************************************************
 
@@ -107,4 +107,4 @@ retornarModulo:
 
     call aguardarTeclado
 
-    jmp analisarPC.novaEntrada
+    jmp analisarPC

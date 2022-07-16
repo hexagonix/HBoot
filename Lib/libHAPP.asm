@@ -22,40 +22,47 @@
 ;;                                  
 ;;************************************************************************************
 
-iniciarCOM1:  ;; Esse método é usado para inicializar uma Porta Serial
+verificarImagemHAPP:
 
+    mov di, SEG_KERNEL
+    sub di, 0x50
 
-    mov ah, 0     ;; Move o valor 0 para o registrador ah 
-	              ;; A função 0 é usada para inicializar a Porta Serial COM1
-    mov al, 0xE3  ;; Parâmetros da porta serial
-    mov dx, 0     ;; Número da porta (COM 1) - Porta Serial 1
+    cmp byte[di+0], "H" ;; H de HAPP
+	jne .imagemInvalida
+
+	cmp byte[di+1], "A" ;; A de HAPP
+	jne .imagemInvalida
+
+	cmp byte[di+2], "P" ;; P de HAPP
+	jne .imagemInvalida
+
+	cmp byte[di+3], "P" ;; P de HAPP
+	jne .imagemInvalida
+
+;; Se chegamos até aqui, temos o cabeçalho no arquivo, devemos checar o restante dos campos,
+;; como a arquitetura
+
+;; Vamos checar se a arquitetura da imagem é a mesma do Sistema
+
+	cmp byte[di+4], ARQUITETURA ;; Arquitetura suportada
+	jne .imagemInvalida
+
+;; Os tipos de imagem podem ser (01h) imagens executáveis e (02h e 03h) bibliotecas
+;; estáticas ou dinâminas (implementações futuras)
+
+	cmp byte[di+11], 03h
+	jg .imagemInvalida
+
+	jmp .fim ;; Vamos continuar sem marcar erro na imagem
+
+.imagemInvalida:
+
+    mov si, HBoot.Mensagens.imagemInvalida
+
+    call imprimir
+
+    jmp $
     
-    int 14h       ;; Inicializar porta - Ativa a porta para receber e enviar dados
-	
-	ret
-
-;;************************************************************************************
-
-transferirCOM1: ;; Esse método é usado para transferir dados pela Porta Serial aberta
-
-    lodsb         ;; Carrega o próximo caractere à ser enviado
-
-    or al, al     ;; Compara o caractere com o fim da mensagem
-    jz .pronto    ;; Se igual ao fim, pula para .pronto
-
-    mov ah, 01h   ;; Função de envio de caractere do BIOS por Porta Serial
-    int 14h       ;; Chama o BIOS e executa a ação 
-
-    jc near .erro
-
-    jmp transferirCOM1 ;; Se não tiver acabado, volta à função e carrega o próximo caractere
-
-.pronto: ;; Se tiver acabado...
-
-    ret      ;; Retorna a função que o chamou
-
-.erro:
-
-    stc
+.fim:
 
     ret

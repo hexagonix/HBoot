@@ -22,40 +22,31 @@
 ;;                                  
 ;;************************************************************************************
 
-iniciarCOM1:  ;; Esse método é usado para inicializar uma Porta Serial
+;; Segmentos de carregamento do HBoot e do Hexagon®
 
+SEG_HBOOT                   equ 0x1000 ;; Segmento de carregamento de HBoot  
+SEG_KERNEL 	                equ 0x50   ;; Segmento para carregar Kernel
+SEG_DIAG                    equ 0x60   ;; Segmento para carregamento de imagens de diagnóstico
 
-    mov ah, 0     ;; Move o valor 0 para o registrador ah 
-	              ;; A função 0 é usada para inicializar a Porta Serial COM1
-    mov al, 0xE3  ;; Parâmetros da porta serial
-    mov dx, 0     ;; Número da porta (COM 1) - Porta Serial 1
-    
-    int 14h       ;; Inicializar porta - Ativa a porta para receber e enviar dados
-	
-	ret
+;; Dados de arquitetura a qual deve-se carregar o Hexagon®
 
-;;************************************************************************************
+ARQUITETURA                 = 01h      ;; Arquitetura do HBoot e a qual se destina o Kernel
 
-transferirCOM1: ;; Esse método é usado para transferir dados pela Porta Serial aberta
+;; Tamanho do cabeçalho HAPP da imagem
 
-    lodsb         ;; Carrega o próximo caractere à ser enviado
+CABECALHO_HAPP              = 026h     ;; Versão 2.0 da definição HAPP
 
-    or al, al     ;; Compara o caractere com o fim da mensagem
-    jz .pronto    ;; Se igual ao fim, pula para .pronto
+;; Memória mínima para o boot do Hexagon®. Vale lembrar que os requisitos são variáveis a depender
+;; da versão do Hexagon®, sendo necessária a adaptação à necessidade mínima de memória.
 
-    mov ah, 01h   ;; Função de envio de caractere do BIOS por Porta Serial
-    int 14h       ;; Chama o BIOS e executa a ação 
+MEMORIA_MINIMA              = 31744    ;; Memória mínima necessária para boot seguro
 
-    jc near .erro
+;; Constantes utilizadas para alterações de parâmetros de boot
 
-    jmp transferirCOM1 ;; Se não tiver acabado, volta à função e carrega o próximo caractere
+FATOR_TEMPO                 = 10000    ;; Contagem de décimos de segundo
+CICLOS_PARAMETROS_INICIACAO = 30       ;; Contagem de tempo = valor x 1 décimo de segundo
 
-.pronto: ;; Se tiver acabado...
+;; Scancode de teclas do teclado
 
-    ret      ;; Retorna a função que o chamou
-
-.erro:
-
-    stc
-
-    ret
+F8                          = 42h
+ESC                         = 1Bh

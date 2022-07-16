@@ -17,33 +17,43 @@
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
 ;;                                  
+;;************************************************************************************
+
+;;************************************************************************************
+;;
+;; Mensagens e debug
+;;
 ;;************************************************************************************
 
 HBoot.Mensagens:
 
-.aguardarUsuario:       db "Pressione [F8] para alterar parametros de inicializacao...",  0
+.iniciando:             db "Hexagon(R) Boot (HBoot) versao ", versaoHBoot, ".", 13, 10
+                        db "Gerenciador de Inicializacao para Hexagon(R).", 13, 10
+                        db "Copyright (C) 2020-2022 Felipe Miguel Nery Lunkes.", 13, 10
+                        db "Todos os direitos reservados.", 13, 10, 0
+.aguardarUsuario:       db "Pressione [F8] para acessar as configuracoes do HBoot.. ",  0
 .naoEncontrado:         db 13,10, "HBoot: A imagem do Hexagon(R) nao foi encontrada no disco atual.", 13, 10
                         db "Impossivel continuar com o protocolo de inicializacao. Tente realizar", 13, 10
-                        db "uma restauracao ou reinstalacao do Sistema e tente iniciar o Sistema", 13, 10
+                        db "uma restauracao ou reinstalacao do sistema e tente iniciar o sistema", 13, 10
                         db "novamente.", 13, 10, 0
 .erroDisco:             db 13, 10, "HBoot: Erro de disco! Reinicie o computador e tente novamente.", 0 ;; Mensagem de erro no disco
 .erroA20:               db "HBoot: Erro ao habilitar a linha A20, necessaria para o", 13, 10
-                        db "o modo protegido.", 13, 10
+                        db "modo protegido.", 13, 10
                         db "Impossivel continuar a inicializacao. Reinicie seu computador.", 0
 .erroMemoria:           db "HBoot: Memoria RAM instalada insuficiente para executar o Hexagon(R).", 13, 10
                         db "Impossivel continuar. Ao menos 32 Mb sao necessarios.", 13, 10
                         db "Instale mais memoria e tente novamente.", 0
 .imagemInvalida:        db 13, 10, "HBoot: A imagem em disco do Hexagon(R) parece estar corrompida e nao pode", 13, 10
                         db "ser utilizada para a inicializacao. Tente reinstalar ou recuperar o", 13, 10
-                        db "Sistema para continuar.", 0
+                        db "sistema para continuar.", 0
 .modoDOS:               db 13, 10, "HBoot: Carregar sistema DOS a partir de um volume Hexagon(R)", 13, 10
                         db "HBoot: O HBoot entrou em modo de compatibilidade de iniciacao DOS.", 13, 10
                         db "Isso significa que voce pode iniciar algum sistema DOS instalado na", 13, 10
                         db "mesma particao/volume do Hexagon(R)/Andromeda(R), caso ele suporte o", 13, 10
-                        db "Sistema de Arquivos do volume Hexagon(R). Selecione abaixo a opcao mais", 13, 10
+                        db "sistema de Arquivos do volume Hexagon(R). Selecione abaixo a opcao mais", 13, 10
                         db "pertinente para o seu caso. A lista abaixo nao contem instalacoes DOS", 13, 10
                         db "sobre o Hexagon(R) detectadas automaticamente no volume original da", 13, 10
                         db "instalacao do Hexagon(R), mas sim as versoes DOS atualmente suportadas", 13, 10
@@ -107,7 +117,7 @@ HBoot.Mensagens:
                         db "suportados, com maximo de 64 caracteres.", 13, 10
                         db "> ", 0   
 .semCPUIDNome:          db "<Pentium III ou processador generico/desconhecido>", 0    
-.saInvalido:            db 13, 10, "HBoot: O Sistema de Arquivos do volume nao e suportado pelo HBoot no momento.", 13, 10, 0     
+.saInvalido:            db 13, 10, "HBoot: O sistema de Arquivos do volume nao e suportado pelo HBoot no momento.", 13, 10, 0     
 .erroMBR:               db 13, 10, "HBoot: Erro ao tentar recuperar informacoes da MBR. Impossivel continuar.", 13, 10, 0
 .informacoesDetalhadas: db 13, 10, "HBoot: Informacoes detalhadas do ambiente de inicializacao:", 0
 .informacaoMemoria:     db 13, 10, " > Memoria total instalada: ", 0
@@ -130,7 +140,7 @@ HBoot.Mensagens:
 .dsq0:                  db "dsq0", 0
 .dsq1:                  db "dsq1", 0
 .cdrom0:                db "cdrom0", 0
-.sistemaArquivos:       db 13, 10, " > Sistema de Arquivos do volume: ", 0
+.sistemaArquivos:       db 13, 10, " > sistema de Arquivos do volume: ", 0
 .FAT16:                 db "FAT16", 0
 .FAT16B:                db "FAT16B", 0
 .FAT12:                 db "FAT12", 0
@@ -163,3 +173,4 @@ HBoot.Mensagens:
 .dii:                   db " > Registrador DI: ",0
 .reinicioContinuarED:   db 13, 10
 .reinicioContinuar:     db 13, 10, "Pressione [ENTER] para reiniciar o computador (necessario)...", 13, 10, 0
+;

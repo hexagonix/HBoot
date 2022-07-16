@@ -17,13 +17,13 @@
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
 ;;                                  
 ;;************************************************************************************
 
 ;; O HBoot funciona exclusivamente em modo real 16-bit. Sendo assim, implementa funções
-;; de controle de dispositivos e de leitura de Sistema de Arquivos com código incompatível
+;; de controle de dispositivos e de leitura de sistema de Arquivos com código incompatível
 ;; com o Hexagon®. Não existe código Hexagon® aqui, com implementação feita do zero
 
 use16					
@@ -32,18 +32,17 @@ use16
 ;; estágio de inicialização. São 6 bytes, com assinatura (número mágico) e arquitetura 
 ;; alvo
 
+;; Vamos incluir o arquivo de versão
+
+include "HBoot/versao.asm"
+
 cabecalhoHBoot:
 
-.assinatura:  db "HBOOT"              ;; Assinatura, 5 bytes
-.arquitetura: db ARQUITETURA          ;; Arquitetura (i386), 1 byte
-.versaoMod:   db versaoHBootCabecalho ;; Versão
-.subverMod:   db subVerHBootCabecalho ;; Subversão
-.nomeHBoot:   db "HBoot   "           ;; Nome do módulo
-
-    cmp byte[HBoot.Parametros.execucaoModulo], 00h
-    jne retornarModulo
-
-    mov byte[HBoot.Parametros.execucaoModulo], 01h
+.assinatura:  db "HBOOT"          ;; Assinatura, 5 bytes
+.arquitetura: db arquiteturaHBoot ;; Arquitetura (i386), 1 byte
+.versaoMod:   db verHBoot         ;; Versão
+.subverMod:   db suvberHBoot      ;; Subversão
+.nomeHBoot:   db "HBoot   "       ;; Nome do módulo
 
     jmp inicioHBoot
 
@@ -51,15 +50,14 @@ cabecalhoHBoot:
 
 ;; Vamos incluir todas as constantes utilizadas
 
-include "Lib/hboot.s"
-include "Lib/versao.s"
+include "HBoot/hboot.s"
 
 ;; Macros utilizados pelo HBoot
 
 include "Lib/macros.s"
 
 ;; Camada de abstração de Sistemas de Arquivos (que inclui os arquivos de cada
-;; Sistema de Arquivos)
+;; sistema de Arquivos)
 
 include "FS/univerFS.asm"
 
@@ -69,18 +67,16 @@ include "Dev/dev.asm"
 
 ;; Agora, bibliotecas úteis
 
-include "Lib/libMod.asm"
-include "Lib/libUtil.asm"
-include "Lib/libHexagon.asm"
-include "Lib/string.asm"
-include "Lib/num.asm"
-include "Lib/HAPP.asm"
-include "Lib/int.asm"
-include "Lib/prompt.asm"
+include "Lib/lib.asm"
 
-;; Agora vamos incluir os módulos internos e o carregador de módulos
+;; Agora, funções do HBoot
 
-include "Lib/modulos.asm"
+include "HBoot/prompt.asm"
+include "HBoot/tom.asm"
+
+;; Mensagens e debug
+
+include "HBoot/mensagens.s"
 
 ;;************************************************************************************
 
@@ -97,13 +93,15 @@ inicioHBoot:
     sti				   ;; Habilitar interrupções
 
 ;; Salvar entedereço LBA da partição, fornecido pelo Saturno®
+
+    push esi ;; Aqui temos o endereço do BPB
     
     mov dword[enderecoLBAParticao], ebp ;; Salvar aqui o LBA da partição
     mov dword[enderecoBPB], esi         ;; Salvar o BPB
     
 ;; Carregar registradores de segmento para a nova posição
      
-    cli 
+    clc 
 
     mov ax, SEG_HBOOT
     mov ds, ax
@@ -121,52 +119,24 @@ boasVindasHBoot:
 
     call tomInicializacao ;; Tocar tom de inicialização
  
-    exibir  HBoot.HBoot.iniciando
+    mov si, HBoot.Mensagens.iniciando
+    
+    call imprimir
 
 analisarPC:
 
     call initDev
 
     call definirSistemaArquivos
-
-    call instalar80h
-
-    jmp .naoHouveMod
-
-.novaEntrada:
-
+    
 ;; Agora iremos verificar se o usuário deseja alterar o comportamento do processo
 ;; de inicialização, inclusive passando parâmetros para o núcleo, por exemplo
 
-.naoHouveMod:
-
-;; Vamos checar a interação do usuário. ALém de fornecer uma linha de comando ao
-;; Hexagon®, o usuário pode iniciar um módulo HBoot, obter informações sobre o
-;; hardware e software e também iniciar outro sistema operacional cujos arquivos
-;; estejam na mesma unidade, como um sistema do tipo DOS.
-
     call verificarInteracaoUsuario  
-
-;; Caso nenhuma interação tenha acontecido, devemos então procurar e iniciar o Hexagon®.
-;; Caso alguma interação tenha ocorrido mas o usuário selecionou continuar a inicialização,
-;; também devemos continuar com o protocolo de boot 
 
     jmp carregarHexagon
 
 ;;************************************************************************************
-
-;;************************************************************************************
-;;
-;; Variáveis e constantes utilizadas 
-;;
-;;************************************************************************************
-
-HBoot.HBoot:
-
-.iniciando:             db "Hexagon(R) Boot (HBoot) versao ", versaoHBoot, ".", 13, 10
-                        db "Gerenciador de Inicializacao para Hexagon(R).", 13, 10
-                        db "Copyright (C) 2020-2022 Felipe Miguel Nery Lunkes.", 13, 10
-                        db "Todos os direitos reservados.", 13, 10, 0
 
 ;; Parâmetros que podem ser passados para o Hexagon®
 
@@ -177,7 +147,6 @@ HBoot.Parametros:
 .forcarDisco:       db 0
 .bufLeitura:        times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon®  
 .parada:            db 0          ;; Ponto de parada da exibição do conteúdo
-.execucaoModulo:    db 0
 
 ;; Nome e informações de arquivo necessárias para o carregamento do Hexagon®
 

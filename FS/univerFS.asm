@@ -17,8 +17,8 @@
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
 ;;                                  
 ;;************************************************************************************
 
@@ -70,7 +70,9 @@ lerMBR:
 
 .erro:
 
-    exibir HBoot.Mensagens.erroMBR
+    mov si, HBoot.Mensagens.erroMBR
+
+    call imprimir
 
     jmp $
 
@@ -89,7 +91,9 @@ procurarArquivo:
     cmp ah, HBoot.SistemaArquivos.FAT16B
     je .FAT16B 
 
-    exibir HBoot.Mensagens.saInvalido
+    mov si, HBoot.Mensagens.saInvalido
+
+    call imprimir
 
     jmp $
 

@@ -17,34 +17,9 @@
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
 ;;                                  
-;;************************************************************************************
-
-;; Esse arquivo contém funções úteis para a execução do HBoot. As funções aqui contidas
-;; foram movidas de outros arquivos, incluindo o arquivo principal.
-
-;;************************************************************************************
-
-;; Tocar tom de inicialização do Sistema, tal como em Macs/Apple
-
-tomInicializacao:
-  
-;; Roteiro de execução com nota e tempo. Macro em "HBOOT.S"
-
-    tocarNota HBoot.Sons.nDO, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nLA, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nDO, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nLA, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nFA, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nSI, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nDO2, HBoot.Sons.tNormal
-
-    call desligarsom
-
-    ret
-
 ;;************************************************************************************
 
 HBoot.Sons: ;; Frequências de som para as notas musicais utilizadas para a música

@@ -86,4 +86,3 @@ Spartan:
 
 .mensagem: db 13, 10, 13, 10, "Modelo de implementacao de modulo HBoot iniciado com sucesso.", 13, 10
            db "Pressione qualquer tecla para retornar ao HBoot...", 13, 10, 0
-

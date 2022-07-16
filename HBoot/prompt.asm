@@ -17,8 +17,8 @@
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
 ;;                                  
 ;;************************************************************************************
 
@@ -461,7 +461,7 @@ verificarInteracaoUsuario:
 
 .carregarModuloHBoot:
 
-    jmp carregarModulo
+   jmp carregarModulo
   
 ;;*******************************
 
@@ -639,5 +639,3 @@ verificarInteracaoUsuario:
     ret
 
 ;;************************************************************************************
-
-include "Lib/mensagens.s" ;; Incluir os textos de mensagens

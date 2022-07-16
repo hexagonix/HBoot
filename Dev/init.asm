@@ -17,15 +17,10 @@
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon®
 ;;           
-;;                 Copyright © 2020-2022 Felipe Miguel Nery Lunkes
-;;                         Todos os direitos reservados
+;;                  Copyright © 2020-2022 Felipe Miguel Nery Lunkes
+;;                          Todos os direitos reservados
 ;;                                  
 ;;************************************************************************************
-
-HBoot.Init.Dev:
-
-.IDUnidade: db 0
-.FSUnidade: db 0
 
 initDev:
 
@@ -37,6 +32,6 @@ initDev:
 
     call iniciarCOM1      ;; Vamos iniciar a porta serial COM1
 
-    call iniciarParalela  ;; Iniciar a porta paralela
+    call iniciarParalela
 
     ret
