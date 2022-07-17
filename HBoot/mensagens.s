@@ -34,7 +34,7 @@ HBoot.Mensagens:
                         db "Gerenciador de Inicializacao para Hexagon(R).", 13, 10
                         db "Copyright (C) 2020-2022 Felipe Miguel Nery Lunkes.", 13, 10
                         db "Todos os direitos reservados.", 13, 10, 0
-.aguardarUsuario:       db "Pressione [F8] para acessar as configuracoes do HBoot.. ",  0
+.aguardarUsuario:       db "Pressione [F8] para acessar as configuracoes do HBoot... ",  0
 .naoEncontrado:         db 13,10, "HBoot: A imagem do Hexagon(R) nao foi encontrada no disco atual.", 13, 10
                         db "Impossivel continuar com o protocolo de inicializacao. Tente realizar", 13, 10
                         db "uma restauracao ou reinstalacao do sistema e tente iniciar o sistema", 13, 10
