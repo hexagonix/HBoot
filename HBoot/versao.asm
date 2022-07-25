@@ -24,8 +24,8 @@
 
 ;; Versão do HBoot
 
-versaoHBoot      equ "0.1 - suporte a KVM"
+versaoHBoot      equ "0.2"
 verProtocolo     equ "H1 (Orion)"
 arquiteturaHBoot equ 01h
-verHBoot         equ 0
-suvberHBoot      equ 1
+verHBoot         equ 00h
+suvberHBoot      equ 02h
