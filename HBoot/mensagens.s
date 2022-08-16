@@ -30,9 +30,9 @@
 
 HBoot.Mensagens:
 
-.iniciando:             db "Hexagon(R) Boot (HBoot) versao ", versaoHBoot, ".", 13, 10
+.iniciando:             db "Hexagon(R) Boot (HBoot) versao ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ").", 13, 10
                         db "Gerenciador de Inicializacao para Hexagon(R).", 13, 10
-                        db "Copyright (C) 2020-2022 Felipe Miguel Nery Lunkes.", 13, 10
+                        db "Copyright (C) 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
                         db "Todos os direitos reservados.", 13, 10, 0
 .aguardarUsuario:       db "Pressione [F8] para acessar as configuracoes do HBoot... ",  0
 .naoEncontrado:         db 13,10, "HBoot: A imagem do Hexagon(R) nao foi encontrada no disco atual.", 13, 10
@@ -78,7 +78,7 @@ HBoot.Mensagens:
                         db " > ", 0
 .pressionado:           db "[Ok]", 13, 10, 0
 .falhaOpcao:            db "[Falha]", 13, 10, 0
-.sobreHBoot:            db 13, 10, "Hboot: Informacoes do Hexagon(R) Boot - HBoot versao ", versaoHBoot, 13, 10, 13, 10
+.sobreHBoot:            db 13, 10, "Hboot: Informacoes do Hexagon(R) Boot - HBoot versao ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ")", 13, 10, 13, 10
                         db "O Hexagon Boot (HBoot) e um gerenciador de inicializacao poderoso", 13, 10
                         db "desenvolvido para inicializar o kernel Hexagon(R) em um volume do", 13, 10
                         db "armazenamento do seu computador. O HBoot tem como funcao realizar", 13, 10
@@ -150,7 +150,7 @@ HBoot.Mensagens:
 .enterContinuar:        db 13, 10
 .enterContinuarEU:      db 13, 10, "HBoot: pressione [ENTER] para retornar ao menu anterior...", 13, 10, 0
 .tamanhoParticao:       db 13, 10, " > Tamanho da particao do volume: ", 0
-.versaoHBoot:           db 13, 10, " > Versao do HBoot: ", versaoHBoot, 0
+.versaoHBoot:           db 13, 10, " > Versao do HBoot: ", versaoHBoot, " (build ", __stringdia, "/", __stringmes, "/", __stringano, ")", 0
 .versaoProtocolo:       db 13, 10, " > Versao do protocolo de boot (carregador) do HBoot: ", verProtocolo, 0
 .novaLinha:             db 13, 10, 0
 .unidadesOnline:        db 13, 10, " > Unidades online (nomes Hexagon(R)): ", 0
