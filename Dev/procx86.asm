@@ -44,12 +44,12 @@ initProc:
 identificarVendedorProcx86:
 
     mov eax, 0
-	
+    
     cpuid
-	
-	mov [HBoot.Procx86.Dados.vendedorProcx86], ebx
-	mov [HBoot.Procx86.Dados.vendedorProcx86 + 4], edx
-	mov [HBoot.Procx86.Dados.vendedorProcx86 + 8], ecx
+    
+    mov [HBoot.Procx86.Dados.vendedorProcx86], ebx
+    mov [HBoot.Procx86.Dados.vendedorProcx86 + 4], edx
+    mov [HBoot.Procx86.Dados.vendedorProcx86 + 8], ecx
 
     ret
 
@@ -57,82 +57,82 @@ identificarVendedorProcx86:
 
 identificarNomeProcx86:
 
-    mov eax, 80000002h	
-	
+    mov eax, 80000002h  
+    
     cpuid
-	
-	mov di, HBoot.Procx86.Dados.nomeProcx86		
+    
+    mov di, HBoot.Procx86.Dados.nomeProcx86     
 
-	stosd
-
-	mov eax, ebx
-
-	stosd
-
-	mov eax, ecx
-
-	stosd
-
-	mov eax, edx
-
-	stosd
-	
-	mov eax, 80000003h
-
-	cpuid
-	
-	stosd
-
-	mov eax, ebx
-	
     stosd
-	
-    mov eax, ecx
-	
-    stosd
-	
-    mov eax, edx
-	
-    stosd
-	
-	mov eax, 80000004h	
-	
-    cpuid
-	
-	stosd
-	
+
     mov eax, ebx
-	
+
     stosd
-	
+
     mov eax, ecx
-	
-    stosd 
-	
-    mov eax, edx
-	
+
     stosd
-	
-    mov si, HBoot.Procx86.Dados.nomeProcx86		
-	
+
+    mov eax, edx
+
+    stosd
+    
+    mov eax, 80000003h
+
+    cpuid
+    
+    stosd
+
+    mov eax, ebx
+    
+    stosd
+    
+    mov eax, ecx
+    
+    stosd
+    
+    mov eax, edx
+    
+    stosd
+    
+    mov eax, 80000004h  
+    
+    cpuid
+    
+    stosd
+    
+    mov eax, ebx
+    
+    stosd
+    
+    mov eax, ecx
+    
+    stosd 
+    
+    mov eax, edx
+    
+    stosd
+    
+    mov si, HBoot.Procx86.Dados.nomeProcx86     
+    
     mov cx, 48
-	
-.loopCPU:	
+    
+.loopCPU:   
 
     lodsb
 
-	cmp al, ' '
-	jae .formatarNomeCPU
-	
+    cmp al, ' '
+    jae .formatarNomeCPU
+    
     mov al, 0
-	
-.formatarNomeCPU:	
+    
+.formatarNomeCPU:   
 
     mov [si-1], al
-	
+    
     loop .loopCPU
 
-	ret
+    ret
 
 ;;************************************************************************************
 
@@ -145,7 +145,7 @@ habilitarA20:
 
     mov ax, 0x2401  ;; Solicitar a ativação do A20
         
-	int 15h         ;; Interrupção do BIOS
+    int 15h         ;; Interrupção do BIOS
 
     jc .erroA20
 

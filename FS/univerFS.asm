@@ -34,12 +34,12 @@ HBoot.SistemaArquivos:
 ;;************************************************************************************
 
 definirSistemaArquivos:
-	
-	call lerMBR
+    
+    call lerMBR
 
-	mov byte[HBoot.SistemaArquivos.codigo], ah
-	
-	ret
+    mov byte[HBoot.SistemaArquivos.codigo], ah
+    
+    ret
 
 ;;************************************************************************************
 
@@ -47,26 +47,26 @@ lerMBR:
 
 ;; Primeiro devemos carregar a MBR na memória
     
-	mov ax, 01h                    ;; Número de setores para ler
-	mov esi, 00h                   ;; LBA do setor inicial
-	mov di, bufferDeDisco	       ;; Deslocamento
-	mov dl, byte[idDrive] 
+    mov ax, 01h                    ;; Número de setores para ler
+    mov esi, 00h                   ;; LBA do setor inicial
+    mov di, bufferDeDisco          ;; Deslocamento
+    mov dl, byte[idDrive] 
 
-	call carregarSetor
+    call carregarSetor
 
-	jc .erro
+    jc .erro
 
-	mov ebx, bufferDeDisco
+    mov ebx, bufferDeDisco
 
-	add ebx, 0x1BE ;; Deslocamento da primeira partição
+    add ebx, 0x1BE ;; Deslocamento da primeira partição
 
-	mov ah, byte[es:ebx+04h]        ;; Contém o sistema de arquivos
+    mov ah, byte[es:ebx+04h]        ;; Contém o sistema de arquivos
 
     mov ebx, dword[es:ebx+0xF]      ;; Tamanho da partição
 
     mov dword[HBoot.SistemaArquivos.tamanhoParticao], ebx
 
-	jmp .fim
+    jmp .fim
 
 .erro:
 

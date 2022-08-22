@@ -26,7 +26,7 @@
 ;; de controle de dispositivos e de leitura de sistema de Arquivos com código incompatível
 ;; com o Hexagon®. Não existe código Hexagon® aqui, com implementação feita do zero
 
-use16					
+use16                   
 
 ;; O Hboot deve apresentar um cabeçalho especial de imagem HBoot, esperada pelo primeiro
 ;; estágio de inicialização. São 6 bytes, com assinatura (número mágico) e arquitetura 
@@ -84,13 +84,13 @@ inicioHBoot:
 
 ;; Configurar pilha e ponteiro
 
-    cli				   ;; Desativar interrupções
+    cli                ;; Desativar interrupções
     
     mov ax, SEG_HBOOT
     mov ss, ax
     mov sp, 0
     
-    sti				   ;; Habilitar interrupções
+    sti                ;; Habilitar interrupções
 
 ;; Salvar entedereço LBA da partição, fornecido pelo Saturno®
 
