@@ -29,7 +29,7 @@ paraString:
     mov cx, 0
     mov bx, 10
     mov di, .tmp
-		
+        
 .empurrar:
 
     mov dx, 0
@@ -42,14 +42,14 @@ paraString:
     
     test ax,ax
     jnz .empurrar
-		
+        
 .puxar:
     
     pop dx
     
     add dl, '0'
     mov [di], dl
-	
+    
     inc di
     dec cx
     
@@ -60,7 +60,7 @@ paraString:
     popa
     
     mov ax, .tmp
-	
+    
     ret
-		     
+             
 .tmp: times 7 db 0

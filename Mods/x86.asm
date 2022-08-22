@@ -16,7 +16,7 @@ macro exibir mensagem
 
     mov si, mensagem
 
-	call imprimir
+    call imprimir
 
 }
 
@@ -28,7 +28,7 @@ MEMORIA_MINIMA = 32768    ;; Memória mínima necessária para boot seguro do He
 
 ;;************************************************************************************
 
-use16	
+use16   
 
 cabecalhoHBoot:
 
@@ -272,12 +272,12 @@ verificarDiscos:
 identificarVendedorProcx86:
 
     mov eax, 0
-	
+    
     cpuid
-	
-	mov [x86.vendedorx86], ebx
-	mov [x86.vendedorx86 + 4], edx
-	mov [x86.vendedorx86 + 8], ecx
+    
+    mov [x86.vendedorx86], ebx
+    mov [x86.vendedorx86 + 4], edx
+    mov [x86.vendedorx86 + 8], ecx
 
 .exibirUsuario:
 
@@ -291,79 +291,79 @@ identificarVendedorProcx86:
 
 identificarNomeProcx86:
 
-    mov eax, 80000002h	
-	
+    mov eax, 80000002h  
+    
     cpuid
-	
-	mov di, x86.nomex86		
+    
+    mov di, x86.nomex86     
 
-	stosd
-
-	mov eax, ebx
-
-	stosd
-
-	mov eax, ecx
-
-	stosd
-
-	mov eax, edx
-
-	stosd
-	
-	mov eax, 80000003h
-
-	cpuid
-	
-	stosd
-
-	mov eax, ebx
-	
     stosd
-	
-    mov eax, ecx
-	
-    stosd
-	
-    mov eax, edx
-	
-    stosd
-	
-	mov eax, 80000004h	
-	
-    cpuid
-	
-	stosd
-	
+
     mov eax, ebx
-	
+
     stosd
-	
+
     mov eax, ecx
-	
-    stosd 
-	
-    mov eax, edx
-	
+
     stosd
-	
-    mov si, x86.nomex86		
-	
+
+    mov eax, edx
+
+    stosd
+    
+    mov eax, 80000003h
+
+    cpuid
+    
+    stosd
+
+    mov eax, ebx
+    
+    stosd
+    
+    mov eax, ecx
+    
+    stosd
+    
+    mov eax, edx
+    
+    stosd
+    
+    mov eax, 80000004h  
+    
+    cpuid
+    
+    stosd
+    
+    mov eax, ebx
+    
+    stosd
+    
+    mov eax, ecx
+    
+    stosd 
+    
+    mov eax, edx
+    
+    stosd
+    
+    mov si, x86.nomex86     
+    
     mov cx, 48
-	
-.loopCPU:	
+    
+.loopCPU:   
 
     lodsb
 
-	cmp al, ' '
-	jae .formatarNomeCPU
-	
+    cmp al, ' '
+    jae .formatarNomeCPU
+    
     mov al, 0
-	
-.formatarNomeCPU:	
+    
+.formatarNomeCPU:   
 
     mov [si-1], al
-	
+    
     loop .loopCPU
 
     exibir x86.nomeProcessador
@@ -383,65 +383,65 @@ identificarNomeProcx86:
 
 .fim:
 
-	ret
+    ret
 
 ;;************************************************************************************
 
 verificarMemoria:
 
     push edx
-	push ecx
-	push ebx
+    push ecx
+    push ebx
 
-	xor eax, eax
-	xor ebx, ebx
-	
-	mov ax, 0xE801
-	
-	xor dx, dx
-	xor cx, cx
-	
-	int 15h
-	
-	jnc .processar
-	
-	xor eax, eax
-	
-	jmp .fim         ;; Erro                                  
+    xor eax, eax
+    xor ebx, ebx
+    
+    mov ax, 0xE801
+    
+    xor dx, dx
+    xor cx, cx
+    
+    int 15h
+    
+    jnc .processar
+    
+    xor eax, eax
+    
+    jmp .fim         ;; Erro                                  
 
 .quantificar:
 
-	mov si, ax
-	
-	or si, bx
-	jne .quantificar
-	
-	mov ax, cx
-	mov bx, dx
+    mov si, ax
+    
+    or si, bx
+    jne .quantificar
+    
+    mov ax, cx
+    mov bx, dx
 
 .processar:
 
-	cmp ax, 0x3C00
-	jb .abaixoDe16MB
-	
-	movzx eax, bx
-	
-	add eax, 100h
-	
-	shl eax, 16      ;; EAX = EAX * 65536
-	
-	jmp .fim
+    cmp ax, 0x3C00
+    jb .abaixoDe16MB
+    
+    movzx eax, bx
+    
+    add eax, 100h
+    
+    shl eax, 16      ;; EAX = EAX * 65536
+    
+    jmp .fim
 
 .abaixoDe16MB:
 
-	shl eax, 10      ;; EAX = EAX * 1024
+    shl eax, 10      ;; EAX = EAX * 1024
 
 .fim:
 
-	pop ebx
-	pop ecx
-	pop edx
-	
+    pop ebx
+    pop ecx
+    pop edx
+    
 ;; Vamos salvar aqui o total de memória recuperado. Caso seja suficiente para o processo continuar,
 ;; a quantidade de RAM instalada será fornecida ao Hexagon®, em Kbytes
 
@@ -508,9 +508,9 @@ verificarMemoria:
 
 imprimir:
 
-    lodsb		;; mov AL, [SI] & inc SI
+    lodsb       ;; mov AL, [SI] & inc SI
     
-    or al, al	;; cmp AL, 0
+    or al, al   ;; cmp AL, 0
     jz .pronto
     
     mov ah, 0Eh
@@ -528,18 +528,18 @@ imprimir:
 limparTela:
 
     mov dx, 0
-	mov bh, 0
-	mov ah, 2
-	
+    mov bh, 0
+    mov ah, 2
+    
     int 10h  
-	
-	mov ah, 6			
-	mov al, 0			
-	mov bh, 7			
-	mov cx, 0			
-	mov dh, 24			
-	mov dl, 79
-	
+    
+    mov ah, 6           
+    mov al, 0           
+    mov bh, 7           
+    mov cx, 0           
+    mov dh, 24          
+    mov dl, 79
+    
     int 10h
 
     ret
@@ -647,35 +647,35 @@ identificarTecla:
 
 paraMaiusculo: ;; Esta função requer um ponteiro para a string, em DS:SI
 
-	pusha
-	
-	mov bx, 0xFFFF						;; Início em -1, dentro da String
-	
-paraMaiusculoLoop:	
+    pusha
+    
+    mov bx, 0xFFFF                      ;; Início em -1, dentro da String
+    
+paraMaiusculoLoop:  
 
-	inc bx
-	
-    mov al, byte [ds:si+bx]				;; Em al, o caracter atual
-	
-	cmp al, 0							;; Caso no fim da String
-	je paraMaiusculoPronto			;; Está tudo pronto
-	
-	cmp al, 'a'
-	jb paraMaiusculoLoop              ;; Código ASCII muito baixo para ser minúsculo
-	
-	cmp al, 'z'
-	ja paraMaiusculoLoop              ;; Código ASCII muito alto para ser minúsculo
-	
-	sub al, 'a'-'A'
-	mov byte [ds:si+bx], al				;; Subtraia e transformar em maiúsculo
-	
-	jmp paraMaiusculoLoop             ;; Próximo caractere
-	
-paraMaiusculoPronto:	
+    inc bx
+    
+    mov al, byte [ds:si+bx]             ;; Em al, o caracter atual
+    
+    cmp al, 0                           ;; Caso no fim da String
+    je paraMaiusculoPronto          ;; Está tudo pronto
+    
+    cmp al, 'a'
+    jb paraMaiusculoLoop              ;; Código ASCII muito baixo para ser minúsculo
+    
+    cmp al, 'z'
+    ja paraMaiusculoLoop              ;; Código ASCII muito alto para ser minúsculo
+    
+    sub al, 'a'-'A'
+    mov byte [ds:si+bx], al             ;; Subtraia e transformar em maiúsculo
+    
+    jmp paraMaiusculoLoop             ;; Próximo caractere
+    
+paraMaiusculoPronto:    
 
-	popa
-	
-	ret
+    popa
+    
+    ret
 
 ;;************************************************************************************
 
@@ -696,7 +696,7 @@ gotoxy:
     pop dx
     pop bx
     pop ax
-		
+        
     ret
 
 ;;************************************************************************************
@@ -759,7 +759,7 @@ paraString:
     mov cx, 0
     mov bx, 10
     mov di, .tmp
-		
+        
 .empurrar:
 
     mov dx, 0
@@ -771,7 +771,7 @@ paraString:
 
     test ax,ax
     jnz .empurrar
-		
+        
 .puxar:
 
     pop dx
@@ -791,7 +791,7 @@ paraString:
     mov ax, .tmp
 
     ret
-		
+        
     .tmp: times 7 db 0
 
 ;;************************************************************************************
