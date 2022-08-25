@@ -1,3 +1,22 @@
+<p align="center">
+<img src="https://github.com/hexagonix/Doc/blob/main/Img/Hexagonix.png" width="150" height="150">
+</p>
+
+<div align="center">
+
+![](https://img.shields.io/github/license/hexagonix/HBoot.svg)
+![](https://img.shields.io/github/stars/hexagonix/HBoot.svg)
+![](https://img.shields.io/github/issues/hexagonix/HBoot.svg)
+![](https://img.shields.io/github/issues-closed/hexagonix/HBoot.svg)
+![](https://img.shields.io/github/issues-pr/hexagonix/HBoot.svg)
+![](https://img.shields.io/github/issues-pr-closed/hexagonix/HBoot.svg)
+![](https://img.shields.io/github/downloads/hexagonix/HBoot/total.svg)
+![](https://img.shields.io/github/release/hexagonix/HBoot.svg)
+
+</div>
+
+<hr>
+
 # Inicialização do Hexagon
 
 Este repositório contém o gerenciador de inicialização MBR do Hexagonix e o Hexagon Boot, responsável por carregar, configurar e executar o Hexagon, bem como oferecer outros recursos.
@@ -79,4 +98,8 @@ Novos sistemas de arquivos serão implementados no futuro.
 
 O HBoot ganhou muita complexidade desde o início de seu desenvolvimento, em 2020. Devido a esse aumento de código e a natureza de sua operação (16-bit), bugs podem ser encontrados. Os mesmos podem ser reportados no repositório ou por email, disponível no final deste arquivo.
 
+<!--
+
 Versão deste arquivo: 2.0
+
+-->
