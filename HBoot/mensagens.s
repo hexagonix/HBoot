@@ -86,7 +86,7 @@ HBoot.Mensagens:
                         db "apos os testes, carregar o kernel, fornecer parametros (caso sejam", 13, 10
                         db "fornecidos pelo usuario) e iniciar a execucao do Hexagon(R).", 0
 .pressionouF8:          db "HBoot: Aqui voce pode alterar parametros de boot do Hexagon(R).", 13, 10, 0
-.listaModif:            db 13, 10, "Voce pode alterar os parametros abaixo (lista provisoria):", 13, 10
+.listaModif:            db 13, 10, "Voce pode alterar os parametros abaixo:", 13, 10
                         db " > [1]: Fornecer linha de comando/parametros personalizada ao Hexagon(R).", 13, 10
                         db " > [2]: Obter informacoes do ambiente de inicializacao configurado.", 13, 10
                         db " > [3]: Confirmar alteracoes/informacoes e iniciar o Hexagon(R).", 13, 10
@@ -140,7 +140,7 @@ HBoot.Mensagens:
 .dsq0:                  db "dsq0", 0
 .dsq1:                  db "dsq1", 0
 .cdrom0:                db "cdrom0", 0
-.sistemaArquivos:       db 13, 10, " > sistema de Arquivos do volume: ", 0
+.sistemaArquivos:       db 13, 10, " > Sistema de Arquivos do volume: ", 0
 .FAT16:                 db "FAT16", 0
 .FAT16B:                db "FAT16B", 0
 .FAT12:                 db "FAT12", 0
