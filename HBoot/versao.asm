@@ -22,8 +22,8 @@
 
 ;; Versão do HBoot
 
-versaoHBoot      equ "0.2"
-verProtocolo     equ "H1 (Orion)"
+versaoHBoot      equ "0.3"
+verProtocolo     equ "H2-dev"
 arquiteturaHBoot equ 01h
 verHBoot         equ 00h
-suvberHBoot      equ 02h
+suvberHBoot      equ 03h

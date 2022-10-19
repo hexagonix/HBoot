@@ -163,7 +163,7 @@ HBoot.Arquivos:
 
 .nomeHBoot:         db "HBOOT      " ;; Nome de arquivo do HBoot em disco
 .nomeImagem:        db "           " ;; Aqui será salvo o nome do arquivo que deverá ser carregado
-.imagemHexagon:     db "HEXAGON SIS" ;; Nome do arquivo que contém o Kernel Hexagon®, a ser carregado
+.imagemHexagon:     db "HEXAGON    " ;; Nome do arquivo que contém o Kernel Hexagon®, a ser carregado
 .parada:            db 0             ;; Ponto de parada da exibição do conteúdo
 .imagemModulo:      times 64 db ' '  ;; Por segurança, um buffer maior
 .imagemInvalida:    db 0             ;; A imagem é válida?
