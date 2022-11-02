@@ -144,11 +144,11 @@ This repository contains the Hexagonix MBR boot manager and Hexagon Boot, which 
 
 </div>
     
-## Saturn
+## Saturno
 
 <div align="justify">
     
-The first component of Hexagonix is ​​the Saturn. It is responsible for taking control of the boot process performed by the BIOS/UEFI and looking in the volume for the second boot stage. For that, it implements a driver for reading a FAT16 file system. The second boot stage (see below) can implement drivers for other file systems and is responsible for finding Hexagon, loading HBoot modules or loading a compatible DOS-like system (BETA version).
+The first component of Hexagonix is the Saturno. It is responsible for taking control of the boot process performed by the BIOS/UEFI and looking in the volume for the second boot stage. For that, it implements a driver for reading a FAT16 file system. The second boot stage (see below) can implement drivers for other file systems and is responsible for finding Hexagon, loading HBoot modules or loading a compatible DOS-like system (BETA version).
 
 </div>
     
@@ -165,13 +165,13 @@ Hexagon Boot (HBoot) is a component designed to allow booting the Hexagon kernel
 <div align="justify">
 
 * HBoot allows loading modules in HBoot format, which may be useful in the future to allow hardware tests such as memory and disk tests if modules are available on disk. The modules can also be used to extend the functions of HBoot. The format specification is now available and an example can be found below. These modules can be used to test specific devices, obtain hardware information, or load files into file systems not originally supported by HBoot.
-* In the context of Hexagonix development, HBoot can also directly load, from a currently built-in module (this function will be moved to a standalone module as soon as possible) the core of the FreeDOS[^1] open source operating system , so that established and robust utility tools that run in a DOS environment can run on the Hexagonix/Andromeda volume and files. FreeDOS was chosen because of its kernel feature consisting of a single file, usually "KERNEL.SYS"[^2], in addition to its free distribution. Other DOS, such as MS-DOS, prior to version 7.0, use two files that must be contiguous on the disk, and this is not possible here, since the installation of FreeDOS takes place on a Hexagonix volume, with the kernel copy , command interpreter, and other DOS utilities, with the main operating system being Hexagonix/Andromeda, with optional launch of FreeDOS for some special activity[^3]. If the FreeDOS system components are not present on the disk (copying the FreeDOS files is not part of the default image), booting in DOS compatibility mode will not occur.
+* In the context of Hexagonix development, HBoot can also directly load, from a currently built-in module (this function will be moved to a standalone module as soon as possible) the core of the FreeDOS[^1] open source operating system , so that established and robust utility tools that run in a DOS environment can run on the Hexagonix/Andromeda volume and files. FreeDOS was chosen because of its kernel feature consisting of a single file, usually "KERNEL.SYS"[^4], in addition to its free distribution. Other DOS, such as MS-DOS, prior to version 7.0, use two files that must be contiguous on the disk, and this is not possible here, since the installation of FreeDOS takes place on a Hexagonix volume, with the kernel copy , command interpreter, and other DOS utilities, with the main operating system being Hexagonix/Andromeda, with optional launch of FreeDOS for some special activity[^5]. If the FreeDOS system components are not present on the disk (copying the FreeDOS files is not part of the default image), booting in DOS compatibility mode will not occur.
 
 </div>
 
 [^1]: You can find the project page [here](https://www.freedos.org/).
-[^2]: Booting in DOS mode was possible after searching the FreeDOS documentation, especially the "SYS.C" file (which can be found [here](http://www.ibiblio.org/pub/micro/ pc-stuff/freedos/files/dos/sys/2043/)), which indicates which thread the kernel expects to load and which parameters are required. Each DOS system has a preferred loading segment and this loading of other DOS editions can be implemented in the future with the help of HBoot modules. All the code for loading the core was developed from scratch and not based on any existing ones.
-[^3]: HBoot's DOS compatibility mode boot can be useful for running volume error checking, volume defrag, partitioning and other diagnostic as well as development tools such as compilers and assemblers that are not supported by Hexagonix/Andromeda (the 16-bit tools for example).
+[^4]: Booting in DOS mode was possible after searching the FreeDOS documentation, especially the "SYS.C" file (which can be found [here](http://www.ibiblio.org/pub/micro/ pc-stuff/freedos/files/dos/sys/2043/)), which indicates which thread the kernel expects to load and which parameters are required. Each DOS system has a preferred loading segment and this loading of other DOS editions can be implemented in the future with the help of HBoot modules. All the code for loading the core was developed from scratch and not based on any existing ones.
+[^5]: HBoot's DOS compatibility mode boot can be useful for running volume error checking, volume defrag, partitioning and other diagnostic as well as development tools such as compilers and assemblers that are not supported by Hexagonix/Andromeda (the 16-bit tools for example).
 
 ### HBoot module example
 
