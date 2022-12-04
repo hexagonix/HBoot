@@ -91,7 +91,7 @@ HBoot.Mensagens:
                         db "projects, if any.", 13, 10
                         db "[!] Warning! File and executable formats are incompatible between DOS and", 13, 10
                         db "Hexagon(R) systems. To return to Hexagon(R), restart your computer and wait.", 13, 10
-                        db " > [1] Start FreeDOS installed on the Hexagon(R) volume.", 10, 13
+                        db " > [1]: Start FreeDOS installed on the Hexagon(R) volume.", 10, 13
                         db " > [2]: Return to previous menu.", 13, 10, 0
 .iniciarModulo:         db 13, 10, "HBoot: Start HBoot module.", 13, 10
                         db "HBoot: Here you can start a compatible module for HBoot.", 13, 10
