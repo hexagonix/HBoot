@@ -52,12 +52,12 @@
 ;; Segmentos de carregamento do HBoot e do Hexagon®
 
 SEG_HBOOT                   equ 0x1000 ;; Segmento de carregamento de HBoot  
-SEG_KERNEL 	                equ 0x50   ;; Segmento para carregar Kernel
+SEG_KERNEL 	                equ 0x50   ;; Segmento para carregar o Hexagon
 SEG_DIAG                    equ 0x60   ;; Segmento para carregamento de imagens de diagnóstico
 
 ;; Dados de arquitetura a qual deve-se carregar o Hexagon®
 
-ARQUITETURA                 = 01h      ;; Arquitetura do HBoot e a qual se destina o Kernel
+ARQUITETURA                 = 01h      ;; Arquitetura do HBoot e a qual se destina o kernel
 
 ;; Tamanho do cabeçalho HAPP da imagem
 
