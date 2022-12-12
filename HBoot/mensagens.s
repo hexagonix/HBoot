@@ -175,7 +175,7 @@ HBoot.Mensagens:
 .versaoHBoot:           db 13, 10, " > HBoot version: ", versaoHBoot, " (build ", __stringdia, "/", __stringmes, "/", __stringano, ")", 0
 .versaoProtocolo:       db 13, 10, " > HBoot boot protocol (loader) version: ", verProtocolo, 0
 .novaLinha:             db 13, 10, 0
-.unidadesOnline:        db 13, 10, " > Online units (Hexagon names): ", 0
+.unidadesOnline:        db 13, 10, " > Online volumes (Hexagon names): ", 0
 .espacoSimples:         db " ", 0
 .hex:                   db "0x0000", 13, 10, 0
 .hexc:                  db "0123456789ABCDEF"
