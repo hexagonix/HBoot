@@ -52,7 +52,7 @@
 ;; Versão do HBoot
 
 versaoHBoot      equ "0.4"
-verProtocolo     equ "H2-dev.beta8"
+verProtocolo     equ "H2-RELEASE"
 arquiteturaHBoot equ 01h
 verHBoot         equ 00h
 suvberHBoot      equ 04h

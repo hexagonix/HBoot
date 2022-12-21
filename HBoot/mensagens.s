@@ -113,9 +113,9 @@ HBoot.Mensagens:
                         db " > [2]: Get configured boot environment information.", 13, 10
                         db " > [3]: Commit changes/information and start Hexagon(R).", 13, 10
                         db " > [4]: More information about HBoot.", 13, 10
-                        db " > [t,T]: Experimental and diagnostic options (modules, starting FreeDOS, etc).", 10, 13
-                        db " Use experimental and diagnostic functions with care!", 10, 13, 0
-.selecioneModif:        db 13, 10, "HBoot: Select option: ", 0
+                        db " > [t,T]: Experimental and diagnostic options (modules, starting FreeDOS, etc).", 10, 13, 10, 13
+                        db "[!] Warning: Use experimental and diagnostic functions with care!", 10, 13, 0
+.selecioneModif:        db 13, 10, "Select option: ", 0
 .modifIndisponivel:     db 13, 10, "HBoot: Invalid option. Press [ENTER] to continue boot.", 0
 .testarComponentes:     db 13, 10, "HBoot: Here you can test HBoot components as well as use", 13, 10
                         db "functions and features under development or not in wide use.", 13, 10, 0
@@ -129,7 +129,7 @@ HBoot.Mensagens:
                         db " > [d,D]: Start boot compatibility mode and start DOS system.", 13, 10
                         db " > [m,M]: Load module in HBoot format.", 13, 10, 0
 .exibirRegs:            db 13, 10, 13, 10, "HBoot: List and contents of main processor registers (proc0):", 13, 10, 13, 10, 0
-.selecioneComponente:   db 13, 10, "HBoot: Select option: ", 0
+.selecioneComponente:   db 13, 10, "Select option: ", 0
 .componenteInvalido:    db 13, 10, "HBoot: Invalid option. Press [ENTER] to return.", 13, 10, 0
 .alterarVerbose:        db 13, 10, "HBoot: Choose (0) to turn off verbose or (1) to turn on:", 0
 .opcaoInvalida:         db 13, 10, "HBoot: Invalid behavior change option for selection.", 13, 10
@@ -141,7 +141,7 @@ HBoot.Mensagens:
 .semCPUIDNome:          db "<Pentium III or generic/unknown processor>", 0    
 .saInvalido:            db 13, 10, "HBoot: Volume Filesystem is not supported by HBoot at this time.", 13, 10, 0     
 .erroMBR:               db 13, 10, "HBoot: Error when trying to retrieve information from the MBR. Impossible to continue.", 13, 10, 0
-.informacoesDetalhadas: db 13, 10, "HBoot: Detailed boot environment information:", 0
+.informacoesDetalhadas: db 13, 10, "Detailed boot environment information:", 0
 .informacaoMemoria:     db 13, 10, " > Total memory installed: ", 0
 .vendedorProcessador:   db 13, 10, " > Processor information (manufacturer's signature): ", 0
 .nomeProcessador:       db 13, 10, " > Processor name: ", 0

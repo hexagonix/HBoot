@@ -66,8 +66,8 @@ carregarHexagon:
 ;; Função que transfere a execução para o Hexagon®, passando parâmetros pelos 
 ;; registradores, como descrito a seguir:
 ;;
-;; EBP - Ponteiro para o BIOS Parameter Block do disco de boot
-;; DL  - Número lógico do disco usado para a inicialização
+;; EBP - Ponteiro para o BIOS Parameter Block do volume de boot
+;; DL  - Número lógico do volume usado para a inicialização
 ;; CX  - Quantidade, em Kbytes, de memória RAM instalada na máquina
 ;; Mais parâmetros poderão ser passados agora em razão da criação do segundo
 ;; estágio (HBoot)
