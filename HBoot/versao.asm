@@ -51,8 +51,8 @@
 
 ;; Versão do HBoot
 
-versaoHBoot      equ "0.4"
+versaoHBoot      equ "0.5"
 verProtocolo     equ "H2-RELEASE"
 arquiteturaHBoot equ 01h
 verHBoot         equ 00h
-suvberHBoot      equ 04h
+suvberHBoot      equ 05h

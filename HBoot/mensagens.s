@@ -61,8 +61,8 @@ HBoot.Mensagens:
                         db "Boot loader for Hexagon(R).", 13, 10
                         db "Copyright (C) 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
                         db "All rights reserved.", 13, 10, 0
-.aguardarUsuario:       db "Press [F8] to access HBoot settings... ",  0
-.naoEncontrado:         db 13,10, "HBoot: Hexagon(R) image not found on current volume.", 13, 10
+.aguardarUsuario:       db 13, 10, "Press [F8] to access HBoot settings... ",  0
+.naoEncontrado:         db 13, 10, "HBoot: Hexagon(R) image not found on current volume.", 13, 10
                         db "Impossible to continue the initialization protocol. Please try to perform", 13, 10
                         db "a system restore or reinstallation and try to start the system again.", 13, 10, 0
 .erroDisco:             db 13, 10, "HBoot: Disk Error! Restart your computer and try again.", 0 ;; Mensagem de erro no disco
@@ -96,7 +96,7 @@ HBoot.Mensagens:
 .iniciarModulo:         db 13, 10, "HBoot: Start HBoot module.", 13, 10
                         db "HBoot: Here you can start a compatible module for HBoot.", 13, 10
                         db "Enter a file name in FAT format, as in the example:", 13, 10
-                        db "For oi.txt file, supply 'OI TXT', without quotes and in capital letters.", 13, 10
+                        db "For hello.txt file, supply 'HELLO   TXT', without quotes and in capital letters.", 13, 10
                         db "The name must have a maximum of 11 uppercase characters.", 13, 10, 13, 10
                         db " > ", 0
 .pressionado:           db "[Ok]", 13, 10, 0
@@ -119,7 +119,7 @@ HBoot.Mensagens:
 .modifIndisponivel:     db 13, 10, "HBoot: Invalid option. Press [ENTER] to continue boot.", 0
 .testarComponentes:     db 13, 10, "HBoot: Here you can test HBoot components as well as use", 13, 10
                         db "functions and features under development or not in wide use.", 13, 10, 0
-.listaComponentes:      db 13, 10, "You can test some components (tentative list):", 13, 10
+.listaComponentes:      db 13, 10, "You can test some components and functions of HBoot:", 13, 10
                         db "[!] Warning! Some tests require computer restart!", 13, 10
                         db " > [1]: Test startup tone (cries, Mac).", 13, 10
                         db " > [2]: Display contents of registers (required later restart).", 13, 10
@@ -135,22 +135,22 @@ HBoot.Mensagens:
 .opcaoInvalida:         db 13, 10, "HBoot: Invalid behavior change option for selection.", 13, 10
                         db "HBoot: Press [ENTER] to continue boot without changing behavior...", 13, 10, 0
 .prosseguirBoot:        db "HBoot: Continuing with the boot protocol...", 13, 10, 0       
-.linhaComando:          db 13, 10, "HBoot: Enter the command line for Hexagon(R). Pay attention to the parameters", 13, 10
-                        db "supported, with a maximum of 64 characters.", 13, 10
+.linhaComando:          db 13, 10, "Enter the command line for Hexagon(R). Pay attention to the parameters", 13, 10
+                        db "supported, with a maximum of 64 characters.", 13, 10, 13, 10
                         db "> ", 0   
 .semCPUIDNome:          db "<Pentium III or generic/unknown processor>", 0    
-.saInvalido:            db 13, 10, "HBoot: Volume Filesystem is not supported by HBoot at this time.", 13, 10, 0     
+.saInvalido:            db 13, 10, "HBoot: Volume filesystem is not supported by HBoot at this time.", 13, 10, 0     
 .erroMBR:               db 13, 10, "HBoot: Error when trying to retrieve information from the MBR. Impossible to continue.", 13, 10, 0
 .informacoesDetalhadas: db 13, 10, "Detailed boot environment information:", 0
 .informacaoMemoria:     db 13, 10, " > Total memory installed: ", 0
 .vendedorProcessador:   db 13, 10, " > Processor information (manufacturer's signature): ", 0
 .nomeProcessador:       db 13, 10, " > Processor name: ", 0
-.discoBoot:             db 13, 10, " > Boot volume (Hexagon name): ", 0
-.arquivoHexagon:        db 13, 10, " > Hexagon image on disk to be loaded: ", 0
+.discoBoot:             db 13, 10, " > Boot volume (Hexagon device name): ", 0
+.arquivoHexagon:        db 13, 10, " > Hexagon image on volume to be loaded: ", 0
 .infoLinhaComando:      db 13, 10, " > Command line for Hexagon: ", 0
-.moduloAusente:         db 13, 10, 13, 10, "HBoot: The file containing an HBoot module was not found on disk.", 13, 10
+.moduloAusente:         db 13, 10, 13, 10, "HBoot: The file containing an HBoot module was not found on volume.", 13, 10
                         db "HBoot: Press [ENTER] to return to the previous menu...", 13, 10, 0
-.DOSAusente:            db 13, 10, 13, 10, "HBoot: DOS system files not found on disk.", 13, 10
+.DOSAusente:            db 13, 10, 13, 10, "HBoot: DOS system files not found on volume.", 13, 10
                         db "HBoot: Press [ENTER] to return to the previous menu...", 13, 10, 0
 .HexagonAusente:        db 13, 10, 13, 10, "HBoot: The file containing the Hexagon(R) was not found.", 13, 10
                         db "HBoot: Press [ENTER] to restart your computer...", 13, 10, 0
@@ -175,7 +175,7 @@ HBoot.Mensagens:
 .versaoHBoot:           db 13, 10, " > HBoot version: ", versaoHBoot, " (build ", __stringdia, "/", __stringmes, "/", __stringano, ")", 0
 .versaoProtocolo:       db 13, 10, " > HBoot boot protocol (loader) version: ", verProtocolo, 0
 .novaLinha:             db 13, 10, 0
-.unidadesOnline:        db 13, 10, " > Online volumes (Hexagon names): ", 0
+.unidadesOnline:        db 13, 10, " > Online volumes (Hexagon device names): ", 0
 .espacoSimples:         db " ", 0
 .hex:                   db "0x0000", 13, 10, 0
 .hexc:                  db "0123456789ABCDEF"
