@@ -95,7 +95,7 @@ include "HBoot/hboot.s"
 include "Lib/macros.s"
 
 ;; Camada de abstração de Sistemas de Arquivos (que inclui os arquivos de cada
-;; sistema de Arquivos)
+;; Sistema de Arquivos)
 
 include "FS/FS.asm"
 
