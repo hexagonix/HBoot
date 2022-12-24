@@ -97,7 +97,7 @@ include "Lib/macros.s"
 ;; Camada de abstração de Sistemas de Arquivos (que inclui os arquivos de cada
 ;; sistema de Arquivos)
 
-include "FS/univerFS.asm"
+include "FS/FS.asm"
 
 ;; Agora incluir todo o código que lida diretamente com dispositivos 
 
