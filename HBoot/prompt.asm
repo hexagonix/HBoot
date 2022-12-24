@@ -123,7 +123,10 @@ verificarInteracaoUsuario:
     cmp al, '4'
     je .infoHBoot
 
-    ;; cmp al, '5'
+    cmp al, '5'
+    je .reiniciarDispositivo
+
+    ;; cmp al, '9'
     ;; je .alterarVerbose
 
     cmp al, 't'
@@ -137,6 +140,16 @@ verificarInteracaoUsuario:
 ;; teclas
 
     jmp .pontoControlePressionouF8
+
+;;*******************************
+
+.reiniciarDispositivo:
+
+    call pararDiscos
+
+    hlt 
+
+    int 19h 
 
 ;;*******************************
 
@@ -625,6 +638,8 @@ verificarInteracaoUsuario:
 
     call aguardarTeclado
 
+    call pararDiscos
+    
     int 19h
 
 ;; Se falhar, vamos ficar aqui até o reinício vir automaticamente
@@ -655,6 +670,8 @@ verificarInteracaoUsuario:
     exibir HBoot.Mensagens.reinicioContinuarED
 
     call aguardarTeclado
+
+    call pararDiscos
 
     int 19h
 

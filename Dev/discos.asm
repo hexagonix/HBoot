@@ -172,17 +172,15 @@ verificarDiscos:
  
     mov byte[HBoot.Disco.dsq1Online], 01h
  
-    jmp verificarhd0
+    jmp .verificarhd0
  
 .errodsq1:
  
     mov byte[HBoot.Disco.dsq1Online], 00h
 
-    jmp verificarhd0
- 
-;;************************************************************************************
+    jmp .verificarhd0
 
-verificarhd0:
+.verificarhd0:
 
     mov ah, 02h
     mov al, 01h
@@ -238,4 +236,40 @@ verificarhd0:
 
     ret
 
+;;************************************************************************************
+
+pararDiscos:
+
+.hd0:
+
+    mov ah, 00h
+    mov dl, 80h
+
+    int 13h
+
+.hd1:
+
+    mov ah, 00h
+    mov dl, 81h
+
+    int 13h
+
+.dsq0:
+
+    mov ah, 00h
+    mov dl, 00h
+
+    int 13h
+
+.dsq1:
+
+    mov ah, 00h
+    mov dl, 01h
+
+    int 13h
+
+.continuar:
+
+    ret
+    
 ;;************************************************************************************

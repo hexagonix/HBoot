@@ -58,7 +58,7 @@
 HBoot.Mensagens:
 
 .iniciando:             db "Hexagon(R) Boot (HBoot) version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ").", 13, 10
-                        db "Boot loader for Hexagon(R).", 13, 10
+                        db "Boot loader for Hexagonix(R).", 13, 10
                         db "Copyright (C) 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
                         db "All rights reserved.", 13, 10, 0
 .aguardarUsuario:       db 13, 10, "Press [F8] to access HBoot settings... ",  0
@@ -74,7 +74,7 @@ HBoot.Mensagens:
 .imagemInvalida:        db 13, 10, "HBoot: The Hexagon(R) disk image appears to be corrupt and cannot", 13, 10
                         db "be used for initialization. Try reinstalling or recovering system to", 13, 10
                         db "continue.", 0
-.modoDOS:              db 13, 10, "HBoot: Load DOS system from a Hexagon(R) volume", 13, 10
+.modoDOS:               db 13, 10, "HBoot: Load DOS system from a Hexagon(R) volume", 13, 10
                         db "HBoot: HBoot has entered DOS boot compatibility mode.", 13, 10
                         db "This means you can boot some DOS system installed on same partition/volume as", 13, 10
                         db "Hexagon(R), if it supports Hexagon(R) Volume File System. Please select more ", 13, 10
@@ -109,10 +109,11 @@ HBoot.Mensagens:
                         db "Hexagon(R).", 0
 .pressionouF8:          db "HBoot: Here you can change Hexagon(R) boot parameters.", 13, 10, 0
 .listaModif:            db 13, 10, "You can change the parameters below:", 13, 10
-                        db " > [1]: Provide custom command line/parameters to Hexagon(R).", 13, 10
+                        db " > [1]: Provide custom command line to Hexagon(R).", 13, 10
                         db " > [2]: Get configured boot environment information.", 13, 10
-                        db " > [3]: Commit changes/information and start Hexagon(R).", 13, 10
+                        db " > [3]: Commit changes and start Hexagon(R).", 13, 10
                         db " > [4]: More information about HBoot.", 13, 10
+                        db " > [5]: Restart the device.", 13, 10
                         db " > [t,T]: Experimental and diagnostic options (modules, starting FreeDOS, etc).", 10, 13, 10, 13
                         db "[!] Warning: Use experimental and diagnostic functions with care!", 10, 13, 0
 .selecioneModif:        db 13, 10, "Select option: ", 0
@@ -120,11 +121,11 @@ HBoot.Mensagens:
 .testarComponentes:     db 13, 10, "HBoot: Here you can test HBoot components as well as use", 13, 10
                         db "functions and features under development or not in wide use.", 13, 10, 0
 .listaComponentes:      db 13, 10, "You can test some components and functions of HBoot:", 13, 10
-                        db "[!] Warning! Some tests require computer restart!", 13, 10
-                        db " > [1]: Test startup tone (cries, Mac).", 13, 10
-                        db " > [2]: Display contents of registers (required later restart).", 13, 10
+                        db "[!] Warning! Some tests require restart!", 13, 10
+                        db " > [1]: Test sound hardware and startup tone.", 13, 10
+                        db " > [2]: Display contents of registers (required restart).", 13, 10
                         db " > [3]: Perform video test in graphics mode.", 13, 10
-                        db " > [4]: Restart the computer.", 13, 10
+                        db " > [4]: Restart the device.", 13, 10
                         db " > [5]: Return to previous menu.", 13, 10
                         db " > [d,D]: Start boot compatibility mode and start DOS system.", 13, 10
                         db " > [m,M]: Load module in HBoot format.", 13, 10, 0
@@ -171,7 +172,7 @@ HBoot.Mensagens:
 .saDesconhecido:        db "<unknown>", 0
 .enterContinuar:        db 13, 10
 .enterContinuarEU:      db 13, 10, "HBoot: press [ENTER] to return to the previous menu...", 13, 10, 0
-.tamanhoParticao:       db 13, 10, " > volume partition size: ", 0
+.tamanhoParticao:       db 13, 10, " > Volume partition size: ", 0
 .versaoHBoot:           db 13, 10, " > HBoot version: ", versaoHBoot, " (build ", __stringdia, "/", __stringmes, "/", __stringano, ")", 0
 .versaoProtocolo:       db 13, 10, " > HBoot boot protocol (loader) version: ", verProtocolo, 0
 .novaLinha:             db 13, 10, 0

@@ -52,7 +52,7 @@
 ;; Segmentos de carregamento do HBoot e do Hexagon®
 
 SEG_HBOOT                   equ 0x1000 ;; Segmento de carregamento de HBoot  
-SEG_KERNEL 	                equ 0x50   ;; Segmento para carregar o Hexagon
+SEG_KERNEL                  equ 0x50   ;; Segmento para carregar o Hexagon
 SEG_DIAG                    equ 0x60   ;; Segmento para carregamento de imagens de diagnóstico
 
 ;; Dados de arquitetura a qual deve-se carregar o Hexagon®
