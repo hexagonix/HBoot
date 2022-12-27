@@ -103,14 +103,14 @@ HBoot.Mensagens:
 .falhaOpcao:            db "[Fail]", 13, 10, 0
 .sobreHBoot:            db 13, 10, "HBoot: Hexagon(R) Boot Information - HBoot version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ")", 13, 10, 13, 10
                         db "Hexagon Boot (HBoot) is a powerful boot loader designed to boot the Hexagon(R) ", 13, 10
-                        db "kernel on a volume on your computer. HBoot has the function to perform tests", 13, 10
+                        db "kernel on a volume of your computer. HBoot has the function to perform tests", 13, 10
                         db "to verify that the computer can run Hexagon(R) and, after the tests, load the ", 13, 10
                         db "kernel, provide parameters (if any user-supplied) and start running Hexagon(R).", 0
 .pressionouF8:          db "HBoot: Here you can change Hexagon(R) boot parameters.", 13, 10, 0
 .listaModif:            db 13, 10, "You can change the parameters below:", 13, 10
-                        db " > [1]: Provide custom command line to Hexagon(R).", 13, 10
-                        db " > [2]: Get configured boot environment information.", 13, 10
-                        db " > [3]: Commit changes and start Hexagon(R).", 13, 10
+                        db " > [1]: Provide a command line to Hexagon(R).", 13, 10
+                        db " > [2]: Get information about the configured boot environment .", 13, 10
+                        db " > [3]: Commit changes and start Hexagon(R)/Hexagonix(R).", 13, 10
                         db " > [4]: More information about HBoot.", 13, 10
                         db " > [5]: Restart the device.", 13, 10
                         db " > [t,T]: Experimental and diagnostic options (modules, starting FreeDOS, etc).", 10, 13, 10, 13
