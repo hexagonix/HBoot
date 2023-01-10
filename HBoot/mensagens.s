@@ -109,7 +109,7 @@ HBoot.Mensagens:
 .pressionouF8:          db "HBoot: Here you can change Hexagon(R) boot parameters.", 13, 10, 0
 .listaModif:            db 13, 10, "You can change the parameters below:", 13, 10
                         db " > [1]: Provide a command line to Hexagon(R).", 13, 10
-                        db " > [2]: Get information about the configured boot environment .", 13, 10
+                        db " > [2]: Get information about the configured boot environment.", 13, 10
                         db " > [3]: Commit changes and start Hexagon(R)/Hexagonix(R).", 13, 10
                         db " > [4]: More information about HBoot.", 13, 10
                         db " > [5]: Restart the device.", 13, 10
