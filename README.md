@@ -32,6 +32,8 @@
         
 Este repositório contém o gerenciador de inicialização MBR do Hexagonix e o Hexagon Boot, responsável por carregar, configurar e executar o Hexagon, bem como oferecer outros recursos.
 
+> **Este arquivo não fornece informações técnicas sobre o HBoot ou o processo de inicialização do Hexagon. Para acessar a documentação técnica completa, clique [aqui](https://github.com/hexagonix/Doc/blob/main/HBoot/README.pt.md).**
+
 </div>
     
 ## Saturno
@@ -142,6 +144,8 @@ O HBoot ganhou muita complexidade desde o início de seu desenvolvimento, em 202
 <div align="justify">
         
 This repository contains the Hexagonix MBR boot manager and Hexagon Boot, which is responsible for loading, configuring, and running Hexagon, as well as offering other features.
+
+> **This file does not provide technical information about the HBoot and Hexagon boot process. To access the complete technical documentation, click [here](https://github.com/hexagonix/Doc/tree/main/HBoot/README.en.md).**
 
 </div>
     
