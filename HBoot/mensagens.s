@@ -103,13 +103,14 @@ HBoot.Mensagens:
 .pressionado:           db "[Ok]", 13, 10, 0
 .falhaOpcao:            db "[Fail]", 13, 10, 0
 .sobreHBoot:            db 13, 10, "HBoot: Hexagon(R) Boot Information - HBoot version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ")", 13, 10, 13, 10
+                        db "Copyright 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
+                        db "All rights reserved.",13, 10
+                        db "HBoot is licensed under BSD-3-Clause.", 13, 10, 13, 10
                         db "Hexagon Boot (HBoot) is a powerful boot loader designed to boot the Hexagon(R) ", 13, 10
                         db "kernel on a volume of your computer. HBoot has the function to perform tests", 13, 10
                         db "to verify that the computer can run Hexagon(R) and, after the tests, load the ", 13, 10
-                        db "kernel, provide parameters (if any user-supplied) and start running Hexagon(R).", 13, 10, 13, 10
-                        db "Copyright 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
-                        db "All rights reserved.",13, 10
-                        db "HBoot is licensed under BSD-3-Clause.", 0
+                        db "kernel, provide parameters (if any user-supplied) and start running Hexagon(R).", 0
+                        
 .pressionouF8:          db "HBoot: Here you can change Hexagon(R) boot parameters.", 13, 10, 0
 .listaModif:            db 13, 10, "You can change the parameters below:", 13, 10
                         db " > [1]: Provide a command line to Hexagon(R).", 13, 10
