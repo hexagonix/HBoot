@@ -55,6 +55,8 @@
 
 carregarHexagon:
 
+    exibir HBoot.Mensagens.carregarHexagon 
+
     call configurarInicioHexagon ;; Configura nome de imagem e localização em memória
 
     call procurarArquivo  ;; Procurar o arquivo que contêm o Kernel

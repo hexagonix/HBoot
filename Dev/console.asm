@@ -132,9 +132,10 @@ imprimirHexa:
 testarVideo:
 
     mov ax, 19
+
     int 10h ;; 320x200 com 256 cores
 
-    mov ax, 0a000h
+    mov ax, 0A000h
     mov es, ax ;; Definir DI para o segmento de memória de vídeo
     xor bl, bl ;; BL será usado para armazenar o número da figura
 
@@ -152,6 +153,7 @@ testarVideo:
 
     mov al, cl
     xor al, dl
+    
     add al, dl
     add al, bl ;; Cria uma cor
     

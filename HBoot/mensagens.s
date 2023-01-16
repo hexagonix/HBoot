@@ -71,6 +71,7 @@ HBoot.Mensagens:
 .erroMemoria:           db "HBoot: Insufficient RAM installed to run Hexagon(R).", 13, 10
                         db "Cannot continue. At least 32 Mb are required.", 13, 10
                         db "Install more memory and try again.", 0
+.carregarHexagon:       db 13, 10, 13, 10, "Loading Hexagon...", 0
 .imagemInvalida:        db 13, 10, "HBoot: The Hexagon(R) disk image appears to be corrupt and cannot", 13, 10
                         db "be used for initialization. Try reinstalling or recovering system to", 13, 10
                         db "continue.", 0
@@ -105,7 +106,10 @@ HBoot.Mensagens:
                         db "Hexagon Boot (HBoot) is a powerful boot loader designed to boot the Hexagon(R) ", 13, 10
                         db "kernel on a volume of your computer. HBoot has the function to perform tests", 13, 10
                         db "to verify that the computer can run Hexagon(R) and, after the tests, load the ", 13, 10
-                        db "kernel, provide parameters (if any user-supplied) and start running Hexagon(R).", 0
+                        db "kernel, provide parameters (if any user-supplied) and start running Hexagon(R).", 13, 10, 13, 10
+                        db "Copyright 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
+                        db "All rights reserved.",13, 10
+                        db "HBoot is licensed under BSD-3-Clause.", 0
 .pressionouF8:          db "HBoot: Here you can change Hexagon(R) boot parameters.", 13, 10, 0
 .listaModif:            db 13, 10, "You can change the parameters below:", 13, 10
                         db " > [1]: Provide a command line to Hexagon(R).", 13, 10
@@ -138,7 +142,7 @@ HBoot.Mensagens:
 .linhaComando:          db 13, 10, "Enter the command line for Hexagon(R). Pay attention to the parameters", 13, 10
                         db "supported, with a maximum of 64 characters.", 13, 10, 13, 10
                         db "> ", 0   
-.semCPUIDNome:          db "<Pentium III or generic/unknown processor>", 0    
+.semCPUIDNome:          db "<Pentium III or older/unknown processor>", 0    
 .saInvalido:            db 13, 10, "HBoot: Volume filesystem is not supported by HBoot at this time.", 13, 10, 0     
 .erroMBR:               db 13, 10, "HBoot: Error when trying to retrieve information from the MBR. Impossible to continue.", 13, 10, 0
 .informacoesDetalhadas: db 13, 10, "Detailed boot environment information:", 0
@@ -179,20 +183,20 @@ HBoot.Mensagens:
 .espacoSimples:         db " ", 0
 .hex:                   db "0x0000", 13, 10, 0
 .hexc:                  db "0123456789ABCDEF"
-.css:                   db " > Register CS: ",0
-.dss:                   db " > Register DS: ",0
-.sss:                   db " > Register SS: ",0
-.ess:                   db " > Register ES: ",0
-.gss:                   db " > Register GS: ",0
-.fss:                   db " > Register FS: ",0
-.axx:                   db " > Register AX: ",0
-.bxx:                   db " > Register BX: ",0
-.cxx:                   db " > Register CX: ",0
-.dxx:                   db " > Register DX: ",0
-.spp:                   db " > Register SP: ",0
-.bpp:                   db " > Register BP: ",0
-.sii:                   db " > Register SI: ",0
-.dii:                   db " > Register DI: ",0
+.css:                   db " > CS: ",0
+.dss:                   db " > DS: ",0
+.sss:                   db " > SS: ",0
+.ess:                   db " > ES: ",0
+.gss:                   db " > GS: ",0
+.fss:                   db " > FS: ",0
+.axx:                   db " > AX: ",0
+.bxx:                   db " > BX: ",0
+.cxx:                   db " > CX: ",0
+.dxx:                   db " > DX: ",0
+.spp:                   db " > SP: ",0
+.bpp:                   db " > BP: ",0
+.sii:                   db " > SI: ",0
+.dii:                   db " > DI: ",0
 .reinicioContinuarED:   db 13, 10
 .reinicioContinuar:     db 13, 10, "Press [ENTER] to restart the computer (required)...", 13, 10, 0
 ;
