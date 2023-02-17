@@ -71,7 +71,7 @@ MEMORIA_MINIMA              = 31744    ;; Memória mínima necessária para boot
 ;; Constantes utilizadas para alterações de parâmetros de boot
 
 FATOR_TEMPO                 = 10000    ;; Contagem de décimos de segundo
-CICLOS_PARAMETROS_INICIACAO = 30       ;; Contagem de tempo = valor x 1 décimo de segundo
+CICLOS_PARAMETROS_INICIACAO = 20       ;; Contagem de tempo = valor x 1 décimo de segundo
 
 ;; Scancode de teclas do teclado
 
