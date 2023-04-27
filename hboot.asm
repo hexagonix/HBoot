@@ -78,7 +78,7 @@
 ;;************************************************************************************
 
 ;; O HBoot funciona exclusivamente em modo real 16-bit. Sendo assim, implementa funções
-;; de controle de dispositivos e de leitura de sistema de Arquivos com código incompatível
+;; de controle de dispositivos e de leitura de sistema de arquivos com código incompatível
 ;; com o Hexagon®. Não existe código Hexagon® aqui, com implementação feita do zero
 
 use16                   
