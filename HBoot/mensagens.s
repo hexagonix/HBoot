@@ -139,8 +139,8 @@ HBoot.Mensagens:
                         db "[!] Warning: Use experimental and diagnostic functions with care!", 10, 13, 0
 .selecioneModif:        db 13, 10, "Select option: ", 0
 .modifIndisponivel:     db 13, 10, "HBoot: Invalid option. Press [ENTER] to continue boot.", 0
-.testarComponentes:     db 13, 10, "HBoot: Here you can test HBoot components as well as use", 13, 10
-                        db "functions and features under development or not in wide use.", 13, 10, 0
+.testarComponentes:     db 13, 10, "HBoot: Here you can test HBoot components as well as use functions and features", 13, 10
+                        db "under development or not in wide use.", 13, 10, 0
 .listaComponentes:      db 13, 10, "You can test some components and functions of HBoot:", 13, 10
                         db "[!] Warning! Some tests require restart!", 13, 10
                         db " > [1]: Test sound hardware and startup tone.", 13, 10
