@@ -68,7 +68,7 @@
 
 ;; Versão do HBoot
 
-versaoHBoot      equ "0.7.3"
+versaoHBoot      equ "0.7.4"
 verProtocolo     equ "Raava-CURRENT"
 arquiteturaHBoot equ 01h
 verHBoot         equ 00h

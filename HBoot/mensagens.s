@@ -75,41 +75,40 @@
 HBoot.Mensagens:
 
 .iniciando:
-db "Hexagon(R) Boot (HBoot) version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ").", 13, 10
-db "Boot loader for Hexagonix(R).", 13, 10
+db "Hexagon Boot (HBoot) version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ").", 13, 10
+db "Boot loader for Hexagonix.", 13, 10
 db "Copyright (C) 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
 db "All rights reserved.", 13, 10, 0
 .aguardarUsuario:
 db 13, 10, "Press [F8] to access HBoot settings... ",  0
 .naoEncontrado:
-db 13, 10, "HBoot: Hexagon(R) image not found on current volume.", 13, 10
+db 13, 10, "HBoot: Hexagon image not found on current volume.", 13, 10
 db "Impossible to continue the initialization protocol. Please try to perform", 13, 10
 db "a system restore or reinstallation and try to start the system again.", 13, 10, 0
 .erroDisco:
-db 13, 10, "HBoot: Disk Error! Restart your computer and try again.", 0 ;; Mensagem de erro no disco
+db 13, 10, "HBoot: Disk error! Restart your computer and try again.", 0 ;; Mensagem de erro no disco
 .erroA20:
 db "HBoot: Error enabling line A20, required for protected mode.", 13, 10
 db "Unable to continue booting. Please restart your computer.", 0
 .erroMemoria:
-db "HBoot: Insufficient RAM installed to run Hexagon(R).", 13, 10
+db "HBoot: Insufficient RAM installed to run Hexagon.", 13, 10
 db "Cannot continue. At least 32 Mb are required.", 13, 10
 db "Install more memory and try again.", 0
 .carregarHexagon:
 db 13, 10, 13, 10, "Loading Hexagon...", 0
 .imagemInvalida:
-db 13, 10, "HBoot: The Hexagon(R) disk image appears to be corrupt and cannot", 13, 10
-db "be used for initialization. Try reinstalling or recovering system to", 13, 10
-db "continue.", 0
+db 13, 10, "HBoot: The Hexagon image appears to be corrupt and cannot be used for", 13, 10
+db "initialization. Try reinstalling or recovering system to continue.", 0
 .modoDOS:
-db 13, 10, "HBoot: Load DOS system from a Hexagon(R) volume", 13, 10
+db 13, 10, "HBoot: Load DOS system from a Hexagon volume.", 13, 10
 db "HBoot: HBoot has entered DOS boot compatibility mode.", 13, 10
 db "This means you can boot some DOS system installed on same partition/volume as", 13, 10
-db "Hexagon(R), if it supports Hexagon(R) Volume File System. Please select more ", 13, 10
+db "Hexagon, if it supports Hexagon volume filesystem. Please select more", 13, 10
 db "option below pertinent to your case. The list below does not contain DOS", 13, 10
-db "installations about Hexagon(R) automatically detected on the original volume", 13, 10
-db "installation of Hexagon(R), but currently supported DOS versions by HBoot ", 13, 10
-db "protocols. Remembering that this is a function still in testing and problems ", 13, 10
-db "may occur. If you don't have a DOS system installed on the Hexagon(R) ", 13, 10
+db "installations about Hexagon automatically detected on the original volume", 13, 10
+db "installation of Hexagon, but currently supported DOS versions by HBoot", 13, 10
+db "protocols. Remembering that this is a function still in testing and problems", 13, 10
+db "may occur. If you don't have a DOS system installed on the Hexagon", 13, 10
 db "installation volume, the process will fail.", 13, 10
 db "It is worth remembering that HBoot or this function does not contain code", 13, 10
 db "derived from no other projects, open source or otherwise, so compatibility" , 13, 10
@@ -117,8 +116,8 @@ db "is not guaranteed and may not work. The initialization parameters of DOS sys
 db "may vary and some of these were taken from the documentation of the appropriate", 13, 10
 db "projects, if any.", 13, 10
 db "[!] Warning! File and executable formats are incompatible between DOS and", 13, 10
-db "Hexagon(R) systems. To return to Hexagon(R), restart your computer and wait.", 13, 10
-db " > [1]: Start FreeDOS installed on the Hexagon(R) volume.", 10, 13
+db "Hexagon systems. To return to Hexagon, restart your computer and wait.", 13, 10
+db " > [1]: Start FreeDOS installed on the Hexagon volume.", 10, 13
 db " > [2]: Return to previous menu.", 13, 10, 0
 .iniciarModulo:
 db 13, 10, "HBoot: Start HBoot module.", 13, 10
@@ -132,21 +131,21 @@ db "[Ok]", 13, 10, 0
 .falhaOpcao:
 db "[Fail]", 13, 10, 0
 .sobreHBoot:
-db 13, 10, "HBoot: Hexagon(R) Boot Information - HBoot version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ")", 13, 10, 13, 10
+db 13, 10, "HBoot: Hexagon Boot Information - HBoot version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ")", 13, 10, 13, 10
 db "Copyright 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
 db "All rights reserved.",13, 10
 db "HBoot is licensed under BSD-3-Clause.", 13, 10, 13, 10
-db "Hexagon Boot (HBoot) is a powerful boot loader designed to boot the Hexagon(R) ", 13, 10
+db "Hexagon Boot (HBoot) is a powerful boot loader designed to boot the Hexagon", 13, 10
 db "kernel on a volume of your computer. HBoot has the function to perform tests", 13, 10
-db "to verify that the computer can run Hexagon(R) and, after the tests, load the ", 13, 10
-db "kernel, provide parameters (if any user-supplied) and start running Hexagon(R).", 0               
+db "to verify that the computer can run Hexagon and, after the tests, load the ", 13, 10
+db "kernel, provide parameters (if any user-supplied) and start running Hexagon.", 0               
 .pressionouF8:
-db "HBoot: Here you can change Hexagon(R) boot parameters.", 13, 10, 0
+db "HBoot: Here you can change Hexagon boot parameters.", 13, 10, 0
 .listaModif:
 db 13, 10, "You can change the parameters below:", 13, 10
-db " > [1]: Provide a command line to Hexagon(R).", 13, 10
+db " > [1]: Provide a command line to Hexagon.", 13, 10
 db " > [2]: Get information about the configured boot environment.", 13, 10
-db " > [3]: Commit changes and start Hexagon(R)/Hexagonix(R).", 13, 10
+db " > [3]: Commit changes and start Hexagon/Hexagonix.", 13, 10
 db " > [4]: More information about HBoot.", 13, 10
 db " > [5]: Restart the device.", 13, 10
 db " > [t,T]: Experimental and diagnostic options (modules, starting FreeDOS, etc).", 10, 13, 10, 13
@@ -182,8 +181,8 @@ db "HBoot: Press [ENTER] to continue boot without changing behavior...", 13, 10,
 .prosseguirBoot:
 db "HBoot: Continuing with the boot protocol...", 13, 10, 0       
 .linhaComando:
-db 13, 10, "Enter the command line for Hexagon(R). Pay attention to the parameters", 13, 10
-db "supported, with a maximum of 64 characters.", 13, 10, 13, 10
+db 13, 10, "Enter the command line for Hexagon. Pay attention to the parameters supported,", 13, 10
+db "with a maximum of 64 characters.", 13, 10, 13, 10
 db "> ", 0   
 .semCPUIDNome:
 db "<Pentium III or older/unknown processor>", 0    
@@ -212,7 +211,7 @@ db "HBoot: Press [ENTER] to return to the previous menu...", 13, 10, 0
 db 13, 10, 13, 10, "HBoot: DOS system files not found on volume.", 13, 10
 db "HBoot: Press [ENTER] to return to the previous menu...", 13, 10, 0
 .HexagonAusente:
-db 13, 10, 13, 10, "HBoot: The file containing the Hexagon(R) was not found.", 13, 10
+db 13, 10, 13, 10, "HBoot: The file containing the Hexagon was not found.", 13, 10
 db "HBoot: Press [ENTER] to restart your computer...", 13, 10, 0
 .linhaVazia:
 db "<null>", 0
