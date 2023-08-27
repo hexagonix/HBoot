@@ -68,14 +68,14 @@
 
 initDev:
 
-    call initProc         ;; Verificar o desenvolvedor do processador
+    call initProc         ;; Verificar o fabricante do processador
 
     call verificarMemoria ;; Identificar memória instalada  
 
-    call verificarDiscos  ;; Vamos verificar as unidades presentes no computador
+    call verificarDiscos  ;; Verificar as unidades presentes no computador
 
-    call iniciarCOM1      ;; Vamos iniciar a porta serial COM1
+    call iniciarCOM1      ;; Iniciar a porta serial COM1
 
-    call iniciarParalela
+    call iniciarParalela  ;; Iniciar as portas paralelas
 
-    ret
+    ret                   ;; Vamos retornar
