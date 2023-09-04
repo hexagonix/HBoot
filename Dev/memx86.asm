@@ -11,9 +11,9 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
+;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
-;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                         Copyright (c) 2015-2023 Felipe Miguel Nery Lunkes
 ;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
@@ -122,7 +122,7 @@ verificarMemoria:
     pop edx
     
 ;; Vamos salvar aqui o total de memória recuperado. Caso seja suficiente para o processo continuar,
-;; a quantidade de RAM instalada será fornecida ao Hexagon®, em Kbytes
+;; a quantidade de RAM instalada será fornecida ao Hexagon, em Kbytes
 
 ;; Vamos comparar se a quantidade de RAM é suficiente para uma inicialização bem sucedida
 

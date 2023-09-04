@@ -11,9 +11,9 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
+;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
-;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                         Copyright (c) 2015-2023 Felipe Miguel Nery Lunkes
 ;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
@@ -68,9 +68,9 @@
 
 ;;************************************************************************************
 ;;    
-;;                                   Hexagon® Boot
+;;                                   Hexagon Boot
 ;;
-;;                   Carregador de Inicialização do Kernel Hexagon®
+;;                   Carregador de Inicialização do Kernel Hexagon
 ;;           
 ;;                  Copyright © 2020-2023 Felipe Miguel Nery Lunkes
 ;;                          Todos os direitos reservados
@@ -79,7 +79,7 @@
 
 ;; O HBoot funciona exclusivamente em modo real 16-bit. Sendo assim, implementa funções
 ;; de controle de dispositivos e de leitura de sistema de arquivos com código incompatível
-;; com o Hexagon®. Não existe código Hexagon® aqui, com implementação feita do zero
+;; com o Hexagon. Não existe código Hexagon aqui, com implementação feita do zero
 
 use16                   
 
@@ -147,7 +147,7 @@ inicioHBoot:
     
     sti                ;; Habilitar interrupções
 
-;; Salvar entedereço LBA da partição, fornecido pelo Saturno®
+;; Salvar entedereço LBA da partição, fornecido pelo Saturno
 
     push esi ;; Aqui temos o endereço do BPB
     
@@ -193,23 +193,23 @@ analisarPC:
 
 ;;************************************************************************************
 
-;; Parâmetros que podem ser passados para o Hexagon®
+;; Parâmetros que podem ser passados para o Hexagon
 
 HBoot.Parametros:
 
 .verbose:           db 0
 .forcarMemoria:     db 0
 .forcarDisco:       db 0
-.bufLeitura:        times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon®  
+.bufLeitura:        times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon  
 .parada:            db 0          ;; Ponto de parada da exibição do conteúdo
 
-;; Nome e informações de arquivo necessárias para o carregamento do Hexagon®
+;; Nome e informações de arquivo necessárias para o carregamento do Hexagon
 
 HBoot.Arquivos:
 
 .nomeHBoot:         db "HBOOT      " ;; Nome de arquivo do HBoot em disco
 .nomeImagem:        db "           " ;; Aqui será salvo o nome do arquivo que deverá ser carregado
-.imagemHexagon:     db "HEXAGON    " ;; Nome do arquivo que contém o Kernel Hexagon®, a ser carregado
+.imagemHexagon:     db "HEXAGON    " ;; Nome do arquivo que contém o Kernel Hexagon, a ser carregado
 .parada:            db 0             ;; Ponto de parada da exibição do conteúdo
 .imagemModulo:      times 64 db ' '  ;; Por segurança, um buffer maior
 .imagemInvalida:    db 0             ;; A imagem é válida?

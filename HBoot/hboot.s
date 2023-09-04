@@ -11,9 +11,9 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
+;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
-;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                         Copyright (c) 2015-2023 Felipe Miguel Nery Lunkes
 ;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
@@ -66,13 +66,13 @@
 ;;
 ;; $HexagonixOS$
 
-;; Segmentos de carregamento do HBoot e do Hexagon®
+;; Segmentos de carregamento do HBoot e do Hexagon
 
 SEG_HBOOT                   equ 0x1000 ;; Segmento de carregamento de HBoot  
 SEG_KERNEL                  equ 0x50   ;; Segmento para carregar o Hexagon
 SEG_DIAG                    equ 0x60   ;; Segmento para carregamento de imagens de diagnóstico
 
-;; Dados de arquitetura a qual deve-se carregar o Hexagon®
+;; Dados de arquitetura a qual deve-se carregar o Hexagon
 
 ARQUITETURA                 = 01h      ;; Arquitetura do HBoot e a qual se destina o kernel
 
@@ -80,8 +80,8 @@ ARQUITETURA                 = 01h      ;; Arquitetura do HBoot e a qual se desti
 
 CABECALHO_HAPP              = 026h     ;; Versão 2.0 da definição HAPP
 
-;; Memória mínima para o boot do Hexagon®. Vale lembrar que os requisitos são variáveis a depender
-;; da versão do Hexagon®, sendo necessária a adaptação à necessidade mínima de memória.
+;; Memória mínima para o boot do Hexagon. Vale lembrar que os requisitos são variáveis a depender
+;; da versão do Hexagon, sendo necessária a adaptação à necessidade mínima de memória.
 
 MEMORIA_MINIMA              = 31744    ;; Memória mínima necessária para boot seguro
 

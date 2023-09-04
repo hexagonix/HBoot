@@ -11,9 +11,9 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
+;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
-;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                         Copyright (c) 2015-2023 Felipe Miguel Nery Lunkes
 ;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-;; Caso nenhuma interação tenha acontecido, devemos então procurar e iniciar o Hexagon®
+;; Caso nenhuma interação tenha acontecido, devemos então procurar e iniciar o Hexagon
 ;; Caso alguma interação tenha ocorrido mas o usuário selecionou continuar a inicialização,
 ;; também devemos continuar com o protocolo de boot 
 
@@ -78,11 +78,11 @@ carregarHexagon:
 
     call procurarArquivo  ;; Procurar o arquivo que contêm o Kernel
 
-    jmp executarKernel    ;; Executar o Hexagon®
+    jmp executarKernel    ;; Executar o Hexagon
 
 ;;************************************************************************************
 
-;; Função que transfere a execução para o Hexagon®, passando parâmetros pelos 
+;; Função que transfere a execução para o Hexagon, passando parâmetros pelos 
 ;; registradores, como descrito a seguir:
 ;;
 ;; EBP - Ponteiro para o BIOS Parameter Block do volume de boot
@@ -98,8 +98,8 @@ executarKernel:
     mov bl, byte[idDrive]           ;; Drive utilizado para a inicialização
     mov cx, word[memoriaDisponivel] ;; Memória RAM instalada
 
-;; O Hexagon® apresenta o cabeçalho HAPP, que será padrão em todos os executáveis no
-;; formato Hexagon®. Este cabeçalho apresenta 38 bytes (0x26), então devemos pulá-lo. Os 
+;; O Hexagon apresenta o cabeçalho HAPP, que será padrão em todos os executáveis no
+;; formato Hexagon. Este cabeçalho apresenta 38 bytes (0x26), então devemos pulá-lo. Os 
 ;; dados contidos no cabeçalho serão futuramente validados, se necessário
 
     jmp SEG_KERNEL:CABECALHO_HAPP   ;; Configurar CS:IP e executar o Kernel
