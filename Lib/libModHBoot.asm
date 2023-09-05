@@ -79,7 +79,7 @@ SEG_MODULOS      equ 0x2000 ;; Segmento para carregamento de imagens de diagnós
 HBoot.modHBoot.Mensagens:
 
 .retornoMod: db 13, 10, "HBoot: Voce retornou de um modulo HBoot finalizado.", 13, 10
-             db "HBoot: E recomendado reiniciar o computador antes de iniciar o Hexagon(R).", 13, 10
+             db "HBoot: E recomendado reiniciar o computador antes de iniciar o Hexagon.", 13, 10
              db "HBoot: Pressione [ENTER] para continuar...", 13, 10, 0
 
 ;;************************************************************************************

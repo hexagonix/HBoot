@@ -119,7 +119,7 @@ configurarInicioHexagon:
 
     mov word[HBoot.Arquivos.segmentoFinal], SEG_KERNEL
 
-;; Vamos marcar para modo de boot do Hexagon(R)
+;; Vamos marcar para modo de boot do Hexagon
 
     mov byte[HBoot.Controle.modoBoot], 00h 
 
