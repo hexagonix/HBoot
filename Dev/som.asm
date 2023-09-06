@@ -109,4 +109,3 @@ desligarsom:
     popa
     
     ret
-    

@@ -1,15 +1,15 @@
 ;;*************************************************************************************************
 ;;
-;; 88                                                                                88              
-;; 88                                                                                ""              
-;; 88                                                                                                
-;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8  
-;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'   
-;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(     
-;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,   
-;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8  
-;;                                               aa,    ,88                                         
-;;                                                "P8bbdP"       
+;; 88                                                                                88
+;; 88                                                                                ""
+;; 88
+;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8
+;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'
+;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(
+;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,
+;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8
+;;                                               aa,    ,88
+;;                                                "P8bbdP"
 ;;
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
@@ -19,7 +19,7 @@
 ;;*************************************************************************************************
 ;;
 ;; Português:
-;; 
+;;
 ;; O Hexagonix e seus componentes são licenciados sob licença BSD-3-Clause. Leia abaixo
 ;; a licença que governa este arquivo e verifique a licença de cada repositório para
 ;; obter mais informações sobre seus direitos e obrigações ao utilizar e reutilizar
@@ -38,10 +38,10 @@
 ;;
 ;; Copyright (c) 2015-2023, Felipe Miguel Nery Lunkes
 ;; All rights reserved.
-;; 
+;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright notice, this
 ;;    list of conditions and the following disclaimer.
 ;;
@@ -52,7 +52,7 @@
 ;; 3. Neither the name of the copyright holder nor the names of its
 ;;    contributors may be used to endorse or promote products derived from
 ;;    this software without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -70,7 +70,7 @@
 ;;
 ;; Exibe uma mensagem e, após interação do usuário, reinicia o computador
 
-use16   
+use16
 
 ;; O Hboot e módulos devem apresentar um cabeçalho especial de imagem HBoot
 ;; São 10 bytes, com assinatura (número mágico), arquitetura alvo, versão,
@@ -86,24 +86,24 @@ cabecalhoHBoot:
 
 ;;************************************************************************************
 
-;; Início do módulo: ?x????:10h 
+;; Início do módulo: ?x????:10h
 
-inicioModulo:  
+inicioModulo:
 
-    push dx 
+    push dx
 
-;; Primeiro devemos configurar e definir os registradores de segmento. O segmento é fornecido 
+;; Primeiro devemos configurar e definir os registradores de segmento. O segmento é fornecido
 ;; juntamente com CS, então devemos passar o valor do segmento para AX e então para DS e ES, que
 ;; não podem ser acessados diretamente em uma cópia a partir de CS.
 
-    mov ax, cs           
-    mov ds, ax           
-    mov es, ax                                         
+    mov ax, cs
+    mov ds, ax
+    mov es, ax
 
 ;; A função deste módulo é exibir uma mensagem previamente definida e então reiniciar o computador.
 ;; Outros módulos podem implementar diversas outras funcionalidades, incluindo ser um terceiro estágio
-;; de boot para encontrar partições com sistemas de arquivos não suportados pelo HBoot e carregar e 
-;; executar um kernel obtido de lá, onde o HBoot atuaria apenas sendo utilizado no processo de boot 
+;; de boot para encontrar partições com sistemas de arquivos não suportados pelo HBoot e carregar e
+;; executar um kernel obtido de lá, onde o HBoot atuaria apenas sendo utilizado no processo de boot
 ;; inicial e configuração de periféricos.
 
     mov si, Spartan.mensagem ;; Vamos fornecer a mensagem
@@ -114,12 +114,12 @@ inicioModulo:
 
     int 16h ;; Existe uma função na interrupção do BIOS responsável pela manipulação de teclado
 
-    pop dx 
+    pop dx
 
     jmp 0x1000:06h ;; Agora, vamos reiniciar o computador após o pressionamento de qualquer tecla
 
 ;; Também é possível pular para o ponto de entrada do HBoot, utilizando o código abaixo. Entretanto,
-;; isso só deve ser feito em casos especiais e quando realmente for bastante necessário. 
+;; isso só deve ser feito em casos especiais e quando realmente for bastante necessário.
 
     ;; jmp 0x1000:06 ;; Retornar o controle diretamente ao HBoot via segmento:deslocamento
 
@@ -131,17 +131,17 @@ inicioModulo:
 imprimir:
 
     lodsb       ;; mov AL, [SI] & inc SI
-    
+
     or al, al   ;; cmp AL, 0
     jz .pronto
-    
+
     mov ah, 0Eh
-    
+
     int 10h     ;; Enviar [SI] para a tela
-    
+
     jmp imprimir
-    
-.pronto: 
+
+.pronto:
 
     ret
 

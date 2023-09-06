@@ -1,15 +1,15 @@
 ;;*************************************************************************************************
 ;;
-;; 88                                                                                88              
-;; 88                                                                                ""              
-;; 88                                                                                                
-;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8  
-;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'   
-;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(     
-;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,   
-;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8  
-;;                                               aa,    ,88                                         
-;;                                                "P8bbdP"       
+;; 88                                                                                88
+;; 88                                                                                ""
+;; 88
+;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8
+;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'
+;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(
+;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,
+;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8
+;;                                               aa,    ,88
+;;                                                "P8bbdP"
 ;;
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
@@ -19,7 +19,7 @@
 ;;*************************************************************************************************
 ;;
 ;; Português:
-;; 
+;;
 ;; O Hexagonix e seus componentes são licenciados sob licença BSD-3-Clause. Leia abaixo
 ;; a licença que governa este arquivo e verifique a licença de cada repositório para
 ;; obter mais informações sobre seus direitos e obrigações ao utilizar e reutilizar
@@ -38,10 +38,10 @@
 ;;
 ;; Copyright (c) 2015-2023, Felipe Miguel Nery Lunkes
 ;; All rights reserved.
-;; 
+;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright notice, this
 ;;    list of conditions and the following disclaimer.
 ;;
@@ -52,7 +52,7 @@
 ;; 3. Neither the name of the copyright holder nor the names of its
 ;;    contributors may be used to endorse or promote products derived from
 ;;    this software without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -67,24 +67,24 @@
 ;; $HexagonixOS$
 
 ;;************************************************************************************
-;;    
+;;
 ;;                                   Hexagon Boot
 ;;
 ;;                   Carregador de Inicialização do Kernel Hexagon
-;;           
+;;
 ;;                  Copyright © 2020-2023 Felipe Miguel Nery Lunkes
 ;;                          Todos os direitos reservados
-;;                                  
+;;
 ;;************************************************************************************
 
 ;; O HBoot funciona exclusivamente em modo real 16-bit. Sendo assim, implementa funções
 ;; de controle de dispositivos e de leitura de sistema de arquivos com código incompatível
 ;; com o Hexagon. Não existe código Hexagon aqui, com implementação feita do zero
 
-use16                   
+use16
 
 ;; O Hboot deve apresentar um cabeçalho especial de imagem HBoot, esperada pelo primeiro
-;; estágio de inicialização. São 6 bytes, com assinatura (número mágico) e arquitetura 
+;; estágio de inicialização. São 6 bytes, com assinatura (número mágico) e arquitetura
 ;; alvo
 
 ;; Vamos incluir o arquivo de versão
@@ -116,7 +116,7 @@ include "Lib/macros.s"
 
 include "FS/FS.asm"
 
-;; Agora incluir todo o código que lida diretamente com dispositivos 
+;; Agora incluir todo o código que lida diretamente com dispositivos
 
 include "Dev/dev.asm"
 
@@ -140,28 +140,28 @@ inicioHBoot:
 ;; Configurar pilha e ponteiro
 
     cli                ;; Desativar interrupções
-    
+
     mov ax, SEG_HBOOT
     mov ss, ax
     mov sp, 0
-    
+
     sti                ;; Habilitar interrupções
 
 ;; Salvar entedereço LBA da partição, fornecido pelo Saturno
 
     push esi ;; Aqui temos o endereço do BPB
-    
+
     mov dword[enderecoLBAParticao], ebp ;; Salvar aqui o LBA da partição
     mov dword[enderecoBPB], esi         ;; Salvar o BPB
-    
+
 ;; Carregar registradores de segmento para a nova posição
-     
-    clc 
+
+    clc
 
     mov ax, SEG_HBOOT
     mov ds, ax
     mov es, ax
-    
+
     sti
 
     mov byte[idDrive], dl ;; Salvar número do drive
@@ -173,9 +173,9 @@ boasVindasHBoot:
     call limparTela       ;; Limpar a tela
 
     call tomInicializacao ;; Tocar tom de inicialização
- 
+
     mov si, HBoot.Mensagens.iniciando
-    
+
     call imprimir
 
 analisarPC:
@@ -183,11 +183,11 @@ analisarPC:
     call initDev
 
     call definirSistemaArquivos
-    
+
 ;; Agora iremos verificar se o usuário deseja alterar o comportamento do processo
 ;; de inicialização, inclusive passando parâmetros para o núcleo, por exemplo
 
-    call verificarInteracaoUsuario  
+    call verificarInteracaoUsuario
 
     jmp carregarHexagon
 
@@ -200,7 +200,7 @@ HBoot.Parametros:
 .verbose:           db 0
 .forcarMemoria:     db 0
 .forcarDisco:       db 0
-.bufLeitura:        times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon  
+.bufLeitura:        times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon
 .parada:            db 0          ;; Ponto de parada da exibição do conteúdo
 
 ;; Nome e informações de arquivo necessárias para o carregamento do Hexagon
@@ -223,4 +223,4 @@ HBoot.Controle:
 
 ;; O arquivo será carregado no espaço abaixo
 
-bufferDeDisco: 
+bufferDeDisco:
