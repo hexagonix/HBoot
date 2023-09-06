@@ -100,11 +100,11 @@ use16
 
 cabecalhoHBoot:
 
-.assinatura:  db "HBOOT"       ;; Assinatura, 5 bytes
-.arquitetura: db 01h           ;; Arquitetura (i386), 1 byte
-.versaoMod:   db 00h           ;; Versão
-.subverMod:   db 02h           ;; Subversão
-.nomeMod:     db "x86Det  "    ;; Nome do módulo
+.assinatura:  db "HBOOT"    ;; Assinatura, 5 bytes
+.arquitetura: db 01h        ;; Arquitetura (i386), 1 byte
+.versaoMod:   db 00h        ;; Versão
+.subverMod:   db 02h        ;; Subversão
+.nomeMod:     db "x86Det  " ;; Nome do módulo
 
 ;;************************************************************************************
 
@@ -475,7 +475,7 @@ verificarMemoria:
 
     xor eax, eax
 
-    jmp .fim         ;; Erro
+    jmp .fim ;; Erro
 
 .quantificar:
 
@@ -496,13 +496,13 @@ verificarMemoria:
 
     add eax, 100h
 
-    shl eax, 16      ;; EAX = EAX * 65536
+    shl eax, 16 ;; EAX = EAX * 65536
 
     jmp .fim
 
 .abaixoDe16MB:
 
-    shl eax, 10      ;; EAX = EAX * 1024
+    shl eax, 10 ;; EAX = EAX * 1024
 
 .fim:
 
@@ -576,14 +576,14 @@ verificarMemoria:
 
 imprimir:
 
-    lodsb       ;; mov AL, [SI] & inc SI
+    lodsb ;; mov AL, [SI] & inc SI
 
-    or al, al   ;; cmp AL, 0
+    or al, al ;; cmp AL, 0
     jz .pronto
 
     mov ah, 0Eh
 
-    int 10h     ;; Enviar [SI] para a tela
+    int 10h ;; Enviar [SI] para a tela
 
     jmp imprimir
 
@@ -643,7 +643,7 @@ lerTeclado:
 
     jmp .loop
 
-.apagar:          ;; Apagar um caracter
+.apagar: ;; Apagar um caracter
 
     cmp cl, 0
     je .loop
@@ -669,7 +669,7 @@ lerTeclado:
 
     jmp .loop
 
-.pronto:          ;; Tarefa ou rotina concluida
+.pronto: ;; Tarefa ou rotina concluida
 
     mov al, 0
 
@@ -717,27 +717,27 @@ paraMaiusculo: ;; Esta função requer um ponteiro para a string, em DS:SI
 
     pusha
 
-    mov bx, 0xFFFF                      ;; Início em -1, dentro da String
+    mov bx, 0xFFFF ;; Início em -1, dentro da String
 
 paraMaiusculoLoop:
 
     inc bx
 
-    mov al, byte [ds:si+bx]             ;; Em al, o caracter atual
+    mov al, byte [ds:si+bx] ;; Em al, o caracter atual
 
-    cmp al, 0                           ;; Caso no fim da String
-    je paraMaiusculoPronto          ;; Está tudo pronto
+    cmp al, 0 ;; Caso no fim da String
+    je paraMaiusculoPronto ;; Está tudo pronto
 
     cmp al, 'a'
-    jb paraMaiusculoLoop              ;; Código ASCII muito baixo para ser minúsculo
+    jb paraMaiusculoLoop ;; Código ASCII muito baixo para ser minúsculo
 
     cmp al, 'z'
-    ja paraMaiusculoLoop              ;; Código ASCII muito alto para ser minúsculo
+    ja paraMaiusculoLoop ;; Código ASCII muito alto para ser minúsculo
 
     sub al, 'a'-'A'
-    mov byte [ds:si+bx], al             ;; Subtraia e transformar em maiúsculo
+    mov byte [ds:si+bx], al ;; Subtraia e transformar em maiúsculo
 
-    jmp paraMaiusculoLoop             ;; Próximo caractere
+    jmp paraMaiusculoLoop ;; Próximo caractere
 
 paraMaiusculoPronto:
 
@@ -874,29 +874,53 @@ VERSAO equ "0.2 (05/06/2022)"
 
 x86:
 
-.iniciando:              db "x86-Detect para HBoot versao ", VERSAO, 10, 13, 0
-.direitos:               db "Copyright (C) 2022 Felipe Miguel Nery Lunkes. Todos os direitos reservados.", 10, 13, 0
-.iniciandoIdentificacao: db 10, 13, "[!] Iniciando a identificacao e inicializacao do hardware instalado...", 0
-.identificandoDiscos:    db 10, 13, " [>] Unidades de disco online (nomes Hexagon): ", 0
-.terminar:               db 10, 13, "[!] O x86-Detect terminou de fazer o diagnostico.", 10, 13, 0
-.dsq0:                   db "dsq0", 0
-.dsq1:                   db "dsq1", 0
-.hd0:                    db "hd0", 0
-.hd1:                    db "hd1", 0
-.espaco:                 db " ", 0
-.virgula:                db ", ", 0
-.ponto:                  db ".", 0
-.fornecedorProc:         db 10, 13, " [>] Fabricante do processador instalado: ", 0
-.nomeProcessador:        db 10, 13, " [>] Nome do processador instalado: ", 0
-.vendedorx86: times 13   db 0
-.nomex86:                db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
-.semCPUID:               db "processador sem suporte a CPUID.", 0
-.memoriaInsuficiente:    db " [impossivel executar o Hexagon].", 0
-.memoriaSuficiente:      db " [compativel com Hexagon].", 0
-.resultadoAvaliacao:     db 10, 13, "Resultado da avaliacao de desempenho e compatibilidade:", 10, 13, 0
-.resultadoNegativo:      db 10, 13, "[!] O sistema nao podera ser iniciado nesta configuracao.", 0
-.resultadoPositivo:      db 10, 13, "[:D] O Hexagonix pode ser iniciado neste dispositivo/configuracao.", 0
-.memoriaDisponivel:      db 10, 13, " [>] Memoria total instalada: ", 0
-.megabytes:              db " megabytes", 0
-.reinicioNecessario:     db 10, 13, 10, 13, "[!] Reinicio necessario. Pressione qualquer tecla para continuar...", 0
-.aprovadoTestes:         db 0
+.iniciando:
+db "x86-Detect para HBoot versao ", VERSAO, 10, 13, 0
+.direitos:
+db "Copyright (C) 2022 Felipe Miguel Nery Lunkes. Todos os direitos reservados.", 10, 13, 0
+.iniciandoIdentificacao:
+db 10, 13, "[!] Iniciando a identificacao e inicializacao do hardware instalado...", 0
+.identificandoDiscos:
+db 10, 13, " [>] Unidades de disco online (nomes Hexagon): ", 0
+.terminar:
+db 10, 13, "[!] O x86-Detect terminou de fazer o diagnostico.", 10, 13, 0
+.dsq0:
+db "dsq0", 0
+.dsq1:
+db "dsq1", 0
+.hd0:
+db "hd0", 0
+.hd1:
+db "hd1", 0
+.espaco:
+db " ", 0
+.virgula:
+db ", ", 0
+.ponto:
+db ".", 0
+.fornecedorProc:
+db 10, 13, " [>] Fabricante do processador instalado: ", 0
+.nomeProcessador:
+db 10, 13, " [>] Nome do processador instalado: ", 0
+.vendedorx86: times 13 db 0
+.nomex86:
+db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
+.semCPUID:
+db "processador sem suporte a CPUID.", 0
+.memoriaInsuficiente:
+db " [impossivel executar o Hexagon].", 0
+.memoriaSuficiente:
+db " [compativel com Hexagon].", 0
+.resultadoAvaliacao:
+db 10, 13, "Resultado da avaliacao de desempenho e compatibilidade:", 10, 13, 0
+.resultadoNegativo:
+db 10, 13, "[!] O sistema nao podera ser iniciado nesta configuracao.", 0
+.resultadoPositivo:
+db 10, 13, "[:D] O Hexagonix pode ser iniciado neste dispositivo/configuracao.", 0
+.memoriaDisponivel:
+db 10, 13, " [>] Memoria total instalada: ", 0
+.megabytes:
+db " megabytes", 0
+.reinicioNecessario:
+db 10, 13, 10, 13, "[!] Reinicio necessario. Pressione qualquer tecla para continuar...", 0
+.aprovadoTestes: db 0

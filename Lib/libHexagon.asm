@@ -76,9 +76,9 @@ carregarHexagon:
 
     call configurarInicioHexagon ;; Configura nome de imagem e localização em memória
 
-    call procurarArquivo  ;; Procurar o arquivo que contêm o Kernel
+    call procurarArquivo ;; Procurar o arquivo que contêm o Kernel
 
-    jmp executarKernel    ;; Executar o Hexagon
+    jmp executarKernel ;; Executar o Hexagon
 
 ;;************************************************************************************
 
@@ -93,16 +93,16 @@ carregarHexagon:
 
 executarKernel:
 
-    pop ebp                         ;; Ponteiro para o BPB
+    pop ebp ;; Ponteiro para o BPB
     mov esi, HBoot.Parametros.bufLeitura + (SEG_HBOOT * 16) ;; Apontar ESI para parâmetros
-    mov bl, byte[idDrive]           ;; Drive utilizado para a inicialização
+    mov bl, byte[idDrive] ;; Drive utilizado para a inicialização
     mov cx, word[memoriaDisponivel] ;; Memória RAM instalada
 
 ;; O Hexagon apresenta o cabeçalho HAPP, que será padrão em todos os executáveis no
 ;; formato Hexagon. Este cabeçalho apresenta 38 bytes (0x26), então devemos pulá-lo. Os
 ;; dados contidos no cabeçalho serão futuramente validados, se necessário
 
-    jmp SEG_KERNEL:CABECALHO_HAPP   ;; Configurar CS:IP e executar o Kernel
+    jmp SEG_KERNEL:CABECALHO_HAPP ;; Configurar CS:IP e executar o Kernel
 
 ;;************************************************************************************
 

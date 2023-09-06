@@ -79,7 +79,7 @@ initProc:
 
     call identificarNomeProcx86
 
-    call habilitarA20                ;; Tentar habilitar prematuramente linha A20
+    call habilitarA20 ;; Tentar habilitar prematuramente linha A20
 
     ret
 
@@ -187,9 +187,9 @@ habilitarA20:
 
     clc 
 
-    mov ax, 0x2401  ;; Solicitar a ativação do A20
+    mov ax, 0x2401 ;; Solicitar a ativação do A20
         
-    int 15h         ;; Interrupção do BIOS
+    int 15h ;; Interrupção do BIOS
 
     jc .erroA20
 

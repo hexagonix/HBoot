@@ -78,4 +78,4 @@ initDev:
 
     call iniciarParalela  ;; Iniciar as portas paralelas
 
-    ret                   ;; Vamos retornar
+    ret ;; Vamos retornar

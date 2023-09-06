@@ -97,14 +97,14 @@ limparTela:
 
 imprimir:
 
-    lodsb       ;; mov AL, [SI] & inc SI
+    lodsb ;; mov AL, [SI] & inc SI
     
-    or al, al   ;; cmp AL, 0
+    or al, al ;; cmp AL, 0
     jz .pronto
     
     mov ah, 0Eh
     
-    int 10h     ;; Enviar [SI] para a tela
+    int 10h ;; Enviar [SI] para a tela
     
     jmp imprimir
     
@@ -174,7 +174,7 @@ testarVideo:
     add al, dl
     add al, bl ;; Cria uma cor
     
-    stosb      ;; Escreve um pixel
+    stosb ;; Escreve um pixel
     
     inc cx
 
@@ -188,7 +188,7 @@ testarVideo:
     cmp dx, 200
     jne .a
 
-    mov ah, 1  ;; Checa se alguma tecla foi pressionada
+    mov ah, 1 ;; Checa se alguma tecla foi pressionada
     
     int 16h
 

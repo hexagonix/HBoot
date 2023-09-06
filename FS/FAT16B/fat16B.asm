@@ -87,11 +87,11 @@ procurarArquivoFAT16B:
 ;; Tamanho  = (entradasRaiz * 32) / bytesPorSetor
 
     mov ax, word[entradasRaiz]
-    shl ax, 5           ;; Multiplicar por 32
+    shl ax, 5 ;; Multiplicar por 32
     mov bx, word[bytesPorSetor]
-    xor dx, dx          ;; DX = 0
+    xor dx, dx ;; DX = 0
     
-    div bx              ;; AX = AX / BX
+    div bx ;; AX = AX / BX
     
     mov word[tamanhoRaiz], ax ;; Salvar tamanho do diretório raiz
 
@@ -102,9 +102,9 @@ procurarArquivoFAT16B:
 
     mov ax, word[setoresPorFAT]
     movzx bx, byte[totalFATs]
-    xor dx, dx                ;; DX = 0
+    xor dx, dx ;; DX = 0
     
-    mul bx                    ;; AX = AX * BX
+    mul bx ;; AX = AX * BX
     
     mov word[tamanhoFATs], ax ;; Salvar tamanho das FATs
 
@@ -149,24 +149,24 @@ procurarArquivoFAT16B:
     mov cx, word[entradasRaiz]
     mov bx, bufferDeDisco
 
-    cld                 ;; Limpar direção
+    cld ;; Limpar direção
     
 loopEncontrarArquivoFAT16B:
 
 ;; Encontrar o nome de 11 caracteres do arquivo em uma entrada
 
-    xchg cx, dx         ;; Salvar contador de loop
+    xchg cx, dx ;; Salvar contador de loop
     mov cx, 11
     mov si, HBoot.Arquivos.nomeImagem
     mov di, bx
     
-    rep cmpsb           ;; Comparar (ECX) caracteres entre DI e SI
+    rep cmpsb ;; Comparar (ECX) caracteres entre DI e SI
     
     je .arquivoEncontrado
 
-    add bx, 32          ;; Ir para a próxima entrada do diretório raiz (+ 32 bytes)
+    add bx, 32 ;; Ir para a próxima entrada do diretório raiz (+ 32 bytes)
     
-    xchg cx, dx         ;; Restaurar contador
+    xchg cx, dx ;; Restaurar contador
     
     loop loopEncontrarArquivoFAT16B
 
@@ -203,13 +203,13 @@ loopEncontrarArquivoFAT16B:
     movzx ebx, word[bytesPorSetor]
     xor edx, edx
         
-    mul ebx                 ;; AX = AX * BX 
+    mul ebx ;; AX = AX * BX 
     
-    mov ebp, eax            ;; Salvar tamanho do cluster
+    mov ebp, eax ;; Salvar tamanho do cluster
     
-    mov ax, word[HBoot.Arquivos.segmentoFinal]  ;; Segmento de carregamento do arquivo
+    mov ax, word[HBoot.Arquivos.segmentoFinal] ;; Segmento de carregamento do arquivo
     mov es, ax
-    mov edi, 0              ;; Buffer para carregar o Kernel
+    mov edi, 0 ;; Buffer para carregar o Kernel
 
 ;; Encontrar cluster e carregar cadeia de clusters
 
@@ -226,9 +226,9 @@ loopCarregarClustersFAT16B:
     sub esi, 2
 
     movzx ax, byte[setoresPorCluster]       
-    xor edx, edx         ;; DX = 0
+    xor edx, edx ;; DX = 0
     
-    mul esi              ;; (cluster - 2) * setoresPorCluster
+    mul esi ;; (cluster - 2) * setoresPorCluster
     
     mov esi, eax    
 
@@ -241,20 +241,20 @@ loopCarregarClustersFAT16B:
 ;; Encontrar próximo setor na tabela FAT
 
     mov bx, word[cluster]
-    shl bx, 1                   ;; BX * 2 (2 bytes na entrada)
+    shl bx, 1 ;; BX * 2 (2 bytes na entrada)
     
-    add bx, bufferDeDisco       ;; Localização da FAT
+    add bx, bufferDeDisco ;; Localização da FAT
 
-    mov si, word[bx]            ;; SI contêm o próximo cluster
+    mov si, word[bx] ;; SI contêm o próximo cluster
 
-    mov word[cluster], si       ;; Salvar isso
+    mov word[cluster], si ;; Salvar isso
 
-    cmp si, 0xFFF8              ;; 0xFFF8 é fim de arquivo (EOF)
+    cmp si, 0xFFF8 ;; 0xFFF8 é fim de arquivo (EOF)
     jae .finalizado
 
 ;; Adicionar espaço para o próximo cluster
     
-    add edi, ebp                ;; EBP tem o tamanho do cluster
+    add edi, ebp ;; EBP tem o tamanho do cluster
     
     jmp loopCarregarClustersFAT16B
 

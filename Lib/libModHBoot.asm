@@ -115,7 +115,7 @@ carregarModulo:
 
     jc .gerenciarErroArquivo
 
-    mov dl, byte[idDrive]            ;; Drive utilizado para a inicialização
+    mov dl, byte[idDrive] ;; Drive utilizado para a inicialização
     mov ebp, dword[enderecoBPB + (SEG_HBOOT * 16)] ;; Ponteiro para o BPB
     mov esi, dword[enderecoLBAParticao + (SEG_HBOOT * 16)] ;; Ponteiro para a partição
 

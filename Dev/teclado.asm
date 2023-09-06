@@ -96,7 +96,7 @@ lerTeclado:
 
     jmp .loop
 
-.apagar:          ;; Usa o Driver de Teclado Principal para apagar um caracter
+.apagar: ;; Usa o Driver de Teclado Principal para apagar um caracter
 
     cmp cl, 0
     je .loop
@@ -122,7 +122,7 @@ lerTeclado:
 
     jmp .loop
 
-.pronto:          ;; Tarefa ou rotina concluida
+.pronto: ;; Tarefa ou rotina concluida
 
     mov al, 0
 

@@ -122,9 +122,9 @@ carregarSetor:
 
     mov dl, byte[idDrive]
     mov si, HBoot.Disco
-    mov ah, 0x42        ;; Função de leitura
+    mov ah, 0x42 ;; Função de leitura
     
-    int 13h             ;; Serviços de disco do BIOS
+    int 13h ;; Serviços de disco do BIOS
     
     jnc .concluido          
 

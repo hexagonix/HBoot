@@ -150,8 +150,7 @@ verificarInteracaoUsuario:
     je .testarComponentes
 
 
-;; Se nenhuma tecla válida foi pressionada, retornar à escolha de
-;; teclas
+;; Se nenhuma tecla válida foi pressionada, retornar à escolha de teclas
 
     jmp .pontoControlePressionouF8
 
@@ -425,7 +424,6 @@ verificarInteracaoUsuario:
     exibir HBoot.Mensagens.FAT16LBA
 
     jmp .continuarSistemaArquivos
-
 
 .continuarSistemaArquivos:
 

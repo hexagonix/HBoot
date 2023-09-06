@@ -78,11 +78,11 @@ use16
 
 cabecalhoHBoot:
 
-.assinatura:  db "HBOOT"       ;; Assinatura, 5 bytes
-.arquitetura: db 01h           ;; Arquitetura (i386), 1 byte
-.versaoMod:   db 01h           ;; Versão
-.subverMod:   db 00h           ;; Subversão
-.nomeMod:     db "SPARTAN "    ;; Nome do módulo
+.assinatura:  db "HBOOT"    ;; Assinatura, 5 bytes
+.arquitetura: db 01h        ;; Arquitetura (i386), 1 byte
+.versaoMod:   db 01h        ;; Versão
+.subverMod:   db 00h        ;; Subversão
+.nomeMod:     db "SPARTAN " ;; Nome do módulo
 
 ;;************************************************************************************
 
@@ -130,14 +130,14 @@ inicioModulo:
 
 imprimir:
 
-    lodsb       ;; mov AL, [SI] & inc SI
+    lodsb ;; mov AL, [SI] & inc SI
 
-    or al, al   ;; cmp AL, 0
+    or al, al ;; cmp AL, 0
     jz .pronto
 
     mov ah, 0Eh
 
-    int 10h     ;; Enviar [SI] para a tela
+    int 10h ;; Enviar [SI] para a tela
 
     jmp imprimir
 
@@ -152,5 +152,6 @@ imprimir:
 
 Spartan:
 
-.mensagem: db 13, 10, 13, 10, "Modelo de implementacao de modulo HBoot iniciado com sucesso.", 13, 10
-           db "Pressione qualquer tecla para retornar ao HBoot...", 13, 10, 0
+.mensagem:
+db 13, 10, 13, 10, "Modelo de implementacao de modulo HBoot iniciado com sucesso.", 13, 10
+db "Pressione qualquer tecla para retornar ao HBoot...", 13, 10, 0

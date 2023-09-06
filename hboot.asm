@@ -139,20 +139,20 @@ inicioHBoot:
 
 ;; Configurar pilha e ponteiro
 
-    cli                ;; Desativar interrupções
+    cli ;; Desativar interrupções
 
     mov ax, SEG_HBOOT
     mov ss, ax
     mov sp, 0
 
-    sti                ;; Habilitar interrupções
+    sti ;; Habilitar interrupções
 
 ;; Salvar entedereço LBA da partição, fornecido pelo Saturno
 
     push esi ;; Aqui temos o endereço do BPB
 
     mov dword[enderecoLBAParticao], ebp ;; Salvar aqui o LBA da partição
-    mov dword[enderecoBPB], esi         ;; Salvar o BPB
+    mov dword[enderecoBPB], esi ;; Salvar o BPB
 
 ;; Carregar registradores de segmento para a nova posição
 
@@ -170,7 +170,7 @@ inicioHBoot:
 
 boasVindasHBoot:
 
-    call limparTela       ;; Limpar a tela
+    call limparTela ;; Limpar a tela
 
     call tomInicializacao ;; Tocar tom de inicialização
 
@@ -197,11 +197,11 @@ analisarPC:
 
 HBoot.Parametros:
 
-.verbose:           db 0
-.forcarMemoria:     db 0
-.forcarDisco:       db 0
-.bufLeitura:        times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon
-.parada:            db 0          ;; Ponto de parada da exibição do conteúdo
+.verbose:       db 0
+.forcarMemoria: db 0
+.forcarDisco:   db 0
+.bufLeitura:    times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon
+.parada:        db 0 ;; Ponto de parada da exibição do conteúdo
 
 ;; Nome e informações de arquivo necessárias para o carregamento do Hexagon
 

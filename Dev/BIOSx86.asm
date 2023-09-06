@@ -71,10 +71,10 @@
 executarAtraso:
 
     mov al, 0
-    mov ah, 86h  ;; Função de causar atraso
-    mov cx, 1    ;; CX:DX - tempo, em microssegundos
+    mov ah, 86h ;; Função de causar atraso
+    mov cx, 1   ;; CX:DX - tempo, em microssegundos
 
-    int 15h      ;; Chamar BIOS
+    int 15h ;; Chamar BIOS
 
     ret
 

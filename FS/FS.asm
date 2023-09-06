@@ -91,9 +91,9 @@ lerMBR:
 
 ;; Primeiro devemos carregar a MBR na memória
     
-    mov ax, 01h                    ;; Número de setores para ler
-    mov esi, 00h                   ;; LBA do setor inicial
-    mov di, bufferDeDisco          ;; Deslocamento
+    mov ax, 01h ;; Número de setores para ler
+    mov esi, 00h ;; LBA do setor inicial
+    mov di, bufferDeDisco ;; Deslocamento
     mov dl, byte[idDrive] 
 
     call carregarSetor
@@ -104,9 +104,9 @@ lerMBR:
 
     add ebx, 0x1BE ;; Deslocamento da primeira partição
 
-    mov ah, byte[es:ebx+04h]        ;; Contém o sistema de arquivos
+    mov ah, byte[es:ebx+04h] ;; Contém o sistema de arquivos
 
-    mov ebx, dword[es:ebx+0xF]      ;; Tamanho da partição
+    mov ebx, dword[es:ebx+0xF] ;; Tamanho da partição
 
     mov dword[HBoot.SistemaArquivos.tamanhoParticao], ebx
 

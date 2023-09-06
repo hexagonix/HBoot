@@ -106,7 +106,7 @@ HBoot.Modulos.DOS.iniciarFreeDOS:
 
 ;; O FreeDOS recebe o parâmetro de drive de boot em BL
 
-    mov bl, byte[idDrive]           ;; Drive utilizado para a inicialização
+    mov bl, byte[idDrive] ;; Drive utilizado para a inicialização
 
     jmp HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS:0000h ;; Configurar CS:IP e executar o Kernel
 
