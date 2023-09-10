@@ -429,7 +429,7 @@ verificarInteracaoUsuario:
 
     exibir HBoot.Mensagens.arquivoHexagon
 
-    exibir HBoot.Arquivos.imagemHexagon
+    exibir HBoot.Modulos.Hexagon.Arquivos.imagemHexagon
 
     exibir HBoot.Mensagens.infoLinhaComando
 

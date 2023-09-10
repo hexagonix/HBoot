@@ -70,7 +70,7 @@
 ;;
 ;;                                   Hexagon Boot
 ;;
-;;                   Carregador de Inicialização do Kernel Hexagon
+;;                   Carregador de Inicialização do kernel Hexagon
 ;;
 ;;                  Copyright © 2020-2023 Felipe Miguel Nery Lunkes
 ;;                          Todos os direitos reservados
@@ -89,7 +89,7 @@ use16
 
 ;; Vamos incluir o arquivo de versão
 
-include "HBoot/versao.asm"
+include "versao.s"
 
 cabecalhoHBoot:
 
@@ -209,7 +209,6 @@ HBoot.Arquivos:
 
 .nomeHBoot:         db "HBOOT      " ;; Nome de arquivo do HBoot em disco
 .nomeImagem:        db "           " ;; Aqui será salvo o nome do arquivo que deverá ser carregado
-.imagemHexagon:     db "HEXAGON    " ;; Nome do arquivo que contém o Kernel Hexagon, a ser carregado
 .parada:            db 0             ;; Ponto de parada da exibição do conteúdo
 .imagemModulo:      times 64 db ' '  ;; Por segurança, um buffer maior
 .imagemInvalida:    db 0             ;; A imagem é válida?
