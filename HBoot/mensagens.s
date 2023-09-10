@@ -77,7 +77,7 @@ HBoot.Mensagens:
 .iniciando:
 db "Hexagon Boot (HBoot) version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ").", 13, 10
 db "Boot loader for Hexagonix.", 13, 10
-db "Copyright (C) 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
+db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
 db "All rights reserved.", 13, 10, 0
 .aguardarUsuario:
 db 13, 10, "Press [F8] to access HBoot settings... ",  0
@@ -132,7 +132,7 @@ db "[Ok]", 13, 10, 0
 db "[Fail]", 13, 10, 0
 .sobreHBoot:
 db 13, 10, "HBoot: Hexagon Boot Information - HBoot version ", versaoHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ")", 13, 10, 13, 10
-db "Copyright 2020-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
+db "Copyright 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
 db "All rights reserved.",13, 10
 db "HBoot is licensed under BSD-3-Clause.", 13, 10, 13, 10
 db "Hexagon Boot (HBoot) is a powerful boot loader designed to boot the Hexagon", 13, 10
