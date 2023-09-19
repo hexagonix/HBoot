@@ -214,7 +214,7 @@ HBoot.Arquivos:
 
 .nomeHBoot:
 db "HBOOT      " ;; Nome de arquivo do HBoot em disco
-.nomeImagem:        
+.nomeImagem:
 db "           " ;; Aqui será salvo o nome do arquivo que deverá ser carregado
 .imagemModulo:
 times 64 db ' ' ;; Por segurança, um buffer maior
