@@ -69,7 +69,8 @@
 HBoot.Procx86.Dados:
 
 .vendedorProcx86: times 13 db 0
-.nomeProcx86:              db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
+.nomeProcx86:
+db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
 
 ;;************************************************************************************
 

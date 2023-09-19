@@ -68,17 +68,17 @@
 
 HBoot.Disco:
 
-.tamanho:       db 16
-.reservado:     db 0
-.totalSetores:  dw 0
-.deslocamento:  dw 0x0000
-.segmento:      dw 0
-.LBA:           dd 0
-                dd 0
-.dsq0Online:    db 0
-.dsq1Online:    db 0
-.hd0Online:     db 0
-.hd1Online:     db 0
+.tamanho:      db 16
+.reservado:    db 0
+.totalSetores: dw 0
+.deslocamento: dw 0x0000
+.segmento:     dw 0
+.LBA:          dd 0
+               dd 0
+.dsq0Online:   db 0
+.dsq1Online:   db 0
+.hd0Online:    db 0
+.hd1Online:    db 0
 
 ;;************************************************************************************
 ;;  

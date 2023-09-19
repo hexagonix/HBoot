@@ -74,7 +74,8 @@
 
 HBoot.Modulos.DOS.Arquivos:
 
-.imagemFreeDOS: db "KERNEL  SYS"
+.imagemFreeDOS:
+db "KERNEL  SYS"
 
 ;; Aqui temos os segmentos para carregamento de um kernel DOS (variável)
 

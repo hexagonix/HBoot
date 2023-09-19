@@ -197,22 +197,30 @@ analisarPC:
 
 HBoot.Parametros:
 
-.verbose:       db 0
-.forcarMemoria: db 0
-.forcarDisco:   db 0
-.bufLeitura:    times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon
-.parada:        db 0 ;; Ponto de parada da exibição do conteúdo
+.verbose:
+db 0
+.forcarMemoria:
+db 0
+.forcarDisco:
+db 0
+.bufLeitura:
+times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon
+.parada:
+db 0 ;; Ponto de parada da exibição do conteúdo
 
 ;; Nome e informações de arquivo necessárias para o carregamento do Hexagon
 
 HBoot.Arquivos:
 
-.nomeHBoot:         db "HBOOT      " ;; Nome de arquivo do HBoot em disco
-.nomeImagem:        db "           " ;; Aqui será salvo o nome do arquivo que deverá ser carregado
-.parada:            db 0             ;; Ponto de parada da exibição do conteúdo
-.imagemModulo:      times 64 db ' '  ;; Por segurança, um buffer maior
-.imagemInvalida:    db 0             ;; A imagem é válida?
-.segmentoFinal:     dw 0             ;; Aqui ficará a localização do segmento a ser carregado
+.nomeHBoot:
+db "HBOOT      " ;; Nome de arquivo do HBoot em disco
+.nomeImagem:        
+db "           " ;; Aqui será salvo o nome do arquivo que deverá ser carregado
+.imagemModulo:
+times 64 db ' ' ;; Por segurança, um buffer maior
+.parada: db 0   ;; Ponto de parada da exibição do conteúdo
+.imagemInvalida: db 0 ;; A imagem é válida?
+.segmentoFinal:  dw 0 ;; Aqui ficará a localização do segmento a ser carregado
 
 HBoot.Controle:
 
