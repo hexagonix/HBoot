@@ -66,6 +66,10 @@
 ;;
 ;; $HexagonixOS$
 
+;; Tamanho do cabeçalho HAPP da imagem
+
+CABECALHO_HAPP = 026h ;; Versão 2.0 da definição HAPP
+
 ;; Caso nenhuma interação tenha acontecido, devemos então procurar e iniciar o Hexagon
 ;; Caso alguma interação tenha ocorrido mas o usuário selecionou continuar a inicialização,
 ;; também devemos continuar com o protocolo de boot

@@ -68,7 +68,7 @@
 
 verificarImagemHAPP:
 
-    mov di, SEG_KERNEL
+    mov di, HBoot.Modulos.Hexagon.Segmentos.segmentoHexagon 
     sub di, 0x50
 
     cmp byte[di+0], "H" ;; H de HAPP

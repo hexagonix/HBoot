@@ -75,10 +75,6 @@ SEG_DIAG   equ 0x60   ;; Segmento para carregamento de imagens de diagnóstico
 
 ARQUITETURA = 01h ;; Arquitetura do HBoot e a qual se destina o kernel
 
-;; Tamanho do cabeçalho HAPP da imagem
-
-CABECALHO_HAPP = 026h ;; Versão 2.0 da definição HAPP
-
 ;; Memória mínima para o boot do Hexagon. Vale lembrar que os requisitos são variáveis a depender
 ;; da versão do Hexagon, sendo necessária a adaptação à necessidade mínima de memória.
 
