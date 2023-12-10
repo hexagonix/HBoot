@@ -86,7 +86,7 @@ verificarImagemHAPP:
 ;; Se chegamos até aqui, temos o cabeçalho no arquivo, devemos checar o restante dos campos,
 ;; como a arquitetura
 
-;; Vamos checar se a arquitetura da imagem é a mesma do Sistema
+;; Vamos checar se a arquitetura da imagem é a mesma do sistema
 
     cmp byte[di+4], ARQUITETURA ;; Arquitetura suportada
     jne .imagemInvalida

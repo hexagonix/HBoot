@@ -70,7 +70,8 @@
 
 tomInicializacao:
 
-;; Roteiro de execução com nota e tempo. Macro em "HBOOT.S"
+;; Roteiro de execução com nota e tempo. Macro em "HBOOT.S". Tons e tempo
+;; em "LIBUTIL.ASM"
 
     tocarNota HBoot.Sons.nDO, HBoot.Sons.tNormal
     tocarNota HBoot.Sons.nLA, HBoot.Sons.tNormal

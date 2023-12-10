@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-parahexa:
+paraHexadecimal:
 
     pusha
 
@@ -75,7 +75,7 @@ parahexa:
 
     push dx 
 
-    call imprimirHexa
+    call imprimirHexadecimal
 
     mov dx, [bp+18]
 
@@ -83,7 +83,7 @@ parahexa:
     mov si, HBoot.Mensagens.hexc
     mov di, HBoot.Mensagens.hex+2
     
-guardar:
+.guardar:
     
     rol dx, 4
 
@@ -95,11 +95,11 @@ guardar:
 
     stosb
 
-    loop guardar
+    loop .guardar
 
     push HBoot.Mensagens.hex
 
-    call imprimirHexa
+    call imprimirHexadecimal
 
     mov sp, bp
 

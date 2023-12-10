@@ -68,9 +68,9 @@
 
 ;; Versão do HBoot
 
-versaoHBoot      equ "0.8.3"
-verProtocolo     equ "System I-CURRENT"
+versaoHBoot      equ "0.9.0"
+verProtocolo     equ "System I"
 arquiteturaHBoot equ 01h
 verHBoot         equ 00h
-suvberHBoot      equ 07h
-revisaoHBoot     equ 03h
+suvberHBoot      equ 09h
+revisaoHBoot     equ 00h

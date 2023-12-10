@@ -68,7 +68,7 @@
 
 ;; Tamanho do cabeçalho HAPP da imagem
 
-CABECALHO_HAPP = 026h ;; Versão 2.0 da definição HAPP
+CABECALHO_HAPP = 26h ;; Versão 2.0 da definição HAPP
 
 ;; Caso nenhuma interação tenha acontecido, devemos então procurar e iniciar o Hexagon
 ;; Caso alguma interação tenha ocorrido mas o usuário selecionou continuar a inicialização,
@@ -76,7 +76,7 @@ CABECALHO_HAPP = 026h ;; Versão 2.0 da definição HAPP
 
 HBoot.Modulos.Hexagon.Segmentos.segmentoHexagon equ 0x50 ;; Segmento para carregar o Hexagon
 HBoot.Modulos.Hexagon.Arquivos.imagemHexagon:
-db "HEXAGON    ", 0 ;; Nome do arquivo que contém o kernel Hexagon, a ser carregado
+db "HEXAGON    ", 0 ;; Nome do arquivo que contém o kernel Hexagon
 
 ;;************************************************************************************
 
@@ -108,7 +108,7 @@ executarKernel:
     mov bl, byte[idDrive] ;; Drive utilizado para a inicialização
     mov cx, word[memoriaDisponivel] ;; Memória RAM instalada
 
-;; O Hexagon apresenta o cabeçalho HAPP, que será padrão em todos os executáveis no
+;; O Hexagon apresenta o cabeçalho HAPP, que é padrão em todos os executáveis no
 ;; formato Hexagon. Este cabeçalho apresenta 38 bytes (0x26), então devemos pulá-lo. Os
 ;; dados contidos no cabeçalho serão futuramente validados, se necessário
 

@@ -584,67 +584,67 @@ verificarInteracaoUsuario:
     push HBoot.Mensagens.axx
     push ax
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.bxx
     push bx
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.cxx
     push cx
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.dxx
     push dx
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.css
     push cs
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.dss
     push ds
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.sss
     push ss
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.ess
     push es
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.spp
     push sp
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.sii
     push si
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.dii
     push di
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.gss
     push gs
 
-    call parahexa
+    call paraHexadecimal
 
     push HBoot.Mensagens.fss
     push fs
 
-    call parahexa
+    call paraHexadecimal
 
     exibir HBoot.Mensagens.reinicioContinuar
 

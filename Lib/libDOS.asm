@@ -70,7 +70,7 @@
 ;; FreeDOS, DR-DOS, dentre outros. Para isso, o nome de arquivo do DOS específico deve
 ;; ser definido, bem como o segmento de carregamento do mesmo
 
-;; Aqui temos os nomes de arquivos que possam conter um kernel DOS
+;; Aqui temos o nome de arquivo que pode conter um kernel DOS
 
 HBoot.Modulos.DOS.Arquivos:
 
@@ -109,7 +109,7 @@ HBoot.Modulos.DOS.iniciarFreeDOS:
 
     mov bl, byte[idDrive] ;; Drive utilizado para a inicialização
 
-    jmp HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS:0000h ;; Configurar CS:IP e executar o Kernel
+    jmp HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS:0000h ;; Configurar CS:IP e executar o kernel
 
     jmp $
 
