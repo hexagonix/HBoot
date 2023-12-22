@@ -13,7 +13,7 @@
 ;;
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
-;;                         Copyright (c) 2015-2023 Felipe Miguel Nery Lunkes
+;;                         Copyright (c) 2015-2024 Felipe Miguel Nery Lunkes
 ;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
@@ -36,7 +36,7 @@
 ;;
 ;; BSD 3-Clause License
 ;;
-;; Copyright (c) 2015-2023, Felipe Miguel Nery Lunkes
+;; Copyright (c) 2015-2024, Felipe Miguel Nery Lunkes
 ;; All rights reserved.
 ;;
 ;; Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@
 
 ;; Versão do HBoot
 
-versaoHBoot      equ "0.9.0"
+versaoHBoot      equ "0.9.1"
 verProtocolo     equ "System I"
 arquiteturaHBoot equ 01h
 verHBoot         equ 00h
