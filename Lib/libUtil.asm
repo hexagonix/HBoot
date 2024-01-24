@@ -66,9 +66,9 @@
 ;;
 ;; $HexagonixOS$
 
-HBoot.Sons: ;; Frequências de som para as notas musicais utilizadas para a música
+HBoot.Sounds: ;; Sound frequencies for the musical notes used for the song
 
-;; Tema do Hexagonix
+;; Hexagonix theme
 
 .nDO  = 2000
 .nRE  = 2100
@@ -90,7 +90,7 @@ HBoot.Sons: ;; Frequências de som para as notas musicais utilizadas para a mús
 .CANON7 = 5080
 .CANON8 = 4420
 
-;; Temporizador padrão em microssegundos
+;; Default timer in microseconds
 
-.tNormal    = 01h
-.tExtendido = 02h
+.tNormal   = 01h
+.tExtended = 02h

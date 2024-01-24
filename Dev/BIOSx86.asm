@@ -66,15 +66,15 @@
 ;;
 ;; $HexagonixOS$
 
-;; Aqui iremos utilizar os serviços do BIOS para provocar um atraso
+;; Here we will use BIOS services to cause a delay
 
-executarAtraso:
+causeDelay:
 
     mov al, 0
-    mov ah, 86h ;; Função de causar atraso
-    mov cx, 1   ;; CX:DX - tempo, em microssegundos
+    mov ah, 86h ;; Function of causing delay
+    mov cx, 1   ;; CX:DX - time, in microseconds
 
-    int 15h ;; Chamar BIOS
+    int 15h ;; Call BIOS
 
     ret
 

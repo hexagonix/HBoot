@@ -68,14 +68,14 @@
 
 initDev:
 
-    call initProc         ;; Verificar o fabricante do processador
+    call initProc         ;; Check the processor manufacturer
 
-    call verificarMemoria ;; Identificar memória instalada  
+    call checkMemory      ;; Identify installed memory
 
-    call verificarDiscos  ;; Verificar as unidades presentes no computador
+    call checkDisks       ;; Check the drives online on the device
 
-    call iniciarCOM1      ;; Iniciar a porta serial COM1
+    call initSerialPort   ;; Start COM1 serial port
 
-    call iniciarParalela  ;; Iniciar as portas paralelas
+    call initParallelPort ;; Start parallel ports
 
-    ret ;; Vamos retornar
+    ret

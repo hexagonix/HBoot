@@ -71,6 +71,6 @@ include "libModHBoot.asm"
 
 ;;************************************************************************************
 
-HBoot.Modulos.Controle:
+HBoot.Modules.Control:
 
-.moduloAtivado: db 0
+.moduleActivated: db 0

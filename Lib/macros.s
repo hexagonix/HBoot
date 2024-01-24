@@ -66,44 +66,44 @@
 ;;
 ;; $HexagonixOS$
 
-macro tocarNota nota, tempo
+macro playNote note, time
 {
 
-    mov ax, nota
+    mov ax, note
     mov bx, 8
     
-    call emitirsom
+    call playSound
 
-    mov dx, tempo
+    mov dx, time
 
-    call executarAtraso
-
-}
-
-macro novaLinha
-{
-
-    mov si, HBoot.Mensagens.novaLinha
-
-    call imprimir
+    call causeDelay
 
 }
 
-;; Uma forma mais simples de exibir conteúdo 
-
-macro exibir texto
+macro putNewLine
 {
 
-    mov si, texto
+    mov si, HBoot.Messages.newLine
 
-    call imprimir
+    call printScreen
 
 }
 
-macro diag texto
+;; A simpler way to fput content
+
+macro fputs message
 {
 
-    mov si, texto
+    mov si, message
+
+    call printScreen
+
+}
+
+macro diag message
+{
+
+    mov si, message
 
     call transferirCOM1
 
@@ -111,7 +111,7 @@ macro diag texto
 
 ;;************************************************************************************
 
-;; O código abaixo extrai e cria strings com informações sobre a build do software
+;; The code below extracts and creates strings with information about the software build
 
 __tempoatual   = %t
 __quadvalorano = (__tempoatual+31536000)/126230400
@@ -167,5 +167,3 @@ __stringdia     equ (__dia/10+'0'),((__dia mod 10)+'0')
 __stringhora    equ (__hora/10+'0'),((__hora mod 10)+'0')
 __stringminuto  equ (__minuto/10+'0'),((__minuto mod 10)+'0')
 __stringsegundo equ (__segundo/10+'0'),((__segundo mod 10)+'0')
-
-;;************************************************************************************

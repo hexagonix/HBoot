@@ -66,57 +66,57 @@
 ;;
 ;; $HexagonixOS$
 
-;; Agora, o HBoot pode realizar a inicialização de sistemas DOS-like, como MS-DOS,
-;; FreeDOS, DR-DOS, dentre outros. Para isso, o nome de arquivo do DOS específico deve
-;; ser definido, bem como o segmento de carregamento do mesmo
+;; Now, HBoot can boot DOS-like systems, such as MS-DOS, FreeDOS, DR-DOS, among others.
+;; To do this, the specific DOS file name must be defined, as well as the loading segment
+;; of the same.
 
-;; Aqui temos o nome de arquivo que pode conter um kernel DOS
+;; Here we have the filename that can contain a DOS kernel
 
-HBoot.Modulos.DOS.Arquivos:
+HBoot.Modules.DOS.Files:
 
-.imagemFreeDOS:
+.freeDOSImage:
 db "KERNEL  SYS"
 
-;; Aqui temos os segmentos para carregamento de um kernel DOS (variável)
+;; Here we have the segments for loading a DOS kernel (variable)
 
-HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS equ 0x60
+HBoot.Modules.DOS.Segments.segmentFreeDOS equ 0x60
 
 ;;************************************************************************************
 
-HBoot.Modulos.DOS.iniciarFreeDOS:
+HBoot.Modules.DOS.startFreeDOS:
 
     push ds 
     pop es 
     
-    mov byte[HBoot.Modulos.Controle.moduloAtivado], 01h
+    mov byte[HBoot.Modules.Control.moduleActivated], 01h
 
-    mov si, HBoot.Modulos.DOS.Arquivos.imagemFreeDOS
-    mov di, HBoot.Arquivos.nomeImagem
+    mov si, HBoot.Modules.DOS.Files.freeDOSImage
+    mov di, HBoot.Files.imageName
 
     mov cx, 11
     
-;; Copiar o nome do arquivo
+;; Copy filename
 
-    rep movsb ;; Copiar (ECX) caracteres de ESI para EDI
+    rep movsb ;; Copy (ECX) characters from ESI to EDI
 
-    mov word[HBoot.Arquivos.segmentoFinal], HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS
+    mov word[HBoot.Files.finalSegment], HBoot.Modules.DOS.Segments.segmentFreeDOS
 
-    call procurarArquivo
+    call searchFile
 
-    jc .gerenciarErroArquivo
+    jc .manageFileError
 
-;; O FreeDOS recebe o parâmetro de drive de boot em BL
+;; FreeDOS receives the boot drive parameter in BL
 
-    mov bl, byte[idDrive] ;; Drive utilizado para a inicialização
+    mov bl, byte[idDrive] ;; Drive used for boot
 
-    jmp HBoot.Modulos.DOS.Segmentos.segmentoFreeDOS:0000h ;; Configurar CS:IP e executar o kernel
+    jmp HBoot.Modules.DOS.Segments.segmentFreeDOS:0000h ;; Configure CS:IP and run the kernel
 
     jmp $
 
-.gerenciarErroArquivo:
+.manageFileError:
 
-    exibir HBoot.Mensagens.DOSAusente
+    fputs HBoot.Messages.DOSNotFound
 
-    call aguardarTeclado
+    call waitKeyboard
 
-    jmp verificarInteracaoUsuario.testarComponentes
+    jmp verifyUserInteraction.testComponents

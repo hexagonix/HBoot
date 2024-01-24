@@ -66,47 +66,48 @@
 ;;
 ;; $HexagonixOS$
 
-HBoot.Procx86.Dados:
+HBoot.Procx86.Data:
 
-.vendedorProcx86: times 13 db 0
-.nomeProcx86:
+.processorVendor:
+times 13 db 0
+.processorName:
 db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
 
 ;;************************************************************************************
 
 initProc:
 
-    call identificarVendedorProcx86
+    call identifyProcessorVendorProcx86
 
-    call identificarNomeProcx86
+    call identifyProcessorNameProcx86
 
-    call habilitarA20 ;; Tentar habilitar prematuramente linha A20
+    call enableA20 ;; Tentar habilitar prematuramente linha A20
 
     ret
 
 ;;************************************************************************************
 
-identificarVendedorProcx86:
+identifyProcessorVendorProcx86:
 
     mov eax, 0
     
     cpuid
     
-    mov [HBoot.Procx86.Dados.vendedorProcx86], ebx
-    mov [HBoot.Procx86.Dados.vendedorProcx86 + 4], edx
-    mov [HBoot.Procx86.Dados.vendedorProcx86 + 8], ecx
+    mov [HBoot.Procx86.Data.processorVendor], ebx
+    mov [HBoot.Procx86.Data.processorVendor + 4], edx
+    mov [HBoot.Procx86.Data.processorVendor + 8], ecx
 
     ret
 
 ;;************************************************************************************
 
-identificarNomeProcx86:
+identifyProcessorNameProcx86:
 
     mov eax, 80000002h  
     
     cpuid
     
-    mov di, HBoot.Procx86.Dados.nomeProcx86     
+    mov di, HBoot.Procx86.Data.processorName     
 
     stosd
 
@@ -158,7 +159,7 @@ identificarNomeProcx86:
     
     stosd
     
-    mov si, HBoot.Procx86.Dados.nomeProcx86     
+    mov si, HBoot.Procx86.Data.processorName
     
     mov cx, 48
     
@@ -167,11 +168,11 @@ identificarNomeProcx86:
     lodsb
 
     cmp al, ' '
-    jae .formatarNomeCPU
+    jae .formatCPUName
     
     mov al, 0
     
-.formatarNomeCPU:   
+.formatCPUName:   
 
     mov [si-1], al
     
@@ -181,23 +182,22 @@ identificarNomeProcx86:
 
 ;;************************************************************************************
 
-;; Vamos tentar ativar o A20 para verificar se o processador é compatível com o 
-;; modo protegido
+;; Let's try to activate the A20 to see if the processor supports protected mode
 
-habilitarA20:
+enableA20:
 
     clc 
 
-    mov ax, 0x2401 ;; Solicitar a ativação do A20
+    mov ax, 0x2401 ;; Request A20 activation
         
-    int 15h ;; Interrupção do BIOS
+    int 15h ;; BIOS Interrupt
 
-    jc .erroA20
+    jc .errorA20
 
     ret 
     
-.erroA20:
+.errorA20:
 
-    exibir HBoot.Mensagens.erroA20
+    fputs HBoot.Messages.errorA20
 
     jmp $

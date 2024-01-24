@@ -66,76 +66,75 @@
 ;;
 ;; $HexagonixOS$
 
-;; Aqui vamos carregar módulos do HBoot, caso o usuário necessite dos mesmos. Estes
-;; módulos podem futuramente extender as funções do HBoot, podendo ser desenvolvidos
-;; para funções específicas, como teste de memória, testes de outros componentes e
-;; etc
+;; Here we will load HBoot modules, if the user needs them.
+;; These modules can in the future extend the functions of HBoot, and can be developed for specific
+;; functions, such as memory testing, testing of other components, etc
 
-CABECALHO_MODULO = 10h      ;; Versão 1.0 da definição de cabeçalhos de módulo
-SEG_MODULOS      equ 0x2000 ;; Segmento para carregamento de imagens de diagnóstico
+MODULE_HEADER  = 10h      ;; Module headers definition version 1.0
+MODULE_SEGMENT equ 0x2000 ;; Segment for loading module images
 
 ;;************************************************************************************
 
-HBoot.modHBoot.Mensagens:
+HBoot.modHBoot.Messages:
 
-.retornoMod:
+.modReturn:
 db 13, 10, "HBoot: You have returned from a finished HBoot module.", 13, 10
 db "HBoot: It is recommended to restart your device before starting Hexagon.", 13, 10
 db "HBoot: Press [ENTER] to continue...", 13, 10, 0
 
 ;;************************************************************************************
 
-carregarModulo:
+loadAndStartHBootModule:
 
-    mov byte[HBoot.Modulos.Controle.moduloAtivado], 01h
+    mov byte[HBoot.Modules.Control.moduleActivated], 01h
 
-    mov si, HBoot.Mensagens.pressionado
+    mov si, HBoot.Messages.pressed
 
-    call imprimir
+    call printScreen
 
-    mov si, HBoot.Mensagens.iniciarModulo
+    mov si, HBoot.Messages.startMod
 
-    call imprimir
+    call printScreen
 
-    mov di, HBoot.Arquivos.imagemModulo
+    mov di, HBoot.Files.moduleImage
 
-    call lerTeclado
+    call readKeyboard
 
-    mov si, HBoot.Arquivos.imagemModulo
-    mov di, HBoot.Arquivos.nomeImagem
+    mov si, HBoot.Files.moduleImage
+    mov di, HBoot.Files.imageName
 
     mov cx, 11
 
-;; Copiar o nome do arquivo
+;; Copy filename
 
-    rep movsb ;; Copiar (ECX) caracteres de ESI para EDI
+    rep movsb ;; Copy (ECX) characters from ESI to EDI
 
-    mov word[HBoot.Arquivos.segmentoFinal], SEG_MODULOS
+    mov word[HBoot.Files.finalSegment], MODULE_SEGMENT
 
-    call procurarArquivo
+    call searchFile
 
-    jc .gerenciarErroArquivo
+    jc .manageFileError
 
-    mov dl, byte[idDrive] ;; Drive utilizado para a inicialização
-    mov ebp, dword[enderecoBPB + (SEG_HBOOT * 16)] ;; Ponteiro para o BPB
-    mov esi, dword[enderecoLBAParticao + (SEG_HBOOT * 16)] ;; Ponteiro para a partição
+    mov dl, byte[idDrive] ;; Drive used for boot
+    mov ebp, dword[BPBAdress + (SEG_HBOOT * 16)] ;; Pointer to BPB
+    mov esi, dword[partitionLBAAdress + (SEG_HBOOT * 16)] ;; Pointer to partition
 
     push ss
     push sp
 
-    jmp SEG_MODULOS:CABECALHO_MODULO ;; Configurar CS:IP e executar o módulo
+    jmp MODULE_SEGMENT:MODULE_HEADER ;; Configure CS:IP and run the module
 
-.gerenciarErroArquivo:
+.manageFileError:
 
-    exibir HBoot.Mensagens.moduloAusente
+    fputs HBoot.Messages.modNotFound
 
-    call aguardarTeclado
+    call waitKeyboard
 
-    jmp verificarInteracaoUsuario.testarComponentes
+    jmp verifyUserInteraction.testComponents
 
 ;;************************************************************************************
 
-retornarModulo:
+moduleReturn:
 
     mov ax, SEG_HBOOT
     mov ds, ax
@@ -148,8 +147,8 @@ retornarModulo:
     push ds
     pop es
 
-    exibir HBoot.modHBoot.Mensagens.retornoMod
+    fputs HBoot.modHBoot.Messages.modReturn
 
-    call aguardarTeclado
+    call waitKeyboard
 
-    jmp analisarPC
+    jmp analyzeDevice

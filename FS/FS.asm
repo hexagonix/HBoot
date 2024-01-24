@@ -66,89 +66,89 @@
 ;;
 ;; $HexagonixOS$
 
-HBoot.SistemaArquivos:
+HBoot.Filesystem:
 
-.codigo:          db 0
-.tamanhoParticao: dd 0
-.FAT12            = 01h ;; FAT12 (Futuro)
-.FAT16            = 04h ;; FAT16 (< 32 MB)
-.FAT16B           = 06h ;; FAT16B (FAT16B) - Suportado
-.FAT16LBA         = 0Eh ;; FAT16 (LBA)
+.code:          db 0
+.partitionSize: dd 0
+.FAT12          = 01h ;; FAT12 (Future)
+.FAT16          = 04h ;; FAT16 (< 32 MB)
+.FAT16B         = 06h ;; FAT16B (FAT16B) - Suported
+.FAT16LBA       = 0Eh ;; FAT16 (LBA)
 
 ;;************************************************************************************
 
-definirSistemaArquivos:
+setFilesystem:
     
-    call lerMBR
+    call readMBR
 
-    mov byte[HBoot.SistemaArquivos.codigo], ah
+    mov byte[HBoot.Filesystem.code], ah
     
     ret
 
 ;;************************************************************************************
 
-lerMBR:
+readMBR:
 
-;; Primeiro devemos carregar a MBR na memória
+;; First we must load the MBR into memory
     
-    mov ax, 01h ;; Número de setores para ler
-    mov esi, 00h ;; LBA do setor inicial
-    mov di, bufferDeDisco ;; Deslocamento
+    mov ax, 01h ;; Number of sectors to read
+    mov esi, 00h ;; First Sector LBA
+    mov di, diskBuffer ;; Offset
     mov dl, byte[idDrive] 
 
-    call carregarSetor
+    call loadSector
 
-    jc .erro
+    jc .error
 
-    mov ebx, bufferDeDisco
+    mov ebx, diskBuffer
 
-    add ebx, 0x1BE ;; Deslocamento da primeira partição
+    add ebx, 0x1BE ;; First partition offset
 
-    mov ah, byte[es:ebx+04h] ;; Contém o sistema de arquivos
+    mov ah, byte[es:ebx+04h] ;; Contains the file system
 
-    mov ebx, dword[es:ebx+0xF] ;; Tamanho da partição
+    mov ebx, dword[es:ebx+0xF] ;; Partition size
 
-    mov dword[HBoot.SistemaArquivos.tamanhoParticao], ebx
+    mov dword[HBoot.Filesystem.partitionSize], ebx
 
-    jmp .fim
+    jmp .end
 
-.erro:
+.error:
 
-    mov si, HBoot.Mensagens.erroMBR
+    mov si, HBoot.Messages.errorMBR
 
-    call imprimir
+    call printScreen
 
     jmp $
 
-.fim:
+.end:
 
     ret
 
 ;;************************************************************************************
 
-;; Aqui temos as funções genéricas chamadas, que redirecionarão para a lógica correta
+;; Here we have the generic functions called, which will redirect to the correct logic
 
-procurarArquivo:
+searchFile:
 
-    mov ah, byte[HBoot.SistemaArquivos.codigo]
+    mov ah, byte[HBoot.Filesystem.code]
 
-    cmp ah, HBoot.SistemaArquivos.FAT16B
+    cmp ah, HBoot.Filesystem.FAT16B
     je .FAT16B 
 
-    mov si, HBoot.Mensagens.saInvalido
+    mov si, HBoot.Messages.invalidFilesystem
 
-    call imprimir
+    call printScreen
 
     jmp $
 
 .FAT16B:
 
-    call procurarArquivoFAT16B
+    call searchFileFAT16B
 
     ret
 
 ;;************************************************************************************
 
-;; Lista de Sistemas de Arquivos suportado pelo HBoot
+;; List of File Systems supported by HBoot
 
 include "FAT16B/fat16B.asm"

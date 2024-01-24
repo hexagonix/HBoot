@@ -66,39 +66,39 @@
 ;;
 ;; $HexagonixOS$
 
-iniciarCOM1:  ;; Esse método é usado para inicializar uma Porta Serial
+initSerialPort:  ;; This method is used to initialize a serial port
 
 
-    mov ah, 0     ;; Move o valor 0 para o registrador ah 
-                  ;; A função 0 é usada para inicializar a Porta Serial COM1
-    mov al, 0xE3  ;; Parâmetros da porta serial
-    mov dx, 0     ;; Número da porta (COM 1) - Porta Serial 1
+    mov ah, 0     ;; Moves the value 0 to the AH register
+                  ;; Function 0 is used to initialize the COM1 serial port
+    mov al, 0xE3  ;; Serial port parameters
+    mov dx, 0     ;; Port number (COM 1) - Serial Port 1
     
-    int 14h ;; Inicializar porta - Ativa a porta para receber e enviar dados
+    int 14h ;; Initialize port - activates the port to receive and send data
     
     ret
 
 ;;************************************************************************************
 
-transferirCOM1: ;; Esse método é usado para transferir dados pela Porta Serial aberta
+sendCOM1: ;; This method is used to transfer data over the open serial port
 
-    lodsb ;; Carrega o próximo caractere à ser enviado
+    lodsb ;; Load the next character to be sent
 
-    or al, al  ;; Compara o caractere com o fim da mensagem
-    jz .pronto ;; Se igual ao fim, pula para .pronto
+    or al, al  ;; Compares the character with the end of the message
+    jz .done   ;; If equal to end, jump to .done
 
-    mov ah, 01h ;; Função de envio de caractere do BIOS por Porta Serial
-    int 14h ;; Chama o BIOS e executa a ação 
+    mov ah, 01h ;; BIOS character sending function via serial port
+    int 14h ;; Calls the BIOS and performs the action
 
-    jc near .erro
+    jc near .error
 
-    jmp transferirCOM1 ;; Se não tiver acabado, volta à função e carrega o próximo caractere
+    jmp sendCOM1 ;; If it is not finished, return to the function and load the next character
 
-.pronto: ;; Se tiver acabado...
+.done: ;; If it's over...
 
-    ret ;; Retorna a função que o chamou
+    ret ;; Returns the function that called it
 
-.erro:
+.error:
 
     stc
 

@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-lerTeclado:
+readKeyboard:
 
 .ler:  
 
@@ -79,10 +79,10 @@ lerTeclado:
     int 16h
 
     cmp al, 8h
-    je .apagar
+    je .clear
 
     cmp al, 0Dh
-    je .pronto
+    je .done
 
     cmp cl, 3Fh
     je .loop
@@ -96,7 +96,7 @@ lerTeclado:
 
     jmp .loop
 
-.apagar: ;; Usa o Driver de Teclado Principal para apagar um caracter
+.clear: ;; Use the Main Keyboard Driver to clear a character
 
     cmp cl, 0
     je .loop
@@ -122,7 +122,7 @@ lerTeclado:
 
     jmp .loop
 
-.pronto: ;; Tarefa ou rotina concluida
+.done: ;; Task or routine completed
 
     mov al, 0
 
@@ -132,7 +132,7 @@ lerTeclado:
 
 ;;************************************************************************************
 
-aguardarTeclado:
+waitKeyboard:
 
     mov ah, 00h
 

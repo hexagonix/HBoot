@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-verificarMemoria:
+checkMemory:
 
     push edx
     push ecx
@@ -82,26 +82,26 @@ verificarMemoria:
     
     int 15h
     
-    jnc .processar
+    jnc .process
     
     xor eax, eax
     
-    jmp .fim ;; Erro                                  
+    jmp .end ;; Error
 
-.quantificar:
+.quantify:
 
     mov si, ax
     
     or si, bx
-    jne .quantificar
+    jne .quantify
     
     mov ax, cx
     mov bx, dx
 
-.processar:
+.process:
 
     cmp ax, 0x3C00
-    jb .abaixoDe16MB
+    jb .below16MB
     
     movzx eax, bx
     
@@ -109,39 +109,39 @@ verificarMemoria:
     
     shl eax, 16 ;; EAX = EAX * 65536
     
-    jmp .fim
+    jmp .end
 
-.abaixoDe16MB:
+.below16MB:
 
     shl eax, 10 ;; EAX = EAX * 1024
 
-.fim:
+.end:
 
     pop ebx
     pop ecx
     pop edx
     
-;; Vamos salvar aqui o total de memória recuperado. Caso seja suficiente para o processo continuar,
-;; a quantidade de RAM instalada será fornecida ao Hexagon, em Kbytes
+;; Let's save the total recovered memory here. If it is sufficient for the process to continue,
+;; the amount of installed RAM will be provided to Hexagon, in Kbytes
 
-;; Vamos comparar se a quantidade de RAM é suficiente para uma inicialização bem sucedida
+;; Let's compare whether the amount of RAM is enough for a successful boot
 
     shr eax, 10 ;; EAX = EAX / 1024
 
-;; Precisamos agora adicionar a memória abaixo de 1 MB que está disponível mas que 
-;; não entra na quantificação feita.
+;; We now need to add memory below 1 MB that is available but does not enter into
+;; the quantification made.
 
-    add eax, 1024 ;; Pronto. Vamos adicionar 1024 kbytes a conta
+    add eax, 1024 ;; Ready. Let's add 1024 kbytes to the account
 
-    mov word[memoriaDisponivel], ax 
+    mov word[availableMemory], ax 
 
-    cmp dword eax, MEMORIA_MINIMA
-    jbe .erroMemoria ;; Se menos que isso, não temos o suficiente
+    cmp dword eax, MINIMUM_MEMORY
+    jbe .memoryError ;; If less than that, we don't have enough
 
     ret
 
-.erroMemoria:
+.memoryError:
 
-    exibir HBoot.Mensagens.erroMemoria
+    fputs HBoot.Messages.memoryError
 
-    jmp $ ;; Não dá para continuar. Então, permanecer aqui
+    jmp $ ;; It can't go on. So stay here

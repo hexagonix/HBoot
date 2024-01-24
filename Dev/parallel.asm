@@ -66,21 +66,40 @@
 ;;
 ;; $HexagonixOS$
 
-;; Tocar tom de inicialização do sistema, tal como em Macs/Apple
+HBoot.Parallel.Control:
 
-tomInicializacao:
+.numPorts:   db 0
+.adressLPT1: dw 0
 
-;; Roteiro de execução com nota e tempo. Macro em "HBOOT.S". Tons e tempo
-;; em "LIBUTIL.ASM"
+use16
 
-    tocarNota HBoot.Sons.nDO, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nLA, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nDO, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nLA, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nFA, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nSI, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.nDO2, HBoot.Sons.tNormal
+;; Initialize and obtain LPT1 port address
 
-    call desligarsom
+initParallelPort:
+
+    pusha
+    push ds
+
+    mov ax, 40h
+    mov ds, ax ;; BIOS data area start starts at 0040:0000h
+
+    mov ax, word [ds:10h] ;; AX := equipment
+    test ax, 1100000000000000b ;; Bytes 14-15 store the number of parallel ports
+    jz .withoutParallelPort ;; Without parallel port
+
+    mov ax, word [ds:08h] ;; The base address of LPT1 starts at offset 08h
+    mov word[cs:HBoot.Parallel.Control.adressLPT1], ax ;; Store the adress
+
+    jmp .exit
+
+.withoutParallelPort:
+
+    mov byte[HBoot.Parallel.Control.numPorts], 00h
+    mov word[HBoot.Parallel.Control.adressLPT1], 00h ;; Store the adress
+
+.exit:
+
+    pop ds
+    popa
 
     ret

@@ -68,93 +68,91 @@
 
 ;;************************************************************************************
 ;;
-;;                                   Hexagon Boot
+;;                               Hexagon Boot
 ;;
-;;                   Carregador de Inicialização do kernel Hexagon
+;;                         Hexagon kernel boot loader
 ;;
-;;                  Copyright © 2020-2024 Felipe Miguel Nery Lunkes
-;;                          Todos os direitos reservados
+;;               Copyright © 2020-2024 Felipe Miguel Nery Lunkes
+;;                          All rights reserved
 ;;
 ;;************************************************************************************
 
-;; O HBoot funciona exclusivamente em modo real 16-bit. Sendo assim, implementa funções
-;; de controle de dispositivos e de leitura de sistema de arquivos com código incompatível
-;; com o Hexagon. Não existe código Hexagon aqui, com implementação feita do zero
+;; HBoot works exclusively in 16-bit real mode.
+;; Therefore, it implements device control and file system reading functions with code incompatible
+;; with Hexagon. There is no Hexagon code here, with implementation made from scratch
 
 use16
 
-;; O Hboot deve apresentar um cabeçalho especial de imagem HBoot, esperada pelo primeiro
-;; estágio de inicialização. São 6 bytes, com assinatura (número mágico) e arquitetura
-;; alvo
+;; Hboot must feature a special HBoot image header expected by the first stage of booting.
+;; There are 6 bytes, with signature (magic number) and target architecture
 
-;; Vamos incluir o arquivo de versão
+;; Let's include the version file
 
-include "versao.s"
+include "version.s"
 
-cabecalhoHBoot:
+HBootHeader:
 
-.assinatura:  db "HBOOT"          ;; Assinatura, 5 bytes
-.arquitetura: db arquiteturaHBoot ;; Arquitetura (i386), 1 byte
-.versaoMod:   db verHBoot         ;; Versão
-.subverMod:   db suvberHBoot      ;; Subversão
-.nomeHBoot:   db "HBoot   "       ;; Nome do módulo
+.signature:     db "HBOOT"          ;; Signature, 5 bytes
+.architecture:  db architectureHBoot ;; Architecture (i386), 1 byte
+.modVersion:    db verHBoot         ;; Version
+.modSubversion: db suvberHBoot      ;; Subversion
+.HBootName:     db "HBoot   "       ;; Module name
 
-    jmp inicioHBoot
+    jmp startHBoot
 
 ;;************************************************************************************
 
-;; Vamos incluir todas as constantes utilizadas
+;; Let's include all the constants used
 
 include "HBoot/hboot.s"
 
-;; Macros utilizados pelo HBoot
+;; Macros used by HBoot
 
 include "Lib/macros.s"
 
-;; Camada de abstração de Sistemas de Arquivos (que inclui os arquivos de cada
-;; Sistema de Arquivos)
+;; Filesystems abstraction layer (which includes the files from each filesystem)
 
 include "FS/FS.asm"
 
-;; Agora incluir todo o código que lida diretamente com dispositivos
+;; Now include all code that directly deals with devices
 
 include "Dev/dev.asm"
 
-;; Agora, bibliotecas úteis
+;; Now useful libraries
 
 include "Lib/lib.asm"
 
-;; Agora, funções do HBoot
+;; Now, HBoot functions
 
 include "HBoot/prompt.asm"
-include "HBoot/tom.asm"
+include "HBoot/sound.asm"
 
-;; Mensagens e debug
+;; Messages and debugging
 
-include "HBoot/mensagens.s"
+include "HBoot/messages.s"
 
 ;;************************************************************************************
 
-inicioHBoot:
+startHBoot:
 
-;; Configurar pilha e ponteiro
+;; Configure stack and pointer
 
-    cli ;; Desativar interrupções
+    cli ;; Disable interrupts
 
     mov ax, SEG_HBOOT
     mov ss, ax
     mov sp, 0
 
-    sti ;; Habilitar interrupções
+    sti ;; Enable interrupts
 
-;; Salvar entedereço LBA da partição, fornecido pelo Saturno
+;; Save partition LBA address, provided by Saturno
 
-    push esi ;; Aqui temos o endereço do BPB
+    push esi ;; Here we have the BPB address
 
-    mov dword[enderecoLBAParticao], ebp ;; Salvar aqui o LBA da partição
-    mov dword[enderecoBPB], esi ;; Salvar o BPB
+    mov dword[partitionLBAAdress], ebp ;; Save partition LBA here
+    mov dword[BPBAdress], esi ;; Save BPB
 
-;; Carregar registradores de segmento para a nova posição
+;; Load segment registers to new position
 
     clc
 
@@ -164,70 +162,70 @@ inicioHBoot:
 
     sti
 
-    mov byte[idDrive], dl ;; Salvar número do drive
+    mov byte[idDrive], dl ;; Save drive number
 
 ;;************************************************************************************
 
-boasVindasHBoot:
+welcomeHBoot:
 
-    call limparTela ;; Limpar a tela
+    call clearScreen ;; Clear the screen
 
-    call tomInicializacao ;; Tocar tom de inicialização
+    call hexagonixBootSound ;; Play startup tone
 
-    mov si, HBoot.Mensagens.iniciando
+    mov si, HBoot.Messages.starting
 
-    call imprimir
+    call printScreen
 
-analisarPC:
+analyzeDevice:
 
     call initDev
 
-    call definirSistemaArquivos
+    call setFilesystem
 
-;; Agora iremos verificar se o usuário deseja alterar o comportamento do processo
-;; de inicialização, inclusive passando parâmetros para o núcleo, por exemplo
+;; Now we will check if the user wants to change the behavior of the boot process, including
+;; passing parameters to the kernel, e.g.
 
-    call verificarInteracaoUsuario
+    call verifyUserInteraction
 
-    jmp carregarHexagon
+    jmp loadAndStartHexagon
 
 ;;************************************************************************************
 
-;; Parâmetros que podem ser passados para o Hexagon
+;; Parameters that can be passed to Hexagon
 
-HBoot.Parametros:
+HBoot.Parameters:
 
 .verbose:
 db 0
-.forcarMemoria:
+.forceMemory:
 db 0
-.forcarDisco:
+.forceDisk:
 db 0
-.bufLeitura:
-times 64 db 0 ;; Um buffer de parâmetro em texto para o Hexagon
-.parada:
-db 0 ;; Ponto de parada da exibição do conteúdo
+.readBuffer: ;; A text parameter buffer for Hexagon
+times 64 db 0
+.stopCharacter: ;; Content display stop point
+db 0
 
-;; Nome e informações de arquivo necessárias para o carregamento do Hexagon
+;; Name and file information required for Hexagon loading
 
-HBoot.Arquivos:
+HBoot.Files:
 
-.nomeHBoot:
-db "HBOOT      " ;; Nome de arquivo do HBoot em disco
-.nomeImagem:
-db "           " ;; Aqui será salvo o nome do arquivo que deverá ser carregado
-.imagemModulo:
-times 64 db ' ' ;; Por segurança, um buffer maior
-.parada: db 0   ;; Ponto de parada da exibição do conteúdo
-.imagemInvalida: db 0 ;; A imagem é válida?
-.segmentoFinal:  dw 0 ;; Aqui ficará a localização do segmento a ser carregado
+.HBootFilename: ;; Nome de arquivo do HBoot em disco
+db "HBOOT      "
+.imageName: ;; Here the name of the file to be loaded will be saved
+db "           "
+.moduleImage: ;; For safety, a larger buffer
+times 64 db ' '
+.stopCharacter: db 0 ;; Content display stop point
+.invalidImage:  db 0 ;; Is the image valid?
+.finalSegment:  dw 0 ;; Here will be the location of the segment to be loaded
 
-HBoot.Controle:
+HBoot.Control:
 
-.modoBoot: db 0
+.bootMode: db 0
 
 ;;************************************************************************************
 
-;; O arquivo será carregado no espaço abaixo
+;; The file will be uploaded to the space below
 
-bufferDeDisco:
+diskBuffer:

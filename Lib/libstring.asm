@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-paraString:
+toString:
 
     pusha
     
@@ -74,7 +74,7 @@ paraString:
     mov bx, 10
     mov di, .tmp
         
-.empurrar:
+.push:
 
     mov dx, 0
     
@@ -85,9 +85,9 @@ paraString:
     push dx
     
     test ax,ax
-    jnz .empurrar
+    jnz .push
         
-.puxar:
+.pull:
     
     pop dx
     
@@ -97,7 +97,7 @@ paraString:
     inc di
     dec cx
     
-    jnz .puxar
+    jnz .pull
 
     mov byte [di], 0
     

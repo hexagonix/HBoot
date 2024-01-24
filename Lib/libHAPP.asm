@@ -66,47 +66,47 @@
 ;;
 ;; $HexagonixOS$
 
-verificarImagemHAPP:
+verifyHAPPImage:
 
-    mov di, HBoot.Modulos.Hexagon.Segmentos.segmentoHexagon 
+    mov di, HBoot.Modules.Hexagon.Segments.segmentHexagon 
     sub di, 0x50
 
-    cmp byte[di+0], "H" ;; H de HAPP
-    jne .imagemInvalida
+    cmp byte[di+0], "H" ;; H for HAPP
+    jne .invalidImage
 
-    cmp byte[di+1], "A" ;; A de HAPP
-    jne .imagemInvalida
+    cmp byte[di+1], "A" ;; A for HAPP
+    jne .invalidImage
 
-    cmp byte[di+2], "P" ;; P de HAPP
-    jne .imagemInvalida
+    cmp byte[di+2], "P" ;; P for HAPP
+    jne .invalidImage
 
-    cmp byte[di+3], "P" ;; P de HAPP
-    jne .imagemInvalida
+    cmp byte[di+3], "P" ;; P for HAPP
+    jne .invalidImage
 
-;; Se chegamos até aqui, temos o cabeçalho no arquivo, devemos checar o restante dos campos,
-;; como a arquitetura
+;; If we got this far, we have the header in the file, we must check the rest of the fields,
+;; such as the architecture
 
-;; Vamos checar se a arquitetura da imagem é a mesma do sistema
+;; Let's check if the image architecture is the same as the system
 
-    cmp byte[di+4], ARQUITETURA ;; Arquitetura suportada
-    jne .imagemInvalida
+    cmp byte[di+4], ARCHITECTURE ;; Supported architecture
+    jne .invalidImage
 
-;; Os tipos de imagem podem ser (01h) imagens executáveis e (02h e 03h) bibliotecas
-;; estáticas ou dinâminas (implementações futuras)
+;; Image types can be (01h) executable images and (02h and 03h) static or dynamic libraries 
+;; (future implementations)
 
     cmp byte[di+11], 03h
-    jg .imagemInvalida
+    jg .invalidImage
 
-    jmp .fim ;; Vamos continuar sem marcar erro na imagem
+    jmp .end ;; Let's continue without marking an error in the image
 
-.imagemInvalida:
+.invalidImage:
 
-    mov si, HBoot.Mensagens.imagemInvalida
+    mov si, HBoot.Messages.invalidImage
 
-    call imprimir
+    call printScreen
 
     jmp $
     
-.fim:
+.end:
 
     ret

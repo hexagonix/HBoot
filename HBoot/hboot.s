@@ -66,26 +66,26 @@
 ;;
 ;; $HexagonixOS$
 
-;; Segmentos de carregamento do HBoot e do Hexagon
+;; HBoot and Hexagon loading threads
 
-SEG_HBOOT  equ 0x1000 ;; Segmento de carregamento de HBoot  
-SEG_DIAG   equ 0x60   ;; Segmento para carregamento de imagens de diagnóstico
+SEG_HBOOT  equ 0x1000 ;; HBoot Load Segment
+SEG_DIAG   equ 0x60   ;; Segment for loading diagnostic images
 
-;; Dados de arquitetura a qual deve-se carregar o Hexagon
+;; Architecture data for which Hexagon must be loaded
 
-ARQUITETURA = 01h ;; Arquitetura do HBoot e a qual se destina o kernel
+ARCHITECTURE = 01h ;; HBoot architecture and what the kernel is intended for
 
-;; Memória mínima para o boot do Hexagon. Vale lembrar que os requisitos são variáveis a depender
-;; da versão do Hexagon, sendo necessária a adaptação à necessidade mínima de memória.
+;; Minimum memory for Hexagon boot. It is worth remembering that the requirements vary depending on
+;; the version of Hexagon, making it necessary to adapt to the minimum memory requirement.
 
-MEMORIA_MINIMA = 31744 ;; Memória mínima necessária para boot seguro
+MINIMUM_MEMORY = 31744 ;; Minimum memory required for secure boot
 
-;; Constantes utilizadas para alterações de parâmetros de boot
+;; Constants used to change boot parameters
 
-FATOR_TEMPO = 10000 ;; Contagem de décimos de segundo
-CICLOS_PARAMETROS_INICIACAO = 20 ;; Contagem de tempo = valor x 1 décimo de segundo
+TIME_FACTOR = 10000        ;; Counting tenths of a second
+INIT_CICLES_PARAMETER = 20 ;; Time count = value x 1 tenth of a second
 
-;; Scancode de teclas do teclado
+;; Keyboard key scancode
 
 F8  = 42h
 ESC = 1Bh

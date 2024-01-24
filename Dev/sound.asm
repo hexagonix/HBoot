@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-emitirsom:
+playSound:
 
     pusha
 
@@ -96,7 +96,7 @@ emitirsom:
 
 ;;************************************************************************************
 
-desligarsom:
+turnOffSound:
 
     pusha
 

@@ -68,37 +68,37 @@
 
 use16
 
-;; Aqui será criada uma tabela em memória com informações sobre os dispositivos em uma
-;; árvore binária linear, mais como uma matriz. O povoamento com as informações sobre 
-;; os dispositivos, obtidas pelo HBoot por análise direta de I/O ou pelo BIOS, devem
-;; respeitar a ordem de campos, para que essas informações possam ser decodificadas 
-;; pelo Hexagon mais tarde. Isso vai substituir os endereços e valores "hard-coded" 
-;; do Hexagon. A árvore terá 128 campos de uma word cada, e cada dispositivo terá duas
-;; words para armazenamento de informações. Futuramente, cada um poderá ter duas words 
-;; e um campo para arnamzenamento de nome obtido.
+;; Here a table will be created in memory with information about the devices in a linear binary
+;; tree, more like a matrix. The population with information about the devices, obtained by HBoot
+;; through direct I/O analysis or by the BIOS, must respect the field order, so that this 
+;; information can be decoded by Hexagon later.
+;; This will replace Hexagon's "hard-coded" addresses and values.
+;; The tree will have 128 fields of one word each, and each device will have two words for storing
+;; information.
+;; In the future, each one may have two words and a field to store the obtained name.
 
 HBoot.Dev:
 
-.arvoreDispositivos16: times 128 dw 0
+.deviceTree16: times 128 dw 0
 
-;; Agora a tabela deve ser preenchida durante a operação do HBoot em uma ordem definida, como a 
-;; seguir. O endereço dessa tabela será fornecida ao Hexagon, para que ele a decodifique. Isso
-;; consegue garantir que mais informações possam ser passadas, uma vez que temos um número 
-;; limitado de registradores. Seguir de acordo com o offset. O primeiro fica vazio e o segundo
-;; com o valor referente
+;; Now the table must be populated during HBoot operation in a defined order as follows.
+;; The address of this table will be provided to Hexagon so that it can decode it.
+;; This ensures that more information can be passed, since we have a limited number of registers.
+;; Follow according to the offset. The first one is empty and the second one with the corresponding
+;; value
 
-;; Campo | Dados/valores/endereços/offsets
+;; Field | Data/values/addresses/offsets
 ;;
-;; 0       Vazio/uso futuro
-;; 3       Memória total detectada
-;; 5       Endereço da primeira porta paralela - 0 se ausente
-;; 7       ID da unidade de boot
-;; 9       Número de discos rígidos disponíveis
-;; 11      bool - presença ou ausência de unidades de disquete
-;; 13      ID do sistema de arquivos da unidade de boot
-;; 15      Versão principal do HBoot
-;; 17      Subversão do HBoot  
-;; 19      bool - presença ou ausência de linha de comando para o Hexagon
+;; 0    Empty/future use
+;; 3    Total memory detected
+;; 5    Address of first parallel port - 0 if absent
+;; 7    Boot drive ID
+;; 9    Number of available hard drives
+;; 11   bool - presence or absence of floppy disk drives
+;; 13   Boot drive file system ID
+;; 15   Major version of HBoot
+;; 17   Subversion of HBoot
+;; 19   bool - presence or absence of command line for Hexagon
 ;; 21     
 ;; 23
 ;; 25
@@ -121,16 +121,16 @@ HBoot.Dev:
 ;; 61
 ;; 63
 
-.arvoreDispositivos32: times 64 dd 0
+.deviceTree32: times 64 dd 0
 
-;; Agora a tabela deve ser preenchida durante a operação do HBoot em uma ordem definida, como a 
-;; seguir. O endereço dessa tabela será fornecida ao Hexagon, para que ele a decodifique. Isso
-;; consegue garantir que mais informações possam ser passadas, uma vez que temos um número 
-;; limitado de registradores. Seguir de acordo com o offset
+;; Now the table must be populated during HBoot operation in a defined order as follows.
+;; The address of this table will be provided to Hexagon so that it can decode it.
+;; This ensures that more information can be passed, since we have a limited number of registers.
+;; Follow according to the offset
 
-;; Campo | Dados/valores/endereços/offsets
+;; Field | Data/values/addresses/offsets
 ;;
-;; 0       Vazio/uso futuro
+;; 0    Empty/future use
 ;; 3       
 ;; 5       
 ;; 7       
@@ -149,35 +149,35 @@ HBoot.Dev:
 
 ;;************************************************************************************
 
-povoarArvoreDispositivos:
+populateDeviceTree:
 
     push ax 
     push bx 
     push cx
 
-.povoarArvore16:
+.populateDeviceTree16:
 
-;; Campo 0 e 1 permanecem vazios 
+;; Field 0 and 1 remain empty
 
-;; Campos 2 e 3: memória total disponível
+;; Fields 2 and 3: total available memory
 
-    mov ax, word[memoriaDisponivel]
-    mov word[HBoot.Dev.arvoreDispositivos16+3], ax
-    mov word[HBoot.Dev.arvoreDispositivos16+2], 00h ;; Campo 2
+    mov ax, word[availableMemory]
+    mov word[HBoot.Dev.deviceTree16+3], ax
+    mov word[HBoot.Dev.deviceTree16+2], 00h ;; Field 2
 
-;; Campos 4 e 5: endereço da primeira porta paralela
+;; Fields 4 and 5: address of the first parallel port
 
-    mov ax, word[HBoot.Paralela.Controle.enderecoLPT1]
-    mov word[HBoot.Dev.arvoreDispositivos16+5], ax
-    mov word[HBoot.Dev.arvoreDispositivos16+4], 00h 
+    mov ax, word[HBoot.Parallel.Control.adressLPT1]
+    mov word[HBoot.Dev.deviceTree16+5], ax
+    mov word[HBoot.Dev.deviceTree16+4], 00h 
 
-;; Campos 6 e 7: ID da unidade de boot
+;; Fields 6 and 7: Boot drive id
 
     movzx ax, byte[idDrive]
-    mov word[HBoot.Dev.arvoreDispositivos16+7], ax
-    mov word[HBoot.Dev.arvoreDispositivos16+6], 00h 
+    mov word[HBoot.Dev.deviceTree16+7], ax
+    mov word[HBoot.Dev.deviceTree16+6], 00h 
 
-.povoarArvore32:
+.populateDeviceTree32:
 
     pop cx 
     pop bx 
@@ -187,16 +187,16 @@ povoarArvoreDispositivos:
 
 ;;************************************************************************************
 
-;; Esta é a cola de código de dispositivos suportados.
-;; Aqui são incluídos os arquivos que interagem com dispositivos da máquina
+;; This is the code glue for supported devices.
+;; Included here are files that interact with machine devices
 
 include "init.asm"
-include "discos.asm"
-include "teclado.asm"
+include "disks.asm"
+include "keyboard.asm"
 include "console.asm"
-include "som.asm"
+include "sound.asm"
 include "memx86.asm"
 include "procx86.asm"
 include "BIOSx86.asm"
 include "serial.asm"
-include "paralela.asm"
+include "parallel.asm"

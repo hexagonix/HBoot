@@ -66,9 +66,9 @@
 ;;
 ;; $HexagonixOS$
 
-;; Função para limpar a tela em modo real
+;; Function to clear the screen in real mode
 
-limparTela:
+clearScreen:
 
     mov dx, 0
     mov bh, 0
@@ -89,32 +89,32 @@ limparTela:
 
 ;;************************************************************************************
 
-;; Função para imprimir string em modo real
+;; Function for print string in real mode
 ;;
-;; Entrada:
+;; Input:
 ;;
 ;; SI - String
 
-imprimir:
+printScreen:
 
     lodsb ;; mov AL, [SI] & inc SI
     
     or al, al ;; cmp AL, 0
-    jz .pronto
+    jz .done
     
     mov ah, 0Eh
     
-    int 10h ;; Enviar [SI] para a tela
+    int 10h ;; Send [SI] to screen
     
-    jmp imprimir
+    jmp printScreen
     
-.pronto: 
+.done: 
 
     ret
 
 ;;************************************************************************************
 
-imprimirHexadecimal:
+printHexadecimal:
 
     pusha
 
@@ -126,7 +126,7 @@ imprimirHexadecimal:
     lodsb
         
     or al, al
-    jz .pronto
+    jz .done
         
     mov ah, 0x0e
     mov bx, 0
@@ -136,7 +136,7 @@ imprimirHexadecimal:
         
     jmp .cont
         
-.pronto:
+.done:
     
     mov sp, bp
     
@@ -146,25 +146,25 @@ imprimirHexadecimal:
 
 ;;************************************************************************************
 
-testarVideo:
+testVideo:
 
     mov ax, 19
 
-    int 10h ;; 320x200 com 256 cores
+    int 10h ;; 320x200 with 256 colors
 
     mov ax, 0A000h
-    mov es, ax ;; Definir DI para o segmento de memória de vídeo
-    xor bl, bl ;; BL será usado para armazenar o número da figura
+    mov es, ax ;; Set DI for video memory segment
+    xor bl, bl ;; BL will be used to store the figure number
 
-.novo:
+.new:
 
     inc bl
 
-    hlt ;; Processador irá aguardar
+    hlt ;; Processor will wait
 
     xor cx, cx
-    xor dx, dx ;; CX e DX representam as coordenadas
-    xor di, di ;; Defina di para o início da tela
+    xor dx, dx ;; CX and DX represent the coordinates
+    xor di, di ;; Set di to start of screen
 
 .a:
 
@@ -172,13 +172,13 @@ testarVideo:
     xor al, dl
     
     add al, dl
-    add al, bl ;; Cria uma cor
+    add al, bl ;; Create a color
     
-    stosb ;; Escreve um pixel
+    stosb ;; Write a pixel
     
     inc cx
 
-    cmp cx, 320 ;; Atualizar coordenadas
+    cmp cx, 320 ;; Update coordinates
     jne .a
 
     xor cx, cx
@@ -188,17 +188,17 @@ testarVideo:
     cmp dx, 200
     jne .a
 
-    mov ah, 1 ;; Checa se alguma tecla foi pressionada
+    mov ah, 1 ;; Check if any key has been pressed
     
     int 16h
 
-    jz .novo ;; Se nenhuma tecla pressionada, exiba outra figura
+    jz .new ;; If no key pressed, display another figure
 
-    mov ax, 3 ;; Retornar ao modo texto
+    mov ax, 3 ;; Return to text mode
     
     int 10h
 
-;; Importante restaurar o segmento antes de finalizar!
+;; It is important to restore the segment before finishing!
 
     mov ax, SEG_HBOOT
     mov es, ax

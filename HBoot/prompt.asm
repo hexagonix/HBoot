@@ -66,99 +66,98 @@
 ;;
 ;; $HexagonixOS$
 
-verificarInteracaoUsuario:
+verifyUserInteraction:
 
-    exibir HBoot.Mensagens.aguardarUsuario
+    fputs HBoot.Messages.waitUser
 
     mov bx, 0
 
-.loopSegundos:
+.loopSeconds:
 
-    mov dx, FATOR_TEMPO
+    mov dx, TIME_FACTOR
 
-    call executarAtraso
+    call causeDelay
 
     add bx, 1
 
-    cmp bx, CICLOS_PARAMETROS_INICIACAO
-    je .continuarBoot
+    cmp bx, INIT_CICLES_PARAMETER
+    je .continueBoot
 
     mov ah, 1
 
     int 16h
 
-    jz .loopSegundos
+    jz .loopSeconds
 
     mov ah, 0
 
     int 16h
 
     cmp ah, F8 ;; F8
-    je .pressionouF8
+    je .pressedF8
 
-    jmp .continuarBoot
+    jmp .continueBoot
 
 ;;*******************************
 
-.pressionouF8:
+.pressedF8:
 
-    exibir HBoot.Mensagens.pressionado
+    fputs HBoot.Messages.pressed
 
-.pontoPressionouF8:
+.pointPressedF8:
 
-    novaLinha
+    putNewLine
 
-    exibir HBoot.Mensagens.pressionouF8
+    fputs HBoot.Messages.pressedF8
 
-    exibir HBoot.Mensagens.listaModif
+    fputs HBoot.Messages.mainCategories
 
-    exibir HBoot.Mensagens.selecioneModif
+    fputs HBoot.Messages.selectCategory
 
-.pontoControlePressionouF8:
+.pointPressedF8Checkpoint:
 
-;; Agora vamos verificar qual a opção selecionada pelo usuário para modificar o comportamento
-;; da inicialização. Vamos primeiro ler o número
+;; Now let's check which option the user selected to modify the startup behavior.
+;; Let's first read the category number
 
     mov ah, 0
 
     int 16h
 
-;; Agora vamos comparar com as opções disponíveis
+;; Now let's compare with the available options
 
     cmp al, '1'
-    je .linhaComando
+    je .commandLine
 
     cmp al, '2'
-    je .exibirInformacoesDetalhadas
+    je .showDetailedInfo
 
     cmp al, '3'
-    je .continuarBoot
+    je .continueBoot
 
     cmp al, '4'
     je .infoHBoot
 
     cmp al, '5'
-    je .reiniciarDispositivo
+    je .rebootDevice
 
     ;; cmp al, '9'
-    ;; je .alterarVerbose
+    ;; je .changeVerboseMode
 
     cmp al, 't'
-    je .testarComponentes
+    je .testComponents
 
     cmp al, 'T'
-    je .testarComponentes
+    je .testComponents
 
+;; If no valid key was pressed, return to key selection
 
-;; Se nenhuma tecla válida foi pressionada, retornar à escolha de teclas
-
-    jmp .pontoControlePressionouF8
+    jmp .pointPressedF8Checkpoint
 
 ;;*******************************
 
-.reiniciarDispositivo:
+.rebootDevice:
 
-    call pararDiscos
+    call stopDisks
 
     hlt
 
@@ -166,166 +165,166 @@ verificarInteracaoUsuario:
 
 ;;*******************************
 
-;; Aqui vamos fornecer mais informações sobre o HBoot
+;; Here we will provide more information about HBoot
 
 .infoHBoot:
 
-    exibir HBoot.Mensagens.pressionado
+    fputs HBoot.Messages.pressed
 
-    exibir HBoot.Mensagens.sobreHBoot
+    fputs HBoot.Messages.aboutHBoot
 
-    exibir HBoot.Mensagens.enterContinuar
+    fputs HBoot.Messages.continueEnter
 
-    call aguardarTeclado
+    call waitKeyboard
 
-    jmp .retornar
+    jmp .return
 
 ;;*******************************
 
-.alterarVerbose:
+.changeVerboseMode:
 
-    exibir HBoot.Mensagens.pressionado
+    fputs HBoot.Messages.pressed
 
-    exibir HBoot.Mensagens.alterarVerbose
+    fputs HBoot.Messages.changeVerboseMode
 
     mov ah, 00h
 
     int 16h
 
     cmp al, '0'
-    je .desativarVerbose
+    je .turnOffVerbose
 
     cmp al, '1'
-    je .ativarVerbose
+    je .turnOnVerbose
 
-    exibir HBoot.Mensagens.falhaOpcao
+    fputs HBoot.Messages.optionFailure
 
-    exibir HBoot.Mensagens.opcaoInvalida
+    fputs HBoot.Messages.invalidOption
 
-    call aguardarTeclado
+    call waitKeyboard
 
-    exibir HBoot.Mensagens.prosseguirBoot
+    fputs HBoot.Messages.resumeBoot
 
-.desativarVerbose:
+.turnOffVerbose:
 
-    mov byte[HBoot.Parametros.verbose], 00h
+    mov byte[HBoot.Parameters.verbose], 00h
 
-    exibir HBoot.Mensagens.prosseguirBoot
+    fputs HBoot.Messages.resumeBoot
 
-    jmp .retornar
+    jmp .return
 
-.ativarVerbose:
+.turnOnVerbose:
 
-    mov byte[HBoot.Parametros.verbose], 01h
+    mov byte[HBoot.Parameters.verbose], 01h
 
-    exibir HBoot.Mensagens.prosseguirBoot
+    fputs HBoot.Messages.resumeBoot
 
-    jmp .retornar
-
-;;*******************************
-
-.linhaComando:
-
-    exibir HBoot.Mensagens.pressionado
-
-    exibir HBoot.Mensagens.linhaComando
-
-    mov di, HBoot.Parametros.bufLeitura
-
-    call lerTeclado
-
-    exibir HBoot.Mensagens.pressionado
-
-    exibir HBoot.Mensagens.prosseguirBoot
-
-    jmp .retornar
+    jmp .return
 
 ;;*******************************
 
-.exibirInformacoesDetalhadas:
+.commandLine:
 
-    exibir HBoot.Mensagens.pressionado
+    fputs HBoot.Messages.pressed
 
-    exibir HBoot.Mensagens.informacoesDetalhadas
+    fputs HBoot.Messages.commandLine
 
-    exibir HBoot.Mensagens.vendedorProcessador
+    mov di, HBoot.Parameters.readBuffer
 
-;; Agora vamos verificar se existe algo dentro da variável
+    call readKeyboard
 
-    exibir HBoot.Procx86.Dados.vendedorProcx86
+    fputs HBoot.Messages.pressed
 
-    exibir HBoot.Mensagens.nomeProcessador
+    fputs HBoot.Messages.resumeBoot
 
-    mov si, HBoot.Procx86.Dados.nomeProcx86
+    jmp .return
+
+;;*******************************
+
+.showDetailedInfo:
+
+    fputs HBoot.Messages.pressed
+
+    fputs HBoot.Messages.detailedInfo
+
+    fputs HBoot.Messages.processorVendor
+
+;; Now let's check if there is something inside the variable
+
+    fputs HBoot.Procx86.Data.processorVendor
+
+    fputs HBoot.Messages.processorName
+
+    mov si, HBoot.Procx86.Data.processorName
 
     cmp byte[si], 0
-    jne .comProcessadorVariavel
+    jne .withProcessorNameAvailable
 
-    mov si, HBoot.Mensagens.semCPUIDNome
+    mov si, HBoot.Messages.withouCPUID
 
-.comProcessadorVariavel:
+.withProcessorNameAvailable:
 
-    call imprimir
+    call printScreen
 
-    exibir HBoot.Mensagens.unidadesOnline
+    fputs HBoot.Messages.onlineVolumes
 
-.verificarUnidadesOnline:
+.verifyOnlineVolumes:
 
-.verificardsq0:
+.verifydsq0:
 
-    cmp byte[HBoot.Disco.dsq0Online], 01h
+    cmp byte[HBoot.Disk.dsq0Online], 01h
     je .dsq0Online
 
-    jmp .verificardsq1
+    jmp .verifydsq1
 
 .dsq0Online:
 
-    exibir HBoot.Mensagens.dsq0
+    fputs HBoot.Messages.dsq0
 
-    exibir HBoot.Mensagens.espacoSimples
+    fputs HBoot.Messages.space
 
-.verificardsq1:
+.verifydsq1:
 
-    cmp byte[HBoot.Disco.dsq1Online], 01h
+    cmp byte[HBoot.Disk.dsq1Online], 01h
     je .dsq1Online
 
-    jmp .verificarhd0
+    jmp .verifyhd0
 
 .dsq1Online:
 
-    exibir HBoot.Mensagens.dsq1
+    fputs HBoot.Messages.dsq1
 
-    exibir HBoot.Mensagens.espacoSimples
+    fputs HBoot.Messages.space
 
-.verificarhd0:
+.verifyhd0:
 
-    cmp byte[HBoot.Disco.hd0Online], 01h
+    cmp byte[HBoot.Disk.hd0Online], 01h
     je .hd0Online
 
-    jmp .verificarhd1
+    jmp .verifyhd1
 
 .hd0Online:
 
-    exibir HBoot.Mensagens.hd0
+    fputs HBoot.Messages.hd0
 
-    exibir HBoot.Mensagens.espacoSimples
+    fputs HBoot.Messages.space
 
-.verificarhd1:
+.verifyhd1:
 
-    cmp byte[HBoot.Disco.hd1Online], 01h
+    cmp byte[HBoot.Disk.hd1Online], 01h
     je .hd1Online
 
-    jmp .verificarConcluido
+    jmp .verificationCompleted
 
 .hd1Online:
 
-    exibir HBoot.Mensagens.hd1
+    fputs HBoot.Messages.hd1
 
-    exibir HBoot.Mensagens.espacoSimples
+    fputs HBoot.Messages.space
 
-.verificarConcluido:
+.verificationCompleted:
 
-   exibir HBoot.Mensagens.discoBoot
+   fputs HBoot.Messages.bootDisk
 
     mov dl, byte[idDrive]
 
@@ -349,350 +348,349 @@ verificarInteracaoUsuario:
 
 .dsq0:
 
-    exibir HBoot.Mensagens.dsq0
+    fputs HBoot.Messages.dsq0
 
-    jmp .continuarInformacoes
+    jmp .continueInfo
 
 .dsq1:
 
-    exibir HBoot.Mensagens.dsq1
+    fputs HBoot.Messages.dsq1
 
-    jmp .continuarInformacoes
+    jmp .continueInfo
 
 .hd0:
 
-    exibir HBoot.Mensagens.hd0
+    fputs HBoot.Messages.hd0
 
-    jmp .continuarInformacoes
+    jmp .continueInfo
 
 .hd1:
 
-    exibir HBoot.Mensagens.hd1
+    fputs HBoot.Messages.hd1
 
-    jmp .continuarInformacoes
+    jmp .continueInfo
 
 .hd2:
 
-    exibir HBoot.Mensagens.hd2
+    fputs HBoot.Messages.hd2
 
-    jmp .continuarInformacoes
+    jmp .continueInfo
 
 .hd3:
 
-    exibir HBoot.Mensagens.hd3
+    fputs HBoot.Messages.hd3
 
-    jmp .continuarInformacoes
+    jmp .continueInfo
 
-.continuarInformacoes:
+.continueInfo:
 
-    exibir HBoot.Mensagens.sistemaArquivos
+    fputs HBoot.Messages.filesystems
 
-    cmp byte[HBoot.SistemaArquivos.codigo], HBoot.SistemaArquivos.FAT12
+    cmp byte[HBoot.Filesystem.code], HBoot.Filesystem.FAT12
     je .FAT12
 
-    cmp byte[HBoot.SistemaArquivos.codigo], HBoot.SistemaArquivos.FAT16
+    cmp byte[HBoot.Filesystem.code], HBoot.Filesystem.FAT16
     je .FAT16
 
-    cmp byte[HBoot.SistemaArquivos.codigo], HBoot.SistemaArquivos.FAT16B
+    cmp byte[HBoot.Filesystem.code], HBoot.Filesystem.FAT16B
     je .FAT16B
 
-    cmp byte[HBoot.SistemaArquivos.codigo], HBoot.SistemaArquivos.FAT16LBA
+    cmp byte[HBoot.Filesystem.code], HBoot.Filesystem.FAT16LBA
     je .FAT16LBA
 
-    mov si, HBoot.Mensagens.saDesconhecido
+    mov si, HBoot.Messages.unknownFilesystem
 
 .FAT12:
 
-    exibir HBoot.Mensagens.FAT12
+    fputs HBoot.Messages.FAT12
 
-    jmp .continuarSistemaArquivos
+    jmp .continueFilesystem
 
 .FAT16:
 
-    exibir HBoot.Mensagens.FAT16
+    fputs HBoot.Messages.FAT16
 
-    jmp .continuarSistemaArquivos
+    jmp .continueFilesystem
 
 .FAT16B:
 
-    exibir HBoot.Mensagens.FAT16B
+    fputs HBoot.Messages.FAT16B
 
-    jmp .continuarSistemaArquivos
+    jmp .continueFilesystem
 
 .FAT16LBA:
 
-    exibir HBoot.Mensagens.FAT16LBA
+    fputs HBoot.Messages.FAT16LBA
 
-    jmp .continuarSistemaArquivos
+    jmp .continueFilesystem
 
-.continuarSistemaArquivos:
+.continueFilesystem:
 
-    exibir HBoot.Mensagens.arquivoHexagon
+    fputs HBoot.Messages.hexagonFile
 
-    exibir HBoot.Modulos.Hexagon.Arquivos.imagemHexagon
+    fputs HBoot.Modules.Hexagon.Files.imageHexagon
 
-    exibir HBoot.Mensagens.infoLinhaComando
+    fputs HBoot.Messages.commandLineInfo
 
-    mov si, HBoot.Parametros.bufLeitura
+    mov si, HBoot.Parameters.readBuffer
 
     cmp byte[si], 0
-    je .semLinhaDefinida
+    je .emptyCommandLine
 
-    call imprimir
+    call printScreen
 
-    jmp .continuarLinha
+    jmp .continueCommandLine
 
-.semLinhaDefinida:
+.emptyCommandLine:
 
-    exibir HBoot.Mensagens.linhaVazia
+    fputs HBoot.Messages.emptyCommandLine
 
-.continuarLinha:
+.continueCommandLine:
 
-    exibir HBoot.Mensagens.versaoHBoot
+    fputs HBoot.Messages.versionHBoot
 
-    exibir HBoot.Mensagens.versaoProtocolo
+    fputs HBoot.Messages.versionProtocol
 
-    exibir HBoot.Mensagens.enterContinuar
+    fputs HBoot.Messages.continueEnter
 
-    call aguardarTeclado
+    call waitKeyboard
 
-    jmp .retornar
+    jmp .return
 
 ;;*******************************
 
-.testarComponentes:
+.testComponents:
 
-    exibir HBoot.Mensagens.pressionado
+    fputs HBoot.Messages.pressed
 
-.semAviso:
+.withoutWarning:
 
-    exibir HBoot.Mensagens.testarComponentes
+    fputs HBoot.Messages.testComponents
 
-    exibir HBoot.Mensagens.listaComponentes
+    fputs HBoot.Messages.componentList
 
-    exibir HBoot.Mensagens.selecioneComponente
+    fputs HBoot.Messages.selectComponent
 
-.pontoControleTeste:
+.testControlCheckpoint:
 
-;; Agora vamos verificar qual a opção selecionada pelo usuário para modificar o comportamento
-;; da inicialização. Vamos primeiro ler o número
+;; Now let's check which option the user selected
 
     mov ah, 0
 
     int 16h
 
-;; Agora vamos comparar com as opções disponíveis
+;; Now let's compare with the available options
 
     cmp al, '1'
-    je .testarTom
+    je .playSound
 
     cmp al, '2'
-    je .exibirRegs
+    je .displayRegisters
 
     cmp al, '3'
-    je .testarVideo
+    je .testVideo
 
     cmp al, '4'
-    je .reiniciar
+    je .reboot
 
     cmp al, '5'
-    je .pontoPressionouF8
+    je .pointPressedF8
 
     cmp al, 'd'
-    je .iniciarDOS
+    je .startDOSMode
 
     cmp al, 'D'
-    je .iniciarDOS
+    je .startDOSMode
 
     cmp al, 'm'
-    je .carregarModuloHBoot
+    je .loadHBootModule
 
     cmp al, 'M'
-    je .carregarModuloHBoot
+    je .loadHBootModule
 
-    jmp .pontoControleTeste
-
-;;*******************************
-
-.carregarModuloHBoot:
-
-   jmp carregarModulo
+    jmp .testControlCheckpoint
 
 ;;*******************************
 
-.iniciarDOS:
+.loadHBootModule:
 
-    exibir HBoot.Mensagens.pressionado
+   jmp loadAndStartHBootModule
 
-    exibir HBoot.Mensagens.modoDOS
+;;*******************************
 
-    exibir HBoot.Mensagens.selecioneModif
+.startDOSMode:
 
-.selecionarDOS:
+    fputs HBoot.Messages.pressed
+
+    fputs HBoot.Messages.DOSMode
+
+    fputs HBoot.Messages.selectCategory
+
+.selectDOSFlavor:
 
     mov ah, 0
 
     int 16h
 
-;; Agora vamos comparar com as opções disponíveis
+;; Now let's compare with the available options
 
     cmp al, '1'
-    je .iniciarFreeDOS
+    je .startFreeDOS
 
     cmp al, '2'
-    je .testarComponentes
+    je .testComponents
 
-    jmp .selecionarDOS
+    jmp .selectDOSFlavor
 
-.iniciarFreeDOS:
+.startFreeDOS:
 
-;; Vamos marcar como modo de compatibilidade DOS para o boot
+;; Let's mark it as DOS compatibility mode for boot
 
-    mov byte[HBoot.Controle.modoBoot], 01h
+    mov byte[HBoot.Control.bootMode], 01h
 
-    jmp HBoot.Modulos.DOS.iniciarFreeDOS
-
-;;*******************************
-
-.testarTom:
-
-    mov si, HBoot.Mensagens.pressionado
-
-    call imprimir
-
-    tocarNota HBoot.Sons.CANON1, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.CANON2, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.CANON3, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.CANON4, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.CANON5, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.CANON6, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.CANON7, HBoot.Sons.tNormal
-    tocarNota HBoot.Sons.CANON8, HBoot.Sons.tExtendido
-
-    call desligarsom
-
-    jmp .testarComponentes
+    jmp HBoot.Modules.DOS.startFreeDOS
 
 ;;*******************************
 
-.exibirRegs:
+.playSound:
 
-    exibir HBoot.Mensagens.pressionado
+    mov si, HBoot.Messages.pressed
 
-    exibir HBoot.Mensagens.exibirRegs
+    call printScreen
 
-    push HBoot.Mensagens.axx
+    playNote HBoot.Sounds.CANON1, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.CANON2, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.CANON3, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.CANON4, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.CANON5, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.CANON6, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.CANON7, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.CANON8, HBoot.Sounds.tExtended
+
+    call turnOffSound
+
+    jmp .testComponents
+
+;;*******************************
+
+.displayRegisters:
+
+    fputs HBoot.Messages.pressed
+
+    fputs HBoot.Messages.displayRegisters
+
+    push HBoot.Messages.axx
     push ax
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.bxx
+    push HBoot.Messages.bxx
     push bx
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.cxx
+    push HBoot.Messages.cxx
     push cx
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.dxx
+    push HBoot.Messages.dxx
     push dx
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.css
+    push HBoot.Messages.css
     push cs
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.dss
+    push HBoot.Messages.dss
     push ds
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.sss
+    push HBoot.Messages.sss
     push ss
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.ess
+    push HBoot.Messages.ess
     push es
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.spp
+    push HBoot.Messages.spp
     push sp
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.sii
+    push HBoot.Messages.sii
     push si
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.dii
+    push HBoot.Messages.dii
     push di
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.gss
+    push HBoot.Messages.gss
     push gs
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    push HBoot.Mensagens.fss
+    push HBoot.Messages.fss
     push fs
 
-    call paraHexadecimal
+    call toHexadecimal
 
-    exibir HBoot.Mensagens.reinicioContinuar
+    fputs HBoot.Messages.continueReboot
 
-    call aguardarTeclado
+    call waitKeyboard
 
-    call pararDiscos
+    call stopDisks
 
     int 19h
 
-;; Se falhar, vamos ficar aqui até o reinício vir automaticamente
+;; If it fails, we will stay here until the restart comes automatically
 
     jmp $
 
 ;;*******************************
 
-.testarVideo:
+.testVideo:
 
     pushad
     pushf
 
-    call testarVideo
+    call testVideo
 
     popf
     popad
 
-    jmp .semAviso
+    jmp .withoutWarning
 
 
 ;;*******************************
 
-.reiniciar:
+.reboot:
 
-    exibir HBoot.Mensagens.pressionado
+    fputs HBoot.Messages.pressed
 
-    exibir HBoot.Mensagens.reinicioContinuarED
+    fputs HBoot.Messages.rebootRequired
 
-    call aguardarTeclado
+    call waitKeyboard
 
-    call pararDiscos
+    call stopDisks
 
     int 19h
 
-.retornar:
+.return:
 
-    jmp .pontoPressionouF8
+    jmp .pointPressedF8
 
 ;;*******************************
 
-.continuarBoot:
+.continueBoot:
 
     ret

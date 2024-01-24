@@ -66,73 +66,72 @@
 ;;
 ;; $HexagonixOS$
 
-;; Tamanho do cabeçalho HAPP da imagem
+;; Image HAPP header size
 
-CABECALHO_HAPP = 26h ;; Versão 2.0 da definição HAPP
+HAPP_HEADER_SIZE = 26h ;; Version 2.0 of the HAPP definition
 
-;; Caso nenhuma interação tenha acontecido, devemos então procurar e iniciar o Hexagon
-;; Caso alguma interação tenha ocorrido mas o usuário selecionou continuar a inicialização,
-;; também devemos continuar com o protocolo de boot
+;; If no interaction has occurred, we must then look for and start Hexagon
+;; If some interaction occurred but the user selected to continue booting,
+;; we must also continue with the boot protocol
 
-HBoot.Modulos.Hexagon.Segmentos.segmentoHexagon equ 0x50 ;; Segmento para carregar o Hexagon
-HBoot.Modulos.Hexagon.Arquivos.imagemHexagon:
-db "HEXAGON    ", 0 ;; Nome do arquivo que contém o kernel Hexagon
-
-;;************************************************************************************
-
-carregarHexagon:
-
-    exibir HBoot.Mensagens.carregarHexagon
-
-    call configurarInicioHexagon ;; Configura nome de imagem e localização em memória
-
-    call procurarArquivo ;; Procurar o arquivo que contêm o kernel
-
-    jmp executarKernel ;; Executar o Hexagon
+HBoot.Modules.Hexagon.Segments.segmentHexagon equ 0x50 ;; Segment for loading the Hexagon
+HBoot.Modules.Hexagon.Files.imageHexagon:
+db "HEXAGON    ", 0 ;; Name of the file containing the Hexagon kernel
 
 ;;************************************************************************************
 
-;; Função que transfere a execução para o Hexagon, passando parâmetros pelos
-;; registradores, como descrito a seguir:
+loadAndStartHexagon:
+
+    fputs HBoot.Messages.loadHexagon
+
+    call configureHexagon ;; Configure image name and memory location
+
+    call searchFile ;; Search for the file containing the kernel
+
+    jmp startHexagonKernel ;; Run Hexagon
+
+;;************************************************************************************
+
+;; Function that transfers execution to Hexagon, passing parameters through
+;;registers, as described below:
 ;;
-;; EBP - Ponteiro para o BIOS Parameter Block do volume de boot
-;; DL  - Número lógico do volume usado para a inicialização
-;; CX  - Quantidade, em Kbytes, de memória RAM instalada na máquina
-;; Mais parâmetros poderão ser passados agora em razão da criação do segundo
-;; estágio (HBoot)
+;; EBP - Pointer to the BIOS Parameter Block of the boot volume
+;; DL  - Logical volume number used for boot
+;; CX  - Quantity, in Kbytes, of RAM memory installed on the machine
+;; More parameters can now be passed due to the creation of the second stage (HBoot)
 
-executarKernel:
+startHexagonKernel:
 
-    pop ebp ;; Ponteiro para o BPB
-    mov esi, HBoot.Parametros.bufLeitura + (SEG_HBOOT * 16) ;; Apontar ESI para parâmetros
-    mov bl, byte[idDrive] ;; Drive utilizado para a inicialização
-    mov cx, word[memoriaDisponivel] ;; Memória RAM instalada
+    pop ebp ;; Pointer to BPB
+    mov esi, HBoot.Parameters.readBuffer + (SEG_HBOOT * 16) ;; Point ESI to parameters
+    mov bl, byte[idDrive] ;; Drive used for boot
+    mov cx, word[availableMemory] ;; Installed memory
 
-;; O Hexagon apresenta o cabeçalho HAPP, que é padrão em todos os executáveis no
-;; formato Hexagon. Este cabeçalho apresenta 38 bytes (0x26), então devemos pulá-lo. Os
-;; dados contidos no cabeçalho serão futuramente validados, se necessário
+;; Hexagon features the HAPP header, which is standard on all Hexagon format executables.
+;; This header is 38 bytes long (0x26), so we should skip it.
+;; The data contained in the header will be validated in the future, if necessary
 
-;; Configurar CS:IP e executar o kernel
+;; Configure CS:IP and run the kernel
 
-    jmp HBoot.Modulos.Hexagon.Segmentos.segmentoHexagon:CABECALHO_HAPP
+    jmp HBoot.Modules.Hexagon.Segments.segmentHexagon:HAPP_HEADER_SIZE
 
 ;;************************************************************************************
 
-configurarInicioHexagon:
+configureHexagon:
 
-    mov si, HBoot.Modulos.Hexagon.Arquivos.imagemHexagon
-    mov di, HBoot.Arquivos.nomeImagem
+    mov si, HBoot.Modules.Hexagon.Files.imageHexagon
+    mov di, HBoot.Files.imageName
 
     mov cx, 11
 
-;; Copiar o nome do arquivo
+;; Copy file name
 
-    rep movsb ;; Copiar (ECX) caracteres de ESI para EDI
+    rep movsb ;; Copy (ECX) characters from ESI to EDI
 
-    mov word[HBoot.Arquivos.segmentoFinal], HBoot.Modulos.Hexagon.Segmentos.segmentoHexagon
+    mov word[HBoot.Files.finalSegment], HBoot.Modules.Hexagon.Segments.segmentHexagon
 
-;; Vamos marcar para modo de boot do Hexagon
+;; Let's set the Hexagon to boot mode
 
-    mov byte[HBoot.Controle.modoBoot], 00h
+    mov byte[HBoot.Control.bootMode], 00h
 
     ret

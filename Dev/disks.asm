@@ -66,13 +66,13 @@
 ;;
 ;; $HexagonixOS$
 
-HBoot.Disco:
+HBoot.Disk:
 
-.tamanho:      db 16
-.reservado:    db 0
-.totalSetores: dw 0
-.deslocamento: dw 0x0000
-.segmento:     dw 0
+.size:         db 16
+.reserved:     db 0
+.totalSectors: dw 0
+.offset:       dw 0x0000
+.segment:      dw 0
 .LBA:          dd 0
                dd 0
 .dsq0Online:   db 0
@@ -82,61 +82,61 @@ HBoot.Disco:
 
 ;;************************************************************************************
 ;;  
-;; Dados do disco
+;; Disk description
 ;;
 ;;************************************************************************************
                                                         
-bytesPorSetor:       dw 512 ;; Número de bytes em cada setor
-setoresPorCluster:   db 8   ;; Setores por cluster
-setoresReservados:   dw 16  ;; Setores reservados após o setor de inicialização
-totalFATs:           db 2   ;; Número de tabelas FAT
-entradasRaiz:        dw 512 ;; Número total de pastas e arquivos no diretório raiz
-setoresPorFAT:       dw 16  ;; Setores usados na FAT
-idDrive:             db 0   ;; Número de identificação do drive.
-tamanhoRaiz:         dw 0   ;; Tamanho do diretório raiz (em setores)
-tamanhoFATs:         dw 0   ;; Tamanho das tabelas FAT (em setores)
-areaDeDados:         dd 0   ;; Endereço físico da área de dados (LBA)
-enderecoLBAParticao: dd 0   ;; Endereço LBA da partição
-enderecoBPB:         dd 0   ;; Endereço do BIOS Parameter Block (BPB)
-cluster:             dw 0   ;; Cluster atual
-memoriaDisponivel:   dw 0   ;; Memória disponível
+bytesPerSector:     dw 512 ;; Number of bytes in each sector
+sectoresPerCluster: db 8   ;; Sectores per cluster
+reservedSectors:    dw 16  ;; Reserved sectors after the boot sector
+totalFATs:          db 2   ;; Number of FAT tables
+rootEntries:        dw 512 ;; Total number of folders and files in the root directory
+sectoresPerFAT:     dw 16  ;; Sectors per FAT
+idDrive:            db 0   ;; Drive identification number
+rootSize:           dw 0   ;; Root directory size (in sectors)
+sizeFATs:           dw 0   ;; Size of FAT tables (in sectors)
+dataArea:           dd 0   ;; Data area physical address (LBA)
+partitionLBAAdress: dd 0   ;; Partition LBA address
+BPBAdress:          dd 0   ;; BIOS Parameter Block (BPB) address
+cluster:            dw 0   ;; Current cluster
+availableMemory:    dw 0   ;; Available memory
 
 ;;************************************************************************************
 
-;; Carregar setor do disco especificado
+;; Load sector from specified disk
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; AX  - Total de setores para carregar
-;; ESI - Endereço LBA  
-;; ES:DI - Localização do destino
+;; AX    - Total sectors to load
+;; ESI   - LBA Address
+;; ES:DI - Destination
 
-carregarSetor:
+loadSector:
 
     push si
 
-    mov word[HBoot.Disco.totalSetores], ax
-    mov dword[HBoot.Disco.LBA], esi
-    mov word[HBoot.Disco.segmento], es
-    mov word[HBoot.Disco.deslocamento], di
+    mov word[HBoot.Disk.totalSectors], ax
+    mov dword[HBoot.Disk.LBA], esi
+    mov word[HBoot.Disk.segment], es
+    mov word[HBoot.Disk.offset], di
 
     mov dl, byte[idDrive]
-    mov si, HBoot.Disco
-    mov ah, 0x42 ;; Função de leitura
+    mov si, HBoot.Disk
+    mov ah, 0x42 ;; Reading function
     
-    int 13h ;; Serviços de disco do BIOS
+    int 13h ;; BIOS Disk Services
     
-    jnc .concluido          
+    jnc .done          
 
-;; Se ocorrerem erros no disco, exibir mensagem de erro na tela
+;; If disk errors occur, display error message on screen
 
-    mov si, HBoot.Mensagens.erroDisco   
+    mov si, HBoot.Messages.diskError   
     
-    call imprimir
+    call printScreen
     
     jmp $
 
-.concluido:
+.done:
     
     pop si
     
@@ -144,106 +144,106 @@ carregarSetor:
 
 ;;************************************************************************************
 
-verificarDiscos:
+checkDisks:
 
     pushad
     pushf
 
-.verificardsq0:
+.checkDsq0:
 
     mov ah, 02h
     mov al, 01h
     mov ch, 01h
     mov cl, 01h
-    xor bx, bufferDeDisco
+    xor bx, diskBuffer
     mov dh, 00h
     mov dl, 00h 
  
     int 13h
 
-    jc .errodsq0
+    jc .dsq0Error
  
-    mov byte[HBoot.Disco.dsq0Online], 01h
+    mov byte[HBoot.Disk.dsq0Online], 01h
  
-    jmp .verificardsq1
+    jmp .checkDsq1
  
-.errodsq0:
+.dsq0Error:
  
-    mov byte[HBoot.Disco.dsq0Online], 00h
+    mov byte[HBoot.Disk.dsq0Online], 00h
   
-    jmp .verificardsq1
+    jmp .checkDsq1
   
-.verificardsq1:
+.checkDsq1:
   
     mov ah, 02h
     mov al, 01h
     mov ch, 01h
     mov cl, 01h
-    xor bx, bufferDeDisco
+    xor bx, diskBuffer
     mov dh, 00h
     mov dl, 01h 
  
     int 13h
  
-    jc .errodsq1
+    jc .dsq1Error
  
-    mov byte[HBoot.Disco.dsq1Online], 01h
+    mov byte[HBoot.Disk.dsq1Online], 01h
  
-    jmp .verificarhd0
+    jmp .checkHd0
  
-.errodsq1:
+.dsq1Error:
  
-    mov byte[HBoot.Disco.dsq1Online], 00h
+    mov byte[HBoot.Disk.dsq1Online], 00h
 
-    jmp .verificarhd0
+    jmp .checkHd0
 
-.verificarhd0:
+.checkHd0:
 
     mov ah, 02h
     mov al, 01h
     mov ch, 01h
     mov cl, 01h
-    xor bx, bufferDeDisco
+    xor bx, diskBuffer
     mov dh, 00h
     mov dl, 80h 
  
     int 13h
 
-    jc .errohd0
+    jc .hd0Error
  
-    mov byte[HBoot.Disco.hd0Online], 01h
+    mov byte[HBoot.Disk.hd0Online], 01h
  
-    jmp .verificarhd1
+    jmp .checkHd1
  
- .errohd0:
+ .hd0Error:
  
-    mov byte[HBoot.Disco.hd0Online], 00h
+    mov byte[HBoot.Disk.hd0Online], 00h
   
-    jmp .verificarhd1
+    jmp .checkHd1
   
-.verificarhd1:
+.checkHd1:
   
     mov ah, 02h
     mov al, 01h
     mov ch, 01h
     mov cl, 01h
-    xor bx, bufferDeDisco
+    xor bx, diskBuffer
     mov dh, 00h
     mov dl, 81h 
  
     int 13h
  
-    jc .errohd1
+    jc .hd1Error
  
-    mov byte[HBoot.Disco.hd1Online], 01h
+    mov byte[HBoot.Disk.hd1Online], 01h
  
-    jmp .continuar
+    jmp .continue
  
- .errohd1:
+ .hd1Error:
  
-    mov byte[HBoot.Disco.hd1Online], 00h
+    mov byte[HBoot.Disk.hd1Online], 00h
 
-.continuar:
+.continue:
 
     clc 
     cld
@@ -255,7 +255,7 @@ verificarDiscos:
 
 ;;************************************************************************************
 
-pararDiscos:
+stopDisks:
 
 .hd0:
 
@@ -285,7 +285,7 @@ pararDiscos:
 
     int 13h
 
-.continuar:
+.continue:
 
     ret
     

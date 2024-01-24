@@ -66,11 +66,20 @@
 ;;
 ;; $HexagonixOS$
 
-;; Versão do HBoot
+;; Play system startup tone, just like Macs/Apple
 
-versaoHBoot      equ "0.9.1"
-verProtocolo     equ "System I"
-arquiteturaHBoot equ 01h
-verHBoot         equ 00h
-suvberHBoot      equ 09h
-revisaoHBoot     equ 00h
+hexagonixBootSound:
+
+;; Execution script with note and time. Macro in "HBOOT.S". Tones and tempo in "LIBUTIL.ASM"
+
+    playNote HBoot.Sounds.nDO, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.nLA, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.nDO, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.nLA, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.nFA, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.nSI, HBoot.Sounds.tNormal
+    playNote HBoot.Sounds.nDO2, HBoot.Sounds.tNormal
+
+    call turnOffSound
+
+    ret

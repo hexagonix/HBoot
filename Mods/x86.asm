@@ -79,7 +79,7 @@
 
 ;; Macros
 
-macro exibir mensagem
+macro fputs mensagem
 {
 
     mov si, mensagem
@@ -127,8 +127,8 @@ inicioModulo:
 
 ;; Exibir informações de inicialização
 
-    exibir x86.iniciando
-    exibir x86.direitos
+    fputs x86.iniciando
+    fputs x86.direitos
 
 ;; Vamos iniciar agora a verificação do hardware disponível
 
@@ -136,13 +136,13 @@ inicioModulo:
 
 ;; Vamos verificar se a execução do Hexagon foi aprovada
 
-    exibir x86.terminar
+    fputs x86.terminar
 
     call verificarAprovacao
 
 ;; Vamos solicitar a interação do usuário para reiniciar e retornar ao HBoot
 
-    exibir x86.reinicioNecessario
+    fputs x86.reinicioNecessario
 
     call aguardarPressionamento
 
@@ -158,12 +158,12 @@ inicioModulo:
 
 verificarHardware:
 
-    exibir x86.iniciandoIdentificacao
+    fputs x86.iniciandoIdentificacao
 
-    call identificarVendedorProcx86
-    call identificarNomeProcx86
+    call identificarFornecedorProcessadorProcx86
+    call identificarNomeProcessadorProcx86
     call verificarMemoria
-    call verificarDiscos
+    call checarVolumes
 ;;  call verificarPortasSeriais
 ;;  call verificarPortasParalelas
 ;;  call verificarVideo
@@ -175,18 +175,18 @@ verificarHardware:
 
 verificarAprovacao:
 
-    exibir x86.resultadoAvaliacao
+    fputs x86.resultadoAvaliacao
 
     cmp byte[x86.aprovadoTestes], 01h
     je .aprovado
 
-    exibir x86.resultadoNegativo
+    fputs x86.resultadoNegativo
 
     jmp .fim
 
 .aprovado:
 
-    exibir x86.resultadoPositivo
+    fputs x86.resultadoPositivo
 
 .fim:
 
@@ -194,9 +194,9 @@ verificarAprovacao:
 
 ;;************************************************************************************
 
-verificarDiscos:
+checarVolumes:
 
-    exibir x86.identificandoDiscos
+    fputs x86.identificandoDiscos
 
     clc
 
@@ -221,7 +221,7 @@ verificarDiscos:
 
     jc .errodsq0
 
-    exibir x86.dsq0
+    fputs x86.dsq0
 
     jmp .dsq1
 
@@ -252,7 +252,7 @@ verificarDiscos:
 
     jc .errodsq1
 
-    exibir x86.dsq1
+    fputs x86.dsq1
 
     jmp .hd0
 
@@ -285,7 +285,7 @@ verificarDiscos:
 
     jc .errohd0
 
-    exibir x86.hd0
+    fputs x86.hd0
 
  ;; Para realização a inicialização correta, o hd0 é requisito
 
@@ -325,7 +325,7 @@ verificarDiscos:
 
     jc .errohd1
 
-    exibir x86.hd1
+    fputs x86.hd1
 
     jmp .fim
 
@@ -337,7 +337,7 @@ verificarDiscos:
 
 ;;************************************************************************************
 
-identificarVendedorProcx86:
+identificarFornecedorProcessadorProcx86:
 
     mov eax, 0
 
@@ -349,15 +349,15 @@ identificarVendedorProcx86:
 
 .exibirUsuario:
 
-    exibir x86.fornecedorProc
+    fputs x86.fornecedorProc
 
-    exibir x86.vendedorx86
+    fputs x86.vendedorx86
 
     ret
 
 ;;************************************************************************************
 
-identificarNomeProcx86:
+identificarNomeProcessadorProcx86:
 
     mov eax, 80000002h
 
@@ -434,20 +434,20 @@ identificarNomeProcx86:
 
     loop .loopCPU
 
-    exibir x86.nomeProcessador
+    fputs x86.nomeProcessador
 
     mov si, x86.nomex86
 
     cmp byte[si], 0
     jne .comCPUID
 
-    exibir x86.semCPUID
+    fputs x86.semCPUID
 
     jmp .fim
 
 .comCPUID:
 
-    exibir x86.nomex86
+    fputs x86.nomex86
 
 .fim:
 
@@ -521,7 +521,7 @@ verificarMemoria:
 
     push eax
 
-    exibir x86.memoriaDisponivel
+    fputs x86.memoriaDisponivel
 
     pop eax
     push eax
@@ -534,14 +534,14 @@ verificarMemoria:
 
     call imprimir
 
-    exibir x86.megabytes
+    fputs x86.megabytes
 
     pop eax
 
     cmp dword eax, MEMORIA_MINIMA
     jbe .erroMemoria ;; Se menos que isso, não temos o suficiente
 
-    exibir x86.memoriaSuficiente
+    fputs x86.memoriaSuficiente
 
 ;; Para realização a inicialização correta, o mínimo de RAM é requisito
 
@@ -551,7 +551,7 @@ verificarMemoria:
 
 .erroMemoria:
 
-    exibir x86.memoriaInsuficiente
+    fputs x86.memoriaInsuficiente
 
 ;; Para realização a inicialização correta, o mínimo de RAM é requisito
 
