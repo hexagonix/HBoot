@@ -72,5 +72,5 @@ versionHBoot        equ "0.10.0"
 bootProtocolVersion equ "System I"
 architectureHBoot   equ 01h
 verHBoot            equ 00h
-suvberHBoot         equ 10h
+suvberHBoot         equ 0Ah
 revisionHBoot       equ 00h
