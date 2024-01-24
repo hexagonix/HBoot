@@ -81,7 +81,7 @@ initProc:
 
     call identifyProcessorNameProcx86
 
-    call enableA20 ;; Tentar habilitar prematuramente linha A20
+    call enableA20 ;; Trying to enable line A20
 
     ret
 

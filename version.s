@@ -68,9 +68,9 @@
 
 ;; HBoot version
 
-versionHBoot        equ "0.10.0"
+versionHBoot        equ "0.10.1"
 bootProtocolVersion equ "System I"
 architectureHBoot   equ 01h
 verHBoot            equ 00h
 suvberHBoot         equ 0Ah
-revisionHBoot       equ 00h
+revisionHBoot       equ 01h
