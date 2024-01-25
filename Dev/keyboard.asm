@@ -96,7 +96,7 @@ readKeyboard:
 
     jmp .loop
 
-.clear: ;; Use the Main Keyboard Driver to clear a character
+.clear: ;; Use the main keyboard driver to clear a character
 
     cmp cl, 0
     je .loop
@@ -122,7 +122,7 @@ readKeyboard:
 
     jmp .loop
 
-.done: ;; Task or routine completed
+.done: ;; Routine completed
 
     mov al, 0
 
