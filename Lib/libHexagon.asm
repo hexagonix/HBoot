@@ -105,7 +105,7 @@ startHexagonKernel:
     pop ebp ;; Pointer to BPB
     mov esi, HBoot.Parameters.readBuffer + (SEG_HBOOT * 16) ;; Point ESI to parameters
     mov bl, byte[idDrive] ;; Drive used for boot
-    mov cx, word[availableMemory] ;; Installed memory
+    mov cx, word[HBoot.Memx86.Control.availableMemory] ;; Installed memory
 
 ;; Hexagon features the HAPP header, which is standard on all Hexagon format executables.
 ;; This header is 38 bytes long (0x26), so we should skip it.

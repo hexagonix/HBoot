@@ -66,6 +66,10 @@
 ;;
 ;; $HexagonixOS$
 
+HBoot.Memx86.Control:
+
+.availableMemory: dw 0 ;; Available memory
+
 checkMemory:
 
     push edx
@@ -133,7 +137,7 @@ checkMemory:
 
     add eax, 1024 ;; Ready. Let's add 1024 kbytes to the account
 
-    mov word[availableMemory], ax 
+    mov word[HBoot.Memx86.Control.availableMemory], ax 
 
     cmp dword eax, MINIMUM_MEMORY
     jbe .memoryError ;; If less than that, we don't have enough

@@ -149,6 +149,6 @@ searchFile:
 
 ;;************************************************************************************
 
-;; List of File Systems supported by HBoot
+;; List of Filesystems supported by HBoot
 
 include "FAT16B/fat16B.asm"

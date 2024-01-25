@@ -99,7 +99,6 @@ dataArea:           dd 0   ;; Data area physical address (LBA)
 partitionLBAAdress: dd 0   ;; Partition LBA address
 BPBAdress:          dd 0   ;; BIOS Parameter Block (BPB) address
 cluster:            dw 0   ;; Current cluster
-availableMemory:    dw 0   ;; Available memory
 
 ;;************************************************************************************
 

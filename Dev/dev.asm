@@ -161,7 +161,7 @@ populateDeviceTree:
 
 ;; Fields 2 and 3: total available memory
 
-    mov ax, word[availableMemory]
+    mov ax, word[HBoot.Memx86.Control.availableMemory]
     mov word[HBoot.Dev.deviceTree16+3], ax
     mov word[HBoot.Dev.deviceTree16+2], 00h ;; Field 2
 

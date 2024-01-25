@@ -68,7 +68,7 @@
 
 readKeyboard:
 
-.ler:  
+.read:  
 
     xor cl, cl
 
