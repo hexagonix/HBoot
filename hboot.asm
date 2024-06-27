@@ -92,11 +92,11 @@ include "version.s"
 
 HBootHeader:
 
-.signature:     db "HBOOT"          ;; Signature, 5 bytes
+.signature:     db "HBOOT"           ;; Signature, 5 bytes
 .architecture:  db architectureHBoot ;; Architecture (i386), 1 byte
-.modVersion:    db verHBoot         ;; Version
-.modSubversion: db suvberHBoot      ;; Subversion
-.HBootName:     db "HBoot   "       ;; Module name
+.modVersion:    db verHBoot          ;; Version
+.modSubversion: db suvberHBoot       ;; Subversion
+.HBootName:     db "HBoot   "        ;; Module name
 
     jmp startHBoot
 
@@ -210,7 +210,7 @@ db 0
 
 HBoot.Files:
 
-.HBootFilename: ;; Nome de arquivo do HBoot em disco
+.HBootFilename: ;; HBoot filename on volume
 db "HBOOT      "
 .imageName: ;; Here the name of the file to be loaded will be saved
 db "           "
