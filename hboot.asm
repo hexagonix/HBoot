@@ -95,7 +95,7 @@ HBootHeader:
 .signature:     db "HBOOT"           ;; Signature, 5 bytes
 .architecture:  db architectureHBoot ;; Architecture (i386), 1 byte
 .modVersion:    db verHBoot          ;; Version
-.modSubversion: db suvberHBoot       ;; Subversion
+.modSubversion: db subverHBoot       ;; Subversion
 .HBootName:     db "HBoot   "        ;; Module name
 
     jmp startHBoot
