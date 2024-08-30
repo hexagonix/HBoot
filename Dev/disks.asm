@@ -154,7 +154,7 @@ checkDisks:
     mov al, 01h
     mov ch, 01h
     mov cl, 01h
-    xor bx, diskBuffer
+    mov bx, diskBuffer
     mov dh, 00h
     mov dl, 00h 
  
@@ -178,7 +178,7 @@ checkDisks:
     mov al, 01h
     mov ch, 01h
     mov cl, 01h
-    xor bx, diskBuffer
+    mov bx, diskBuffer
     mov dh, 00h
     mov dl, 01h 
  
@@ -202,7 +202,7 @@ checkDisks:
     mov al, 01h
     mov ch, 01h
     mov cl, 01h
-    xor bx, diskBuffer
+    mov bx, diskBuffer
     mov dh, 00h
     mov dl, 80h 
  
@@ -226,7 +226,7 @@ checkDisks:
     mov al, 01h
     mov ch, 01h
     mov cl, 01h
-    xor bx, diskBuffer
+    mov bx, diskBuffer
     mov dh, 00h
     mov dl, 81h 
  
@@ -244,12 +244,9 @@ checkDisks:
 
 .continue:
 
-    clc 
-    cld
-
     popf
     popad
-
+    
     ret
 
 ;;************************************************************************************
