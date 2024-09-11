@@ -75,9 +75,9 @@
 HBoot.Messages:
 
 .starting:
-db "Hexagon Boot (HBoot) version ", versionHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ").", 13, 10
+db "Hexagon Boot (HBoot) version ", versionHBoot, " (", __stringDay, "/", __stringMonth, "/", __stringYear, ").", 13, 10
 db "Boot loader for Hexagonix.", 13, 10
-db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
+db "Copyright (C) 2015-", __stringYear, " Felipe Miguel Nery Lunkes.", 13, 10
 db "All rights reserved.", 13, 10, 0
 .waitUser:
 db 13, 10, "Press [F8] to access HBoot settings... ",  0
@@ -131,8 +131,8 @@ db "[Ok]", 13, 10, 0
 .optionFailure:
 db "[Fail]", 13, 10, 0
 .aboutHBoot:
-db 13, 10, "HBoot: Hexagon Boot Information - HBoot version ", versionHBoot, " (", __stringdia, "/", __stringmes, "/", __stringano, ")", 13, 10, 13, 10
-db "Copyright 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 13, 10
+db 13, 10, "HBoot: Hexagon Boot Information - HBoot version ", versionHBoot, " (", __stringDay, "/", __stringMonth, "/", __stringYear, ")", 13, 10, 13, 10
+db "Copyright 2015-", __stringYear, " Felipe Miguel Nery Lunkes.", 13, 10
 db "All rights reserved.",13, 10
 db "HBoot is licensed under BSD-3-Clause.", 13, 10, 13, 10
 db "Hexagon Boot (HBoot) is a powerful boot loader designed to boot the Hexagon", 13, 10
@@ -250,7 +250,7 @@ db 13, 10, "HBoot: press [ENTER] to return to the previous menu...", 13, 10, 0
 .partitionSize:
 db 13, 10, " > Volume partition size: ", 0
 .versionHBoot:
-db 13, 10, " > HBoot version: ", versionHBoot, " (build ", __stringdia, "/", __stringmes, "/", __stringano, ")", 0
+db 13, 10, " > HBoot version: ", versionHBoot, " (build ", __stringDay, "/", __stringMonth, "/", __stringYear, ")", 0
 .versionProtocol:
 db 13, 10, " > HBoot boot protocol (loader) version: ", bootProtocolVersion, 0
 .newLine:
