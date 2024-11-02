@@ -84,7 +84,7 @@ toString:
     
     push dx
     
-    test ax,ax
+    test ax, ax
     jnz .push
         
 .pull:

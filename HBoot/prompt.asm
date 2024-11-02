@@ -260,15 +260,25 @@ verifyUserInteraction:
     cmp byte[si], 0
     jne .withProcessorNameAvailable
 
-    mov si, HBoot.Messages.withouCPUID
+    mov si, HBoot.Messages.withoutCPUID
 
 .withProcessorNameAvailable:
 
     call printScreen
 
-    fputs HBoot.Messages.onlineVolumes
+    fputs HBoot.Messages.totalMemory
+
+    call HBoot.Memx86.getTotalMemory
+
+    mov si, ax
+
+    call printScreen
+
+    fputs HBoot.Messages.megabytes
 
 .verifyOnlineVolumes:
+
+    fputs HBoot.Messages.onlineVolumes
 
 .verifydsq0:
 

@@ -184,7 +184,7 @@ db "HBoot: Continuing with the boot protocol...", 13, 10, 0
 db 13, 10, "Enter the command line for Hexagon. Pay attention to the parameters supported,", 13, 10
 db "with a maximum of 64 characters.", 13, 10, 13, 10
 db "> ", 0
-.withouCPUID:
+.withoutCPUID:
 db "<Pentium III or older/unknown processor>", 0
 .invalidFilesystem:
 db 13, 10, "HBoot: Volume filesystem is not supported by HBoot at this time.", 13, 10, 0
@@ -202,6 +202,10 @@ db 13, 10, " > Processor name: ", 0
 db 13, 10, " > Boot volume (Hexagon device name): ", 0
 .hexagonFile:
 db 13, 10, " > Hexagon image on volume to be loaded: ", 0
+.totalMemory:
+db 13, 10, " > Total memory installed: ", 0
+.megabytes:
+db " megabytes", 0
 .commandLineInfo:
 db 13, 10, " > Command line for Hexagon: ", 0
 .modNotFound:

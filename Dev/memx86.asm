@@ -68,7 +68,32 @@
 
 HBoot.Memx86.Control:
 
-.availableMemory: dw 0 ;; Available memory
+.availableMemory:   dw 0 ;; Available memory
+.availableMemoryMB: dw 0 ;; Available memory in megabytes
+
+;; Return total memory installed
+;;
+;; Input:
+;;
+;; Nothing
+;;
+;;
+;; Output:
+;;
+;; AX - Total memory in megabytes (string)
+;; BX - Total memoty (16-bit int)
+
+HBoot.Memx86.getTotalMemory:
+
+    mov ax, word[HBoot.Memx86.Control.availableMemoryMB]
+
+    call toString
+
+    mov bx, word[HBoot.Memx86.Control.availableMemoryMB]
+
+    ret
+
+;;*************************************************************************************************
 
 checkMemory:
 
@@ -141,6 +166,10 @@ checkMemory:
 
     cmp dword eax, MINIMUM_MEMORY
     jbe .memoryError ;; If less than that, we don't have enough
+
+    shr eax, 10
+
+    mov word[HBoot.Memx86.Control.availableMemoryMB], ax 
 
     ret
 
