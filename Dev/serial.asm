@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-initSerialPort:  ;; This method is used to initialize a serial port
+HBoot.Serial.initSerialPort:  ;; This method is used to initialize a serial port
 
 
     mov ah, 0     ;; Moves the value 0 to the AH register
@@ -80,7 +80,7 @@ initSerialPort:  ;; This method is used to initialize a serial port
 
 ;;************************************************************************************
 
-sendCOM1: ;; This method is used to transfer data over the open serial port
+HBoot.Serial.sendCOM1: ;; This method is used to transfer data over the open serial port
 
     lodsb ;; Load the next character to be sent
 
@@ -92,7 +92,7 @@ sendCOM1: ;; This method is used to transfer data over the open serial port
 
     jc near .error
 
-    jmp sendCOM1 ;; If it is not finished, return to the function and load the next character
+    jmp HBoot.Serial.sendCOM1 ;; If it is not finished, return to the function and load the next character
 
 .done: ;; If it's over...
 

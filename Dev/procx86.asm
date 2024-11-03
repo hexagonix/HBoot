@@ -75,19 +75,19 @@ db "abcdabcdabcdabcdABCDABCDABCDABCDabcdabcdabcdabcd", 0
 
 ;;************************************************************************************
 
-initProc:
+HBoot.Procx86.initProc:
 
-    call identifyProcessorVendorProcx86
+    call HBoot.Procx86.identifyProcessorVendor
 
-    call identifyProcessorNameProcx86
+    call HBoot.Procx86.identifyProcessorName
 
-    call enableA20 ;; Trying to enable line A20
+    call HBoot.Procx86.enableA20 ;; Trying to enable line A20
 
     ret
 
 ;;************************************************************************************
 
-identifyProcessorVendorProcx86:
+HBoot.Procx86.identifyProcessorVendor:
 
     mov eax, 0
     
@@ -101,7 +101,7 @@ identifyProcessorVendorProcx86:
 
 ;;************************************************************************************
 
-identifyProcessorNameProcx86:
+HBoot.Procx86.identifyProcessorName:
 
     mov eax, 80000002h  
     
@@ -184,7 +184,7 @@ identifyProcessorNameProcx86:
 
 ;; Let's try to activate the A20 to see if the processor supports protected mode
 
-enableA20:
+HBoot.Procx86.enableA20:
 
     clc 
 

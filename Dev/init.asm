@@ -66,16 +66,16 @@
 ;;
 ;; $HexagonixOS$
 
-initDev:
+HBoot.Init.initDev:
 
-    call initProc         ;; Check the processor manufacturer
+    call HBoot.Procx86.initProc         ;; Check the processor manufacturer
 
-    call checkMemory      ;; Identify installed memory
+    call HBoot.Memory.checkMemory      ;; Identify installed memory
 
-    call checkDisks       ;; Check the drives online on the device
+    call HBoot.Disk.checkDisks       ;; Check the drives online on the device
 
-    call initSerialPort   ;; Start COM1 serial port
+    call HBoot.Serial.initSerialPort   ;; Start COM1 serial port
 
-    call initParallelPort ;; Start parallel ports
+    call HBoot.Parallel.initParallelPort ;; Start parallel ports
 
     ret

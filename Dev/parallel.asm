@@ -75,7 +75,7 @@ use16
 
 ;; Initialize and obtain LPT1 port address
 
-initParallelPort:
+HBoot.Parallel.initParallelPort:
 
     pusha
     push ds

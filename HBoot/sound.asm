@@ -68,7 +68,7 @@
 
 ;; Play system startup tone, just like Macs/Apple
 
-hexagonixBootSound:
+HBoot.Sound.hexagonixBootSound:
 
 ;; Execution script with note and time. Macro in "HBOOT.S". Tones and tempo in "LIBUTIL.ASM"
 

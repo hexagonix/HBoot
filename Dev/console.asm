@@ -68,7 +68,7 @@
 
 ;; Function to clear the screen in real mode
 
-clearScreen:
+HBoot.Console.clearScreen:
 
     mov dx, 0
     mov bh, 0
@@ -95,7 +95,7 @@ clearScreen:
 ;;
 ;; SI - String
 
-printScreen:
+HBoot.Console.printString:
 
     lodsb ;; mov AL, [SI] & inc SI
     
@@ -106,7 +106,7 @@ printScreen:
     
     int 10h ;; Send [SI] to screen
     
-    jmp printScreen
+    jmp HBoot.Console.printString
     
 .done: 
 
@@ -114,7 +114,7 @@ printScreen:
 
 ;;************************************************************************************
 
-printHexadecimal:
+HBoot.Console.printHexadecimal:
 
     pusha
 
@@ -146,7 +146,7 @@ printHexadecimal:
 
 ;;************************************************************************************
 
-testVideo:
+HBoot.Console.testVideo:
 
     mov ax, 19
 

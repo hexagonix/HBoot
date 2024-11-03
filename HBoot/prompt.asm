@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-verifyUserInteraction:
+HBoot.HBoot.verifyUserInteraction:
 
     fputs HBoot.Messages.waitUser
 
@@ -76,7 +76,7 @@ verifyUserInteraction:
 
     mov dx, TIME_FACTOR
 
-    call causeDelay
+    call HBoot.BIOS.causeDelay
 
     add bx, 1
 
@@ -157,7 +157,7 @@ verifyUserInteraction:
 
 .rebootDevice:
 
-    call stopDisks
+    call HBoot.Disk.stopDisks
 
     hlt
 
@@ -175,7 +175,7 @@ verifyUserInteraction:
 
     fputs HBoot.Messages.continueEnter
 
-    call waitKeyboard
+    call HBoot.Keyboard.waitKeyboard
 
     jmp .return
 
@@ -201,7 +201,7 @@ verifyUserInteraction:
 
     fputs HBoot.Messages.invalidOption
 
-    call waitKeyboard
+    call HBoot.Keyboard.waitKeyboard
 
     fputs HBoot.Messages.resumeBoot
 
@@ -231,7 +231,7 @@ verifyUserInteraction:
 
     mov di, HBoot.Parameters.readBuffer
 
-    call readKeyboard
+    call HBoot.Keyboard.readKeyboard
 
     fputs HBoot.Messages.pressed
 
@@ -264,15 +264,15 @@ verifyUserInteraction:
 
 .withProcessorNameAvailable:
 
-    call printScreen
+    call HBoot.Console.printString
 
     fputs HBoot.Messages.totalMemory
 
-    call HBoot.Memx86.getTotalMemory
+    call HBoot.Memory.getTotalMemory
 
     mov si, ax
 
-    call printScreen
+    call HBoot.Console.printString
 
     fputs HBoot.Messages.megabytes
 
@@ -447,7 +447,7 @@ verifyUserInteraction:
     cmp byte[si], 0
     je .emptyCommandLine
 
-    call printScreen
+    call HBoot.Console.printString
 
     jmp .continueCommandLine
 
@@ -463,7 +463,7 @@ verifyUserInteraction:
 
     fputs HBoot.Messages.continueEnter
 
-    call waitKeyboard
+    call HBoot.Keyboard.waitKeyboard
 
     jmp .return
 
@@ -524,7 +524,7 @@ verifyUserInteraction:
 
 .loadHBootModule:
 
-   jmp loadAndStartHBootModule
+   jmp HBoot.Lib.HMod.loadAndStartHBootModule
 
 ;;*******************************
 
@@ -558,7 +558,7 @@ verifyUserInteraction:
 
     mov byte[HBoot.Control.bootMode], 01h
 
-    jmp HBoot.Modules.DOS.startFreeDOS
+    jmp HBoot.Lib.LibDOS.startFreeDOS
 
 ;;*******************************
 
@@ -566,7 +566,7 @@ verifyUserInteraction:
 
     mov si, HBoot.Messages.pressed
 
-    call printScreen
+    call HBoot.Console.printString
 
     playNote HBoot.Sounds.CANON1, HBoot.Sounds.tNormal
     playNote HBoot.Sounds.CANON2, HBoot.Sounds.tNormal
@@ -592,73 +592,73 @@ verifyUserInteraction:
     push HBoot.Messages.axx
     push ax
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.bxx
     push bx
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.cxx
     push cx
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.dxx
     push dx
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.css
     push cs
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.dss
     push ds
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.sss
     push ss
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.ess
     push es
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.spp
     push sp
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.sii
     push si
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.dii
     push di
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.gss
     push gs
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     push HBoot.Messages.fss
     push fs
 
-    call toHexadecimal
+    call HBoot.Lib.LibNum.toHexadecimal
 
     fputs HBoot.Messages.continueReboot
 
-    call waitKeyboard
+    call HBoot.Keyboard.waitKeyboard
 
-    call stopDisks
+    call HBoot.Disk.stopDisks
 
     int 19h
 
@@ -673,7 +673,7 @@ verifyUserInteraction:
     pushad
     pushf
 
-    call testVideo
+    call HBoot.Console.testVideo
 
     popf
     popad
@@ -689,9 +689,9 @@ verifyUserInteraction:
 
     fputs HBoot.Messages.rebootRequired
 
-    call waitKeyboard
+    call HBoot.Keyboard.waitKeyboard
 
-    call stopDisks
+    call HBoot.Disk.stopDisks
 
     int 19h
 

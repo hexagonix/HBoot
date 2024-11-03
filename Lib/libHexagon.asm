@@ -80,15 +80,15 @@ db "HEXAGON    ", 0 ;; Name of the file containing the Hexagon kernel
 
 ;;************************************************************************************
 
-loadAndStartHexagon:
+HBoot.Lib.Hexagon.loadAndStartHexagon:
 
     fputs HBoot.Messages.loadHexagon
 
-    call configureHexagon ;; Configure image name and memory location
+    call HBoot.Lib.Hexagon.configureHexagon ;; Configure image name and memory location
 
-    call searchFile ;; Search for the file containing the kernel
+    call HBoot.FS.searchFile ;; Search for the file containing the kernel
 
-    jmp startHexagonKernel ;; Run Hexagon
+    jmp HBoot.Lib.Hexgon.startHexagonKernel ;; Run Hexagon
 
 ;;************************************************************************************
 
@@ -100,7 +100,7 @@ loadAndStartHexagon:
 ;; CX  - Quantity, in Kbytes, of RAM memory installed on the machine
 ;; More parameters can now be passed due to the creation of the second stage (HBoot)
 
-startHexagonKernel:
+HBoot.Lib.Hexgon.startHexagonKernel:
 
     pop ebp ;; Pointer to BPB
     mov esi, HBoot.Parameters.readBuffer + (SEG_HBOOT * 16) ;; Point ESI to parameters
@@ -117,7 +117,7 @@ startHexagonKernel:
 
 ;;************************************************************************************
 
-configureHexagon:
+HBoot.Lib.Hexagon.configureHexagon:
 
     mov si, HBoot.Modules.Hexagon.Files.imageHexagon
     mov di, HBoot.Files.imageName

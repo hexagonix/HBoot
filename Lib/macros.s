@@ -72,11 +72,11 @@ macro playNote note, time
     mov ax, note
     mov bx, 8
     
-    call playSound
+    call HBoot.Sound.playSound
 
     mov dx, time
 
-    call causeDelay
+    call HBoot.BIOS.causeDelay
 
 }
 
@@ -85,7 +85,7 @@ macro putNewLine
 
     mov si, HBoot.Messages.newLine
 
-    call printScreen
+    call HBoot.Console.printString
 
 }
 
@@ -96,7 +96,7 @@ macro fputs message
 
     mov si, message
 
-    call printScreen
+    call HBoot.Console.printString
 
 }
 

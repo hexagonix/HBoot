@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-toString:
+HBoot.Lib.LibString.toString:
 
     pusha
     

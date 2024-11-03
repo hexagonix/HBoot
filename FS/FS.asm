@@ -77,9 +77,9 @@ HBoot.Filesystem:
 
 ;;************************************************************************************
 
-setFilesystem:
+HBoot.FS.setFilesystem:
     
-    call readMBR
+    call HBoot.FS.readMBR
 
     mov byte[HBoot.Filesystem.code], ah
     
@@ -87,7 +87,7 @@ setFilesystem:
 
 ;;************************************************************************************
 
-readMBR:
+HBoot.FS.readMBR:
 
 ;; First we must load the MBR into memory
     
@@ -96,7 +96,7 @@ readMBR:
     mov di, diskBuffer ;; Offset
     mov dl, byte[idDrive] 
 
-    call loadSector
+    call HBoot.Disk.loadSector
 
     jc .error
 
@@ -116,7 +116,7 @@ readMBR:
 
     mov si, HBoot.Messages.errorMBR
 
-    call printScreen
+    call HBoot.Console.printString
 
     jmp $
 
@@ -128,7 +128,7 @@ readMBR:
 
 ;; Here we have the generic functions called, which will redirect to the correct logic
 
-searchFile:
+HBoot.FS.searchFile:
 
     mov ah, byte[HBoot.Filesystem.code]
 
@@ -137,13 +137,13 @@ searchFile:
 
     mov si, HBoot.Messages.invalidFilesystem
 
-    call printScreen
+    call HBoot.Console.printString
 
     jmp $
 
 .FAT16B:
 
-    call searchFileFAT16B
+    call HBoot.FS.FAT16B.searchFileFAT16B
 
     ret
 

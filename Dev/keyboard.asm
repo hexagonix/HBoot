@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-readKeyboard:
+HBoot.Keyboard.readKeyboard:
 
 .read:  
 
@@ -132,7 +132,7 @@ readKeyboard:
 
 ;;************************************************************************************
 
-waitKeyboard:
+HBoot.Keyboard.waitKeyboard:
 
     mov ah, 00h
 

@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-playSound:
+HBoot.Sound.playSound:
 
     pusha
 

@@ -68,7 +68,7 @@
 
 ;; Here we will use BIOS services to cause a delay
 
-causeDelay:
+HBoot.BIOS.causeDelay:
 
     mov al, 0
     mov ah, 86h ;; Function of causing delay

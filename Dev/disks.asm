@@ -110,7 +110,7 @@ cluster:            dw 0   ;; Current cluster
 ;; ESI   - LBA Address
 ;; ES:DI - Destination
 
-loadSector:
+HBoot.Disk.loadSector:
 
     push si
 
@@ -131,7 +131,7 @@ loadSector:
 
     mov si, HBoot.Messages.diskError   
     
-    call printScreen
+    call HBoot.Console.printString
     
     jmp $
 
@@ -143,7 +143,7 @@ loadSector:
 
 ;;************************************************************************************
 
-checkDisks:
+HBoot.Disk.checkDisks:
 
     pushad
     pushf
@@ -251,7 +251,7 @@ checkDisks:
 
 ;;************************************************************************************
 
-stopDisks:
+HBoot.Disk.stopDisks:
 
 .hd0:
 

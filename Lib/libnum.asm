@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-toHexadecimal:
+HBoot.Lib.LibNum.toHexadecimal:
 
     pusha
 
@@ -75,7 +75,7 @@ toHexadecimal:
 
     push dx 
 
-    call printHexadecimal
+    call HBoot.Console.printHexadecimal
 
     mov dx, [bp+18]
 
@@ -99,7 +99,7 @@ toHexadecimal:
 
     push HBoot.Messages.hex
 
-    call printHexadecimal
+    call HBoot.Console.printHexadecimal
 
     mov sp, bp
 

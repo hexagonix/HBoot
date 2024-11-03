@@ -83,7 +83,7 @@ HBoot.Modules.DOS.Segments.segmentFreeDOS equ 0x60
 
 ;;************************************************************************************
 
-HBoot.Modules.DOS.startFreeDOS:
+HBoot.Lib.LibDOS.startFreeDOS:
 
     push ds 
     pop es 
@@ -101,7 +101,7 @@ HBoot.Modules.DOS.startFreeDOS:
 
     mov word[HBoot.Files.finalSegment], HBoot.Modules.DOS.Segments.segmentFreeDOS
 
-    call searchFile
+    call HBoot.FS.searchFile
 
     jc .manageFileError
 
@@ -117,6 +117,6 @@ HBoot.Modules.DOS.startFreeDOS:
 
     fputs HBoot.Messages.DOSNotFound
 
-    call waitKeyboard
+    call HBoot.Keyboard.waitKeyboard
 
-    jmp verifyUserInteraction.testComponents
+    jmp HBoot.HBoot.verifyUserInteraction.testComponents

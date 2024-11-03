@@ -168,26 +168,26 @@ startHBoot:
 
 welcomeHBoot:
 
-    call clearScreen ;; Clear the screen
+    call HBoot.Console.clearScreen ;; Clear the screen
 
-    call hexagonixBootSound ;; Play startup tone
+    call HBoot.Sound.hexagonixBootSound ;; Play startup tone
 
     mov si, HBoot.Messages.starting
 
-    call printScreen
+    call HBoot.Console.printString
 
 analyzeDevice:
 
-    call initDev
+    call HBoot.Init.initDev
 
-    call setFilesystem
+    call HBoot.FS.setFilesystem
 
 ;; Now we will check if the user wants to change the behavior of the boot process, including
 ;; passing parameters to the kernel, e.g.
 
-    call verifyUserInteraction
+    call HBoot.HBoot.verifyUserInteraction
 
-    jmp loadAndStartHexagon
+    jmp HBoot.Lib.Hexagon.loadAndStartHexagon
 
 ;;************************************************************************************
 

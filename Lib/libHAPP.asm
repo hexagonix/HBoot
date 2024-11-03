@@ -66,7 +66,7 @@
 ;;
 ;; $HexagonixOS$
 
-verifyHAPPImage:
+HBoot.Lib.HAPP.verifyHAPPImage:
 
     mov di, HBoot.Modules.Hexagon.Segments.segmentHexagon 
     sub di, 0x50
@@ -103,7 +103,7 @@ verifyHAPPImage:
 
     mov si, HBoot.Messages.invalidImage
 
-    call printScreen
+    call HBoot.Console.printString
 
     jmp $
     

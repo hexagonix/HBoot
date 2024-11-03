@@ -83,11 +83,11 @@ HBoot.Memx86.Control:
 ;; AX - Total memory in megabytes (string)
 ;; BX - Total memoty (16-bit int)
 
-HBoot.Memx86.getTotalMemory:
+HBoot.Memory.getTotalMemory:
 
     mov ax, word[HBoot.Memx86.Control.availableMemoryMB]
 
-    call toString
+    call HBoot.Lib.LibString.toString
 
     mov bx, word[HBoot.Memx86.Control.availableMemoryMB]
 
@@ -95,7 +95,7 @@ HBoot.Memx86.getTotalMemory:
 
 ;;*************************************************************************************************
 
-checkMemory:
+HBoot.Memory.checkMemory:
 
     push edx
     push ecx

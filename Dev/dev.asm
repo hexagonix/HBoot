@@ -149,7 +149,7 @@ HBoot.Dev:
 
 ;;************************************************************************************
 
-populateDeviceTree:
+HBoot.Dev.populateDeviceTree:
 
     push ax 
     push bx 

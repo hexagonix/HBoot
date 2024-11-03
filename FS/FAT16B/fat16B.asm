@@ -79,7 +79,7 @@
 ;; Now we will look for the file present in the HBoot.Files.imageName buffer that was
 ;; filled previously
 
-searchFileFAT16B:
+HBoot.FS.FAT16B.searchFileFAT16B:
 
 ;; Calculate root directory size
 ;;
@@ -144,7 +144,7 @@ searchFileFAT16B:
     mov ax, word[rootSize]
     mov di, diskBuffer
         
-    call loadSector
+    call HBoot.Disk.loadSector
 
 ;; Search the root directory for the file entry to load it
 
@@ -178,7 +178,7 @@ searchFileFAT16BLoop:
 
     mov si, HBoot.Messages.notFound
     
-    call printScreen
+    call HBoot.Console.printString
     
     jmp $
 
@@ -193,7 +193,7 @@ searchFileFAT16BLoop:
     mov si, word[reservedSectors] ;; LBA
     mov di, diskBuffer            ;; Buffer where data will be loaded
 
-    call loadSector
+    call HBoot.Disk.loadSector
 
 ;; Calculate cluster size in bytes
 ;;
@@ -238,7 +238,7 @@ loadClustersFAT16BLoop:
 
     movzx ax, byte[sectoresPerCluster] ;; Total sectors to load
     
-    call loadSector
+    call HBoot.Disk.loadSector
     
 ;; Find next sector in FAT table
 

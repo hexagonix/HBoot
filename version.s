@@ -68,9 +68,9 @@
 
 ;; HBoot version
 
-versionHBoot        equ "0.20.0"
+versionHBoot        equ "0.20.1"
 bootProtocolVersion equ "Zonai"
 architectureHBoot   equ 01h
 verHBoot            equ 00h
 subverHBoot         equ 14h
-revisionHBoot       equ 00h
+revisionHBoot       equ 01h

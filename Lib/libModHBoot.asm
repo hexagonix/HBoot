@@ -84,21 +84,21 @@ db "HBoot: Press [ENTER] to continue...", 13, 10, 0
 
 ;;************************************************************************************
 
-loadAndStartHBootModule:
+HBoot.Lib.HMod.loadAndStartHBootModule:
 
     mov byte[HBoot.Modules.Control.moduleActivated], 01h
 
     mov si, HBoot.Messages.pressed
 
-    call printScreen
+    call HBoot.Console.printString
 
     mov si, HBoot.Messages.startMod
 
-    call printScreen
+    call HBoot.Console.printString
 
     mov di, HBoot.Files.moduleImage
 
-    call readKeyboard
+    call HBoot.Keyboard.readKeyboard
 
     mov si, HBoot.Files.moduleImage
     mov di, HBoot.Files.imageName
@@ -111,7 +111,7 @@ loadAndStartHBootModule:
 
     mov word[HBoot.Files.finalSegment], MODULE_SEGMENT
 
-    call searchFile
+    call HBoot.FS.searchFile
 
     jc .manageFileError
 
@@ -128,13 +128,13 @@ loadAndStartHBootModule:
 
     fputs HBoot.Messages.modNotFound
 
-    call waitKeyboard
+    call HBoot.Keyboard.waitKeyboard
 
-    jmp verifyUserInteraction.testComponents
+    jmp HBoot.HBoot.verifyUserInteraction.testComponents
 
 ;;************************************************************************************
 
-moduleReturn:
+HBoot.Lib.HMod.moduleReturn:
 
     mov ax, SEG_HBOOT
     mov ds, ax
@@ -149,6 +149,6 @@ moduleReturn:
 
     fputs HBoot.modHBoot.Messages.modReturn
 
-    call waitKeyboard
+    call HBoot.Keyboard.waitKeyboard
 
     jmp analyzeDevice
