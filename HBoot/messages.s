@@ -83,12 +83,12 @@ db "All rights reserved.", 13, 10, 0
 db 13, 10, "Press [F8] to access HBoot settings... ",  0
 .notFound:
 db 13, 10, "HBoot: Hexagon image not found on current volume.", 13, 10
-db "Impossible to continue the initialization protocol. Please try to perform", 13, 10
+db "Impossible to continue the boot protocol. Please try to perform", 13, 10
 db "a system restore or reinstallation and try to start the system again.", 13, 10, 0
 .diskError:
-db 13, 10, "HBoot: Disk error! Restart your computer and try again.", 0 ;; Mensagem de error no disco
+db 13, 10, "HBoot: Disk error! Restart your computer and try again.", 0 ;; Disk error message
 .errorA20:
-db "HBoot: Error enabling line A20, required for protected mode.", 13, 10
+db "HBoot: Error enabling A20 line, required for protected mode.", 13, 10
 db "Unable to continue booting. Please restart your computer.", 0
 .memoryError:
 db "HBoot: Insufficient RAM installed to run Hexagon.", 13, 10
@@ -98,7 +98,7 @@ db "Install more memory and try again.", 0
 db 13, 10, 13, 10, "Loading Hexagon...", 0
 .invalidImage:
 db 13, 10, "HBoot: The Hexagon image appears to be corrupt and cannot be used for", 13, 10
-db "initialization. Try reinstalling or recovering system to continue.", 0
+db "booting the system. Try reinstalling or recovering system to continue.", 0
 .DOSMode:
 db 13, 10, "HBoot: Load DOS system from a Hexagon volume.", 13, 10
 db "HBoot: HBoot has entered DOS boot compatibility mode.", 13, 10
@@ -161,22 +161,22 @@ db "under development or not in wide use.", 13, 10, 0
 db 13, 10, "You can test some components and functions of HBoot:", 13, 10
 db "[!] Warning! Some tests require restart!", 13, 10
 db " > [1]: Test sound hardware and startup tone.", 13, 10
-db " > [2]: Display contents of registers (required restart).", 13, 10
+db " > [2]: Display content of registers (required restart).", 13, 10
 db " > [3]: Perform video test in graphics mode.", 13, 10
 db " > [4]: Restart the device.", 13, 10
 db " > [5]: Return to previous menu.", 13, 10
 db " > [d,D]: Start boot compatibility mode and start DOS system.", 13, 10
 db " > [m,M]: Load module in HBoot format.", 13, 10, 0
 .displayRegisters:
-db 13, 10, 13, 10, "HBoot: List and contents of main processor registers (proc0):", 13, 10, 13, 10, 0
+db 13, 10, 13, 10, "HBoot: List the content of main processor registers (proc0):", 13, 10, 13, 10, 0
 .selectComponent:
 db 13, 10, "Select option: ", 0
 .invalidComponent:
 db 13, 10, "HBoot: Invalid option. Press [ENTER] to return.", 13, 10, 0
 .changeVerboseMode:
-db 13, 10, "HBoot: Choose (0) to turn off verbose or (1) to turn on:", 0
+db 13, 10, "HBoot: Choose (0) to turn off verbose or (1) to turn on: ", 0
 .invalidOption:
-db 13, 10, "HBoot: Invalid behavior change option for selection.", 13, 10
+db 13, 10, "HBoot: Invalid option to change the boot behavior.", 13, 10
 db "HBoot: Press [ENTER] to continue boot without changing behavior...", 13, 10, 0
 .resumeBoot:
 db "HBoot: Continuing with the boot protocol...", 13, 10, 0
@@ -215,7 +215,7 @@ db "HBoot: Press [ENTER] to return to the previous menu...", 13, 10, 0
 db 13, 10, 13, 10, "HBoot: DOS system files not found on volume.", 13, 10
 db "HBoot: Press [ENTER] to return to the previous menu...", 13, 10, 0
 .hexagonNotFound:
-db 13, 10, 13, 10, "HBoot: The file containing the Hexagon was not found.", 13, 10
+db 13, 10, 13, 10, "HBoot: The file containing the Hexagon kernel was not found.", 13, 10
 db "HBoot: Press [ENTER] to restart your computer...", 13, 10, 0
 .emptyCommandLine:
 db "<null>", 0
