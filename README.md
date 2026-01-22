@@ -23,8 +23,8 @@
 # Hexagon Boot - HBoot
 
 <details title="Português (Brasil)" align='left'>
-<br>
 <summary align='left'>🇧🇷 Português (Brasil)</summary>
+<br>
     
 # Inicialização do Hexagon
 
@@ -136,8 +136,8 @@ O HBoot ganhou muita complexidade desde o início de seu desenvolvimento, em 202
 </details>
 
 <details title="English" align='left'>
-<br>
 <summary align='left'>🇬🇧 English</summary>
+<br>
     
 # Hexagon initialization
 
