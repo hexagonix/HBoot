@@ -12,7 +12,7 @@
 ;;                                                "P8bbdP"
 ;;
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
-;;
+;;Zonai
 ;;                         Copyright (c) 2015-2026 Felipe Miguel Nery Lunkes
 ;;                        Todos os direitos reservados - All rights reserved.
 ;;
@@ -75,7 +75,7 @@
 HBoot.Messages:
 
 .starting:
-db "Hexagon Boot (HBoot) version ", versionHBoot, " (", __stringDay, "/", __stringMonth, "/", __stringYear, ").", 13, 10
+db "HBoot version ", versionHBoot, " (", __stringDay, "/", __stringMonth, "/", __stringYear, ").", 13, 10
 db "Boot loader for Hexagonix.", 13, 10
 db "Copyright (C) 2015-", __stringYear, " Felipe Miguel Nery Lunkes.", 13, 10
 db "All rights reserved.", 13, 10, 0
@@ -131,11 +131,11 @@ db "[Ok]", 13, 10, 0
 .optionFailure:
 db "[Fail]", 13, 10, 0
 .aboutHBoot:
-db 13, 10, "HBoot: Hexagon Boot Information - HBoot version ", versionHBoot, " (", __stringDay, "/", __stringMonth, "/", __stringYear, ")", 13, 10, 13, 10
+db 13, 10, "HBoot Information - HBoot version ", versionHBoot, " (", __stringDay, "/", __stringMonth, "/", __stringYear, ")", 13, 10, 13, 10
 db "Copyright 2015-", __stringYear, " Felipe Miguel Nery Lunkes.", 13, 10
 db "All rights reserved.",13, 10
 db "HBoot is licensed under BSD-3-Clause.", 13, 10, 13, 10
-db "Hexagon Boot (HBoot) is a powerful boot loader designed to boot the Hexagon", 13, 10
+db "HBoot is a powerful boot loader designed to boot the Hexagon", 13, 10
 db "kernel on a volume of your computer. HBoot has the function to perform tests", 13, 10
 db "to verify that the computer can run Hexagon and, after the tests, load the ", 13, 10
 db "kernel, provide parameters (if any user-supplied) and start running Hexagon.", 0
