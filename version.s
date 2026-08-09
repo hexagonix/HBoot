@@ -72,5 +72,5 @@ versionHBoot        equ "0.22.0"
 bootProtocolVersion equ "Dormin"
 architectureHBoot   equ 01h
 verHBoot            equ 00h
-subverHBoot         equ 15h
+subverHBoot         equ 16h
 revisionHBoot       equ 00h
