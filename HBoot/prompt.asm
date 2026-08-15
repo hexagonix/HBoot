@@ -680,7 +680,6 @@ HBoot.HBoot.verifyUserInteraction:
 
     jmp .withoutWarning
 
-
 ;;*******************************
 
 .reboot:
