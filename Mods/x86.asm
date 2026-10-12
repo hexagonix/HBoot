@@ -83,8 +83,9 @@ macro fputs mensagem
 {
 
     mov si, mensagem
+    mov ah, 01h
 
-    call imprimir
+    int SERVICOS_HBOOT
 
 }
 
@@ -93,6 +94,7 @@ macro fputs mensagem
 ;; Definições iniciais e constantes
 
 MEMORIA_MINIMA = 32768    ;; Memória mínima necessária para boot seguro do Hexagonix
+SERVICOS_HBOOT = 20h      ;; Interrupção pela qual o HBoot atende um módulo
 
 ;;************************************************************************************
 
@@ -109,8 +111,6 @@ cabecalhoHBoot:
 ;;************************************************************************************
 
 inicioModulo:
-
-    push dx
 
 ;; Primeiro devemos configurar e definir os registradores de segmento. O segmento é fornecido
 ;; juntamente com CS, então devemos passar o valor do segmento para AX e então para DS e ES, que
@@ -140,15 +140,18 @@ inicioModulo:
 
     call verificarAprovacao
 
-;; Vamos solicitar a interação do usuário para reiniciar e retornar ao HBoot
+;; Vamos solicitar a interação do usuário para retornar ao HBoot
 
-    fputs x86.reinicioNecessario
+    fputs x86.retornoHBoot
 
     call aguardarPressionamento
 
-;; Reiniciar!
+;; Devolver o controle ao HBoot, que retoma a inicialização de onde havia parado. Este é o
+;; único caminho de volta, e não retorna ao módulo
 
-    int 19h
+    mov ah, 05h
+
+    int SERVICOS_HBOOT
 
 ;;************************************************************************************
 ;;
@@ -526,13 +529,14 @@ verificarMemoria:
     pop eax
     push eax
 
-    shr ax, 10 ;; ECX = ECX / 1024
+    shr eax, 10 ;; EAX = EAX / 1024, o total não cabe em AX sozinho
 
     call paraString
 
     mov si, ax
+    mov ah, 01h
 
-    call imprimir
+    int SERVICOS_HBOOT
 
     fputs x86.megabytes
 
@@ -569,28 +573,6 @@ verificarMemoria:
 ;; Copyright (C) 2012-2016 Felipe Miguel Nery Lunkes
 ;; Todos os direitos reservados.
 ;;
-;;************************************************************************************
-
-;; Função construída para exibir na saída de vídeo do usuário uma mensagem presente em SI e
-;; retornar a função que a chamou
-
-imprimir:
-
-    lodsb ;; mov AL, [SI] & inc SI
-
-    or al, al ;; cmp AL, 0
-    jz .pronto
-
-    mov ah, 0Eh
-
-    int 10h ;; Enviar [SI] para a tela
-
-    jmp imprimir
-
-.pronto:
-
-    ret
-
 ;;************************************************************************************
 
 limparTela:
@@ -921,6 +903,6 @@ db 10, 13, "[:D] O Hexagonix pode ser iniciado neste dispositivo/configuracao.",
 db 10, 13, " [>] Memoria total instalada: ", 0
 .megabytes:
 db " megabytes", 0
-.reinicioNecessario:
-db 10, 13, 10, 13, "[!] Reinicio necessario. Pressione qualquer tecla para continuar...", 0
+.retornoHBoot:
+db 10, 13, 10, 13, "Pressione qualquer tecla para retornar ao HBoot...", 0
 .aprovadoTestes: db 0

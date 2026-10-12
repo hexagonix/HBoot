@@ -169,7 +169,7 @@ HBoot.Memory.checkMemory:
 
     shr eax, 10
 
-    mov word[HBoot.Memx86.Control.availableMemoryMB], ax 
+    mov word[HBoot.Memx86.Control.availableMemoryMB], ax
 
     ret
 
@@ -178,3 +178,57 @@ HBoot.Memory.checkMemory:
     fputs HBoot.Messages.memoryError
 
     jmp $ ;; It can't go on. So stay here
+
+;;*************************************************************************************************
+
+;; Physical memory map, as BIOS int 15h/E820h reports it: a list of
+;; base/length/type regions, type following the same numbering E820h
+;; itself uses (1 usable, 2 reserved, 3 ACPI reclaimable, 4 ACPI NVS, 5 bad)
+
+HBoot.Memory.E820.entryCount: dw 0
+HBoot.Memory.E820.entries: ;; Up to 32 regions, 24 bytes each
+times (32 * 24) db 0
+
+;;*************************************************************************************************
+
+;; Walks the BIOS E820h memory map into HBoot.Memory.E820.entries. Leaves
+;; entryCount at 0 if the BIOS doesn't support E820h at all
+
+HBoot.Memory.getMemoryMapE820:
+
+    mov word[HBoot.Memory.E820.entryCount], 0
+
+    xor ebx, ebx ;; Continuation value, 0 starts a fresh walk
+    
+    mov di, HBoot.Memory.E820.entries
+
+.nextEntry:
+
+    mov dword[es:di + 20], 1 ;; Default ACPI extended attribute, some BIOSes only fill 20 bytes
+
+    mov eax, 0000E820h
+    mov edx, 534D4150h ;; 'SMAP'
+    mov ecx, 24
+
+    int 15h
+
+    jc .done
+
+    cmp eax, 534D4150h
+    jne .done
+
+    add di, 24
+    
+    inc word[HBoot.Memory.E820.entryCount]
+
+    cmp ebx, 0
+    je .done ;; EBX back at 0 after a successful call means that was the last one
+
+    cmp word[HBoot.Memory.E820.entryCount], 32
+    jae .done
+
+    jmp .nextEntry
+
+.done:
+
+    ret

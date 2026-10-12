@@ -68,13 +68,15 @@
 
 HBoot.Init.initDev:
 
-    call HBoot.Procx86.initProc         ;; Check the processor manufacturer
+    call HBoot.Procx86.initProc          ;; Check the processor manufacturer
 
-    call HBoot.Memory.checkMemory      ;; Identify installed memory
+    call HBoot.Memory.checkMemory        ;; Identify installed memory
 
-    call HBoot.Disk.checkDisks       ;; Check the drives online on the device
+    call HBoot.Memory.getMemoryMapE820   ;; Walk the BIOS memory region map
 
-    call HBoot.Serial.initSerialPort   ;; Start COM1 serial port
+    call HBoot.Disk.checkDisks           ;; Check the drives online on the device
+
+    call HBoot.Serial.initSerialPort     ;; Start COM1 serial port
 
     call HBoot.Parallel.initParallelPort ;; Start parallel ports
 

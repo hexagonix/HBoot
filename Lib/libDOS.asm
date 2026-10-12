@@ -75,7 +75,7 @@
 HBoot.Modules.DOS.Files:
 
 .freeDOSImage:
-db "KERNEL  SYS"
+db "/kernel.sys", 0
 
 ;; Here we have the segments for loading a DOS kernel (variable)
 
@@ -90,14 +90,14 @@ HBoot.Lib.LibDOS.startFreeDOS:
     
     mov byte[HBoot.Modules.Control.moduleActivated], 01h
 
+;; Read as a path like any other, which also puts the directory field back on
+;; the root after a module was loaded from somewhere else
+
     mov si, HBoot.Modules.DOS.Files.freeDOSImage
-    mov di, HBoot.Files.imageName
 
-    mov cx, 11
-    
-;; Copy filename
+    call HBoot.FS.parsePath
 
-    rep movsb ;; Copy (ECX) characters from ESI to EDI
+    jc .manageFileError
 
     mov word[HBoot.Files.finalSegment], HBoot.Modules.DOS.Segments.segmentFreeDOS
 

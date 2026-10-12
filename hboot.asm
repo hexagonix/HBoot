@@ -125,7 +125,10 @@ include "Lib/lib.asm"
 ;; Now, HBoot functions
 
 include "HBoot/prompt.asm"
+include "HBoot/services.asm"
 include "HBoot/sound.asm"
+include "HBoot/hxbi.asm"
+include "HBoot/pmode.asm"
 
 ;; Messages and debugging
 
@@ -145,13 +148,6 @@ startHBoot:
 
     sti ;; Enable interrupts
 
-;; Save partition LBA address, provided by Saturno
-
-    push esi ;; Here we have the BPB address
-
-    mov dword[partitionLBAAdress], ebp ;; Save partition LBA here
-    mov dword[BPBAdress], esi ;; Save BPB
-
 ;; Load segment registers to new position
 
     clc
@@ -161,6 +157,12 @@ startHBoot:
     mov es, ax
 
     sti
+
+;; Save the addresses Saturno provides, only now that DS is HBoot's own
+;; segment and not the one Saturno relocated itself into
+
+    mov dword[partitionLBAAdress], ebp ;; Save partition LBA here
+    mov dword[BPBAdress], esi ;; Save BPB
 
     mov byte[idDrive], dl ;; Save drive number
 
@@ -187,6 +189,10 @@ analyzeDevice:
 
     call HBoot.HBoot.verifyUserInteraction
 
+    call HBoot.Lib.BootCfg.loadBootCfg ;; Reads boot/boot.cfg's resolution=, if present
+
+    call HBoot.VBE.setupVBE ;; Sets that resolution, if a matching VBE mode exists
+
     jmp HBoot.Lib.Hexagon.loadAndStartHexagon
 
 ;;************************************************************************************
@@ -210,21 +216,28 @@ db 0
 
 HBoot.Files:
 
-.HBootFilename: ;; HBoot filename on volume
-db "HBOOT      "
 .imageName: ;; Here the name of the file to be loaded will be saved
 db "           "
-.moduleImage: ;; For safety, a larger buffer
+.imageDirectory: ;; Root directory entry to search first, blank searches the root itself
+db "           "
+.moduleImage: ;; Path to a module, as typed at the prompt
 times 64 db ' '
 .stopCharacter: db 0 ;; Content display stop point
 .invalidImage:  db 0 ;; Is the image valid?
 .finalSegment:  dw 0 ;; Here will be the location of the segment to be loaded
+.lastFileSize:  dd 0 ;; Byte size of the last file HBoot.FS.searchFile matched
 
 HBoot.Control:
 
 .bootMode: db 0
 
 ;;************************************************************************************
+
+;; Holds one directory's entries while HBoot.FS.FAT16B.searchFileFAT16B
+;; walks a subdirectory looking for the next path component
+
+subdirBuffer:
+times 4000h db 0
 
 ;; The file will be uploaded to the space below
 
