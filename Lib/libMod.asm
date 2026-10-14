@@ -74,3 +74,5 @@ include "libModHBoot.asm"
 HBoot.Modules.Control:
 
 .moduleActivated: db 0
+.moduleSS: dw 0 ;; Stack HBoot ran the module from, to come back to
+.moduleSP: dw 0

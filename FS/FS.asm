@@ -149,6 +149,30 @@ HBoot.FS.searchFile:
 
 ;;************************************************************************************
 
+;; Turns the path in SI into whatever names the volume's own filesystem
+;; searches by, leaving them where HBoot.FS.searchFile picks them up
+
+HBoot.FS.parsePath:
+
+    mov ah, byte[HBoot.Filesystem.code]
+
+    cmp ah, HBoot.Filesystem.FAT16B
+    je .FAT16B
+
+    mov si, HBoot.Messages.invalidFilesystem
+
+    call HBoot.Console.printString
+
+    jmp $
+
+.FAT16B:
+
+    call HBoot.FS.FAT16B.parsePath
+
+    ret
+
+;;************************************************************************************
+
 ;; List of Filesystems supported by HBoot
 
 include "FAT16B/fat16B.asm"

@@ -88,9 +88,11 @@ cabecalhoHBoot:
 
 ;; Início do módulo: ?x????:10h
 
-inicioModulo:
+SERVICOS_HBOOT = 20h ;; Interrupção pela qual o HBoot atende um módulo
 
-    push dx
+;;************************************************************************************
+
+inicioModulo:
 
 ;; Primeiro devemos configurar e definir os registradores de segmento. O segmento é fornecido
 ;; juntamente com CS, então devemos passar o valor do segmento para AX e então para DS e ES, que
@@ -100,50 +102,31 @@ inicioModulo:
     mov ds, ax
     mov es, ax
 
-;; A função deste módulo é exibir uma mensagem previamente definida e então reiniciar o computador.
-;; Outros módulos podem implementar diversas outras funcionalidades, incluindo ser um terceiro estágio
-;; de boot para encontrar partições com sistemas de arquivos não suportados pelo HBoot e carregar e
-;; executar um kernel obtido de lá, onde o HBoot atuaria apenas sendo utilizado no processo de boot
-;; inicial e configuração de periféricos.
+;; A função deste módulo é exibir uma mensagem previamente definida e então devolver o controle
+;; ao HBoot. Outros módulos podem implementar diversas outras funcionalidades, incluindo ser um
+;; terceiro estágio de boot para encontrar partições com sistemas de arquivos não suportados pelo
+;; HBoot e carregar e executar um kernel obtido de lá, onde o HBoot atuaria apenas sendo utilizado
+;; no processo de boot inicial e configuração de periféricos.
+
+;; Exibir uma mensagem é um serviço do próprio HBoot, então o módulo não precisa carregar a sua
+;; própria rotina de escrita na tela
 
     mov si, Spartan.mensagem ;; Vamos fornecer a mensagem
+    mov ah, 01h              ;; Função de exibição de mensagem
 
-    call imprimir ;; E solicitar a função de exibição para que a exiba na tela
+    int SERVICOS_HBOOT
 
     mov ah, 0 ;; Agora, aguardar o pressionamento de qualquer tecla pelo usuário
 
     int 16h ;; Existe uma função na interrupção do BIOS responsável pela manipulação de teclado
 
-    pop dx
+;; O retorno ao HBoot também é um serviço. Reiniciar a máquina ou saltar direto para o ponto de
+;; entrada do HBoot não funciona, pois o HBoot obtém o volume de onde foi carregado a partir de
+;; registradores que o módulo é livre para ter utilizado
 
-    jmp 0x1000:06h ;; Agora, vamos reiniciar o computador após o pressionamento de qualquer tecla
+    mov ah, 05h ;; Função de retorno ao HBoot, que não retorna ao módulo
 
-;; Também é possível pular para o ponto de entrada do HBoot, utilizando o código abaixo. Entretanto,
-;; isso só deve ser feito em casos especiais e quando realmente for bastante necessário.
-
-    ;; jmp 0x1000:06 ;; Retornar o controle diretamente ao HBoot via segmento:deslocamento
-
-;;************************************************************************************
-
-;; Função construída para exibir na saída de vídeo do usuário uma mensagem presente em SI e
-;; retornar a função que a chamou
-
-imprimir:
-
-    lodsb ;; mov AL, [SI] & inc SI
-
-    or al, al ;; cmp AL, 0
-    jz .pronto
-
-    mov ah, 0Eh
-
-    int 10h ;; Enviar [SI] para a tela
-
-    jmp imprimir
-
-.pronto:
-
-    ret
+    int SERVICOS_HBOOT
 
 ;;************************************************************************************
 

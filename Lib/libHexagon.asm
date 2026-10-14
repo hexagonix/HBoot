@@ -76,7 +76,7 @@ HAPP_HEADER_SIZE = 26h ;; Version 2.0 of the HAPP definition
 
 HBoot.Modules.Hexagon.Segments.segmentHexagon equ 0x50 ;; Segment for loading the Hexagon
 HBoot.Modules.Hexagon.Files.imageHexagon:
-db "HEXAGON    ", 0 ;; Name of the file containing the Hexagon kernel
+db "/boot/hexagon", 0 ;; Path to the file containing the Hexagon kernel
 
 ;;************************************************************************************
 
@@ -88,45 +88,38 @@ HBoot.Lib.Hexagon.loadAndStartHexagon:
 
     call HBoot.FS.searchFile ;; Search for the file containing the kernel
 
+    jc .kernelNotFound
+
     jmp HBoot.Lib.Hexgon.startHexagonKernel ;; Run Hexagon
+
+.kernelNotFound:
+
+;; Nothing left to fall back to without a kernel to run
+
+    mov si, HBoot.Messages.notFound
+
+    call HBoot.Console.printString
+
+    jmp $
 
 ;;************************************************************************************
 
-;; Function that transfers execution to Hexagon, passing parameters through
-;;registers, as described below:
-;;
-;; EBP - Pointer to the BIOS Parameter Block of the boot volume
-;; DL  - Logical volume number used for boot
-;; CX  - Quantity, in Kbytes, of RAM memory installed on the machine
-;; More parameters can now be passed due to the creation of the second stage (HBoot)
+;; Builds the HXBI block and hands the kernel its physical address in EBX,
+;; already in 32-bit protected mode
 
 HBoot.Lib.Hexgon.startHexagonKernel:
 
-    pop ebp ;; Pointer to BPB
-    mov esi, HBoot.Parameters.readBuffer + (SEG_HBOOT * 16) ;; Point ESI to parameters
-    mov bl, byte[idDrive] ;; Drive used for boot
-    mov cx, word[HBoot.Memx86.Control.availableMemory] ;; Installed memory
+    call HBoot.HXBI.buildBlock
 
-;; Hexagon features the HAPP header, which is standard on all Hexagon format executables.
-;; This header is 38 bytes long (0x26), so we should skip it.
-;; The data contained in the header will be validated in the future, if necessary
-
-;; Configure CS:IP and run the kernel
-
-    jmp HBoot.Modules.Hexagon.Segments.segmentHexagon:HAPP_HEADER_SIZE
+    call HBoot.PM.switchAndJump ;; Never returns
 
 ;;************************************************************************************
 
 HBoot.Lib.Hexagon.configureHexagon:
 
     mov si, HBoot.Modules.Hexagon.Files.imageHexagon
-    mov di, HBoot.Files.imageName
 
-    mov cx, 11
-
-;; Copy file name
-
-    rep movsb ;; Copy (ECX) characters from ESI to EDI
+    call HBoot.FS.parsePath
 
     mov word[HBoot.Files.finalSegment], HBoot.Modules.Hexagon.Segments.segmentHexagon
 

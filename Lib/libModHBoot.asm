@@ -71,7 +71,12 @@
 ;; functions, such as memory testing, testing of other components, etc
 
 MODULE_HEADER  = 10h      ;; Module headers definition version 1.0
-MODULE_SEGMENT equ 0x2000 ;; Segment for loading module images
+
+;; Segment for loading module images. It has to stay clear of 0x2000, where
+;; Saturno relocated itself, since the BIOS Parameter Block sitting there is
+;; what HBoot hands the kernel
+
+MODULE_SEGMENT equ 0x3000
 
 ;;************************************************************************************
 
@@ -79,7 +84,6 @@ HBoot.modHBoot.Messages:
 
 .modReturn:
 db 13, 10, "HBoot: You have returned from a finished HBoot module.", 13, 10
-db "HBoot: It is recommended to restart your device before starting Hexagon.", 13, 10
 db "HBoot: Press [ENTER] to continue...", 13, 10, 0
 
 ;;************************************************************************************
@@ -100,14 +104,14 @@ HBoot.Lib.HMod.loadAndStartHBootModule:
 
     call HBoot.Keyboard.readKeyboard
 
+;; The path is read the way it is written, so a module can sit in a directory
+;; instead of having to be typed the way the entry itself is stored on disk
+
     mov si, HBoot.Files.moduleImage
-    mov di, HBoot.Files.imageName
 
-    mov cx, 11
+    call HBoot.FS.parsePath
 
-;; Copy filename
-
-    rep movsb ;; Copy (ECX) characters from ESI to EDI
+    jc .manageInvalidPath
 
     mov word[HBoot.Files.finalSegment], MODULE_SEGMENT
 
@@ -115,12 +119,17 @@ HBoot.Lib.HMod.loadAndStartHBootModule:
 
     jc .manageFileError
 
-    mov dl, byte[idDrive] ;; Drive used for boot
-    mov ebp, dword[BPBAdress + (SEG_HBOOT * 16)] ;; Pointer to BPB
-    mov esi, dword[partitionLBAAdress + (SEG_HBOOT * 16)] ;; Pointer to partition
+    call HBoot.Services.install ;; From here on a module can call HBoot itself
 
-    push ss
-    push sp
+    mov dl, byte[idDrive] ;; Drive used for boot
+    mov ebp, dword[BPBAdress] ;; Pointer to BPB
+    mov esi, dword[partitionLBAAdress] ;; Pointer to partition
+
+;; Where to come back to is kept here and not on the stack the module
+;; inherits, so it can ask to return from any depth
+
+    mov word[HBoot.Modules.Control.moduleSS], ss
+    mov word[HBoot.Modules.Control.moduleSP], sp
 
     jmp MODULE_SEGMENT:MODULE_HEADER ;; Configure CS:IP and run the module
 
@@ -134,15 +143,31 @@ HBoot.Lib.HMod.loadAndStartHBootModule:
 
 ;;************************************************************************************
 
+.manageInvalidPath:
+
+    fputs HBoot.Messages.modInvalidPath
+
+    call HBoot.Keyboard.waitKeyboard
+
+    jmp HBoot.HBoot.verifyUserInteraction.testComponents
+
+;;************************************************************************************
+
+;; Where function 05h of the service interrupt lands, and the only way back
+;; into HBoot. Reentering at its entry point instead would have HBoot read the
+;; volume it booted from out of registers the module is free to have used
+
 HBoot.Lib.HMod.moduleReturn:
 
     mov ax, SEG_HBOOT
     mov ds, ax
-    mov es, ax
     mov gs, ax
 
-    pop ss
-    pop sp
+;; An interrupt cannot land between these two, so the stack is never half
+;; restored
+
+    mov ss, word[HBoot.Modules.Control.moduleSS]
+    mov sp, word[HBoot.Modules.Control.moduleSP]
 
     push ds
     pop es

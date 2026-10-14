@@ -68,9 +68,9 @@
 
 ;; HBoot version
 
-versionHBoot        equ "0.22.0"
-bootProtocolVersion equ "Dormin"
+versionHBoot        equ "0.23.0"
+bootProtocolVersion equ "Hylia"
 architectureHBoot   equ 01h
 verHBoot            equ 00h
-subverHBoot         equ 16h
+subverHBoot         equ 17h
 revisionHBoot       equ 00h

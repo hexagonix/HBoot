@@ -96,6 +96,16 @@ db "Cannot continue. At least 32 Mb are required.", 13, 10
 db "Install more memory and try again.", 0
 .loadHexagon:
 db 13, 10, 13, 10, "Loading Hexagon...", 0
+.bootCfgFound:
+db 13, 10, "HBoot: boot.cfg resolution ", 0
+.bootCfgSeparator:
+db "x", 0
+.bootCfgNotFound:
+db 13, 10, "HBoot: boot.cfg not found, using the default video mode.", 0
+.vbeModeSet:
+db 13, 10, "HBoot: VBE mode set.", 0
+.vbeModeNotSet:
+db 13, 10, "HBoot: no matching VBE mode found, using the default video mode.", 0
 .invalidImage:
 db 13, 10, "HBoot: The Hexagon image appears to be corrupt and cannot be used for", 13, 10
 db "booting the system. Try reinstalling or recovering system to continue.", 0
@@ -122,9 +132,10 @@ db " > [2]: Return to previous menu.", 13, 10, 0
 .startMod:
 db 13, 10, "HBoot: Start HBoot module.", 13, 10
 db "HBoot: Here you can start a compatible module for HBoot.", 13, 10
-db "Enter a file name in FAT format, as in the example:", 13, 10
-db "For hello.txt file, supply 'HELLO   TXT', without quotes and in capital letters.", 13, 10
-db "The name must have a maximum of 11 uppercase characters.", 13, 10, 13, 10
+db "Enter the path to the module, as in the example:", 13, 10
+db "For the spartan.mod module kept under /boot, supply '/boot/spartan.mod',", 13, 10
+db "without quotes. A path may name at most one directory, and each name in it", 13, 10
+db "at most 8 characters plus a 3 character extension.", 13, 10, 13, 10
 db " > ", 0
 .pressed:
 db "[Ok]", 13, 10, 0
@@ -210,6 +221,9 @@ db " megabytes", 0
 db 13, 10, " > Command line for Hexagon: ", 0
 .modNotFound:
 db 13, 10, 13, 10, "HBoot: The file containing an HBoot module was not found on volume.", 13, 10
+db "HBoot: Press [ENTER] to return to the previous menu...", 13, 10, 0
+.modInvalidPath:
+db 13, 10, 13, 10, "HBoot: The path given cannot name a file on this volume.", 13, 10
 db "HBoot: Press [ENTER] to return to the previous menu...", 13, 10, 0
 .DOSNotFound:
 db 13, 10, 13, 10, "HBoot: DOS system files not found on volume.", 13, 10

@@ -68,6 +68,7 @@
 
 include "Lib/libstring.asm"
 include "Lib/libnum.asm"
+include "Lib/libBootCfg.asm"
 include "Lib/libHexagon.asm"
 include "Lib/libMod.asm"
 include "Lib/libUtil.asm"

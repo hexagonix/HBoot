@@ -71,6 +71,10 @@
 SEG_HBOOT  equ 0x1000 ;; HBoot Load Segment
 SEG_DIAG   equ 0x60   ;; Segment for loading diagnostic images
 
+;; Interrupt through which a running module calls HBoot's own services
+
+HBOOT_SERVICES = 20h
+
 ;; Architecture data for which Hexagon must be loaded
 
 ARCHITECTURE = 01h ;; HBoot architecture and what the kernel is intended for
